@@ -76,7 +76,8 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .byma-t { font-size:9px; font-weight:600; color:#a09278; text-transform:uppercase; }
 .byma-n { font-size:10px; color:#5c3410; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .byma-p { font-family:'Lora',serif; font-size:1.0rem; font-weight:600; color:#2e2418; margin-top:3px; }
-.byma-v { font-size:10px; font-weight:600; margin-top:1px; }
+.byma-v   { font-size:10px; font-weight:600; }
+.byma-lbl { font-size:9px; color:#a09278; margin-top:2px; line-height:1.3; }
 .pos-v  { color:#4a7820; }
 .neg-v  { color:#c04030; }
 
@@ -399,34 +400,38 @@ function renderDolar() {
     </div>`;
 }
 
-const BYMA_CAT = {
-  'SPY.BA':'cedear','QQQ.BA':'cedear','AAPL.BA':'cedear','MSFT.BA':'cedear',
-  'NVDA.BA':'cedear','AMZN.BA':'cedear','GOOGL.BA':'cedear','BRK-B.BA':'cedear',
-  'MELI.BA':'cedear','TSLA.BA':'cedear',
-  'AL30.BA':'bono','AL35.BA':'bono','GD30.BA':'bono','GD35.BA':'bono','TX26.BA':'bono',
-  'GGAL.BA':'accion','YPF.BA':'accion','BBAR.BA':'accion','PAMP.BA':'accion',
+// Solo los instrumentos que le sirven a Florencia
+const MIS_TICKERS = {
+  'SPY.BA':  { nombre: 'SPY — S&P 500',    cat: 'cedear', label: 'Tu posición principal' },
+  'QQQ.BA':  { nombre: 'QQQ — Nasdaq 100', cat: 'cedear', label: 'Complemento tecnología' },
+  'AL30.BA': { nombre: 'Bono AL30',         cat: 'bono',   label: 'Renta en USD · cupones cada 6 meses' },
+  'GD30.BA': { nombre: 'Bono GD30',         cat: 'bono',   label: 'Renta en USD · ley Nueva York' },
 };
 
 function renderByma() {
   if (!MKT?.byma) return;
-  const entries = Object.entries(MKT.byma).filter(([k,v]) => !k.startsWith('_') && v.precio);
-  if (!entries.length) {
-    document.getElementById('byma-wrap').innerHTML =
-      `<div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;">Sin datos de BYMA — yfinance puede tardar unos segundos. Actualizá.</div>`;
-    return;
-  }
-  const cards = entries.map(([ticker, v]) => {
-    const cat = BYMA_CAT[ticker] || 'otro';
-    const vv  = v.variacion;
-    const sign= vv != null ? (vv >= 0 ? '+' : '') : '';
-    const vStr= vv != null ? `${sign}${vv.toFixed(2)}%` : '—';
-    const cls = vv != null ? (vv >= 0 ? 'pos-v' : 'neg-v') : '';
-    const short= v.nombre.replace(/^(CEDEAR|Bono)\s+/,'').split('(')[0].trim().split('—')[0].trim();
+  const cards = Object.entries(MIS_TICKERS).map(([ticker, info]) => {
+    const v   = MKT.byma[ticker];
+    const cat = info.cat;
+    if (!v?.precio) return `
+      <div class="byma-card ${cat}" style="opacity:.5;">
+        <div class="byma-t">${ticker}</div>
+        <div class="byma-n">${info.nombre}</div>
+        <div class="byma-p" style="font-size:.8rem;color:#a09278;">cargando...</div>
+        <div class="byma-lbl">${info.label}</div>
+      </div>`;
+    const vv   = v.variacion;
+    const sign = vv != null ? (vv >= 0 ? '+' : '') : '';
+    const vStr = vv != null ? `${sign}${vv.toFixed(2)}%` : '—';
+    const cls  = vv != null ? (vv >= 0 ? 'pos-v' : 'neg-v') : '';
     return `<div class="byma-card ${cat}">
       <div class="byma-t">${ticker}</div>
-      <div class="byma-n">${short}</div>
+      <div class="byma-n">${info.nombre}</div>
       <div class="byma-p">$${fmt(v.precio)}</div>
-      <div class="byma-v ${cls}">${vStr}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
+        <div class="byma-lbl">${info.label}</div>
+        <div class="byma-v ${cls}">${vStr}</div>
+      </div>
     </div>`;
   }).join('');
   document.getElementById('byma-wrap').innerHTML = `<div class="byma-grid">${cards}</div>`;
