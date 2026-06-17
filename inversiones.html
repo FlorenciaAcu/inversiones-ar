@@ -323,64 +323,70 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
       <span class="tv">$ <span id="total-pos">0</span></span>
     </div>
 
-    <div class="sec" style="margin-top:22px;">Registrar nueva posición</div>
-    <div class="form-box">
-      <div class="fl">Instrumento</div>
-      <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
-        <option value="">— elegí —</option>
-        <optgroup label="CEDEARs">
-          <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
-          <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
-          <option value="CEDEAR NVDA|variable|cedear|NVDA.BA">CEDEAR NVDA — NVIDIA</option>
-          <option value="CEDEAR AAPL|variable|cedear|AAPL.BA">CEDEAR AAPL — Apple</option>
-          <option value="CEDEAR MSFT|variable|cedear|MSFT.BA">CEDEAR MSFT — Microsoft</option>
-          <option value="CEDEAR MELI|variable|cedear|MELI.BA">CEDEAR MELI — MercadoLibre</option>
-          <option value="CEDEAR BRK.B|variable|cedear|BRK-B.BA">CEDEAR BRK.B — Berkshire</option>
-          <option value="CEDEAR TSLA|variable|cedear|TSLA.BA">CEDEAR TSLA — Tesla</option>
-        </optgroup>
-        <optgroup label="Fondos (FCI)">
-          <option value="FCI Money Market|72|fondo|">FCI Money Market</option>
-          <option value="FCI Renta Mixta|85|fondo|">FCI Renta Mixta</option>
-          <option value="FCI Renta Variable|variable|fondo|">FCI Renta Variable</option>
-        </optgroup>
-        <optgroup label="Renta fija">
-          <option value="Plazo Fijo UVA|inflacion|plazo|">Plazo Fijo UVA</option>
-          <option value="Plazo Fijo|tasa|plazo|">Plazo Fijo (mejor tasa)</option>
-          <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30</option>
-          <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30</option>
-          <option value="Bono CER TX26|cer|bono|TX26.BA">Bono CER TX26</option>
-        </optgroup>
-        <optgroup label="Acciones">
-          <option value="YPF|variable|accion|YPF.BA">YPF</option>
-          <option value="Galicia GGAL|variable|accion|GGAL.BA">Galicia (GGAL)</option>
-          <option value="Pampa Energía|variable|accion|PAMP.BA">Pampa Energía</option>
-        </optgroup>
-        <option value="Otro|variable|otro|">Otro</option>
-      </select>
-      <div id="f-otro-row" style="display:none;">
-        <div class="fl">Nombre personalizado</div>
-        <input class="fi" id="f-otro" placeholder="ej. Fondo Quinquela">
-      </div>
-      <div class="f2">
-        <div>
-          <div class="fl">Monto ($)</div>
-          <input class="fi" type="number" id="f-monto" placeholder="0">
-        </div>
-        <div>
-          <div class="fl">Fecha compra</div>
-          <input class="fi" type="date" id="f-fecha">
-        </div>
-      </div>
-      <div class="fl">Vencimiento (si aplica)</div>
-      <input class="fi" type="date" id="f-venc">
-      <div class="fl">Notas</div>
-      <input class="fi" id="f-notas" placeholder="ej. renovar el 15 ago, 50 cuotapartes, etc.">
-      <button class="btn-add" onclick="agregar()">Registrar inversión</button>
-      <button class="btn-sec" onclick="consultarClaude()">Pedir consejo a la consejera ↗</button>
-    </div>
-    <p class="nota">✦ Comprás en portfoliopersonal.com y lo registrás acá. El backend guarda todo en SQLite — no se pierde al cerrar el navegador.</p>
+    <button class="btn-rec" style="margin-top:18px;" onclick="abrirFormModal()">+ Registrar nueva posición</button>
+    <button class="btn-sec" style="margin-top:8px;" onclick="consultarClaude()">Pedir consejo a la consejera ↗</button>
   </div>
 
+</div>
+
+<!-- MODAL FORMULARIO -->
+<div class="modal-bg" id="modal-form-bg" onclick="cerrarFormModal(event)">
+  <div class="modal" style="max-height:88vh;overflow-y:auto;">
+    <div class="modal-t">Nueva posición</div>
+    <div class="modal-s">Comprás en portfoliopersonal.com y lo registrás acá.</div>
+    <div class="fl">Instrumento</div>
+    <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
+      <option value="">— elegí —</option>
+      <optgroup label="CEDEARs">
+        <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
+        <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
+        <option value="CEDEAR NVDA|variable|cedear|NVDA.BA">CEDEAR NVDA — NVIDIA</option>
+        <option value="CEDEAR AAPL|variable|cedear|AAPL.BA">CEDEAR AAPL — Apple</option>
+        <option value="CEDEAR MSFT|variable|cedear|MSFT.BA">CEDEAR MSFT — Microsoft</option>
+        <option value="CEDEAR MELI|variable|cedear|MELI.BA">CEDEAR MELI — MercadoLibre</option>
+        <option value="CEDEAR BRK.B|variable|cedear|BRK-B.BA">CEDEAR BRK.B — Berkshire</option>
+        <option value="CEDEAR TSLA|variable|cedear|TSLA.BA">CEDEAR TSLA — Tesla</option>
+      </optgroup>
+      <optgroup label="Fondos (FCI)">
+        <option value="FCI Money Market|72|fondo|">FCI Money Market</option>
+        <option value="FCI Renta Mixta|85|fondo|">FCI Renta Mixta</option>
+        <option value="FCI Renta Variable|variable|fondo|">FCI Renta Variable</option>
+      </optgroup>
+      <optgroup label="Renta fija">
+        <option value="Plazo Fijo UVA|inflacion|plazo|">Plazo Fijo UVA</option>
+        <option value="Plazo Fijo|tasa|plazo|">Plazo Fijo (mejor tasa)</option>
+        <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30</option>
+        <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30</option>
+        <option value="Bono CER TX26|cer|bono|TX26.BA">Bono CER TX26</option>
+      </optgroup>
+      <optgroup label="Acciones">
+        <option value="YPF|variable|accion|YPF.BA">YPF</option>
+        <option value="Galicia GGAL|variable|accion|GGAL.BA">Galicia (GGAL)</option>
+        <option value="Pampa Energía|variable|accion|PAMP.BA">Pampa Energía</option>
+      </optgroup>
+      <option value="Otro|variable|otro|">Otro</option>
+    </select>
+    <div id="f-otro-row" style="display:none;">
+      <div class="fl">Nombre personalizado</div>
+      <input class="fi" id="f-otro" placeholder="ej. Fondo Quinquela">
+    </div>
+    <div class="f2">
+      <div>
+        <div class="fl">Monto ($)</div>
+        <input class="fi" type="number" id="f-monto" placeholder="0">
+      </div>
+      <div>
+        <div class="fl">Fecha compra</div>
+        <input class="fi" type="date" id="f-fecha">
+      </div>
+    </div>
+    <div class="fl">Vencimiento (si aplica)</div>
+    <input class="fi" type="date" id="f-venc">
+    <div class="fl">Notas</div>
+    <input class="fi" id="f-notas" placeholder="ej. renovar el 15 ago, 50 cuotapartes, etc.">
+    <button class="btn-add" onclick="agregar()">Registrar inversión</button>
+    <button class="modal-close" style="margin-top:8px;" onclick="cerrarFormModal()">Cancelar</button>
+  </div>
 </div>
 
 <!-- MODAL DETALLE -->
@@ -687,6 +693,16 @@ function go(t) {
   if (t === 'portfolio') renderPortfolio();
 }
 
+// ─── MODAL FORMULARIO ──────────────────────────
+function abrirFormModal() {
+  document.getElementById('f-fecha').valueAsDate = new Date();
+  document.getElementById('modal-form-bg').classList.add('open');
+}
+function cerrarFormModal(e) {
+  if (!e || e.target === document.getElementById('modal-form-bg'))
+    document.getElementById('modal-form-bg').classList.remove('open');
+}
+
 // ─── FORM ──────────────────────────────────────
 function onTipo() {
   document.getElementById('f-otro-row').style.display =
@@ -715,10 +731,10 @@ async function agregar() {
     if (!r.ok) throw new Error();
     document.getElementById('f-tipo').value  = '';
     document.getElementById('f-monto').value = '';
-    document.getElementById('f-fecha').valueAsDate = new Date();
     document.getElementById('f-venc').value  = '';
     document.getElementById('f-notas').value = '';
     document.getElementById('f-otro-row').style.display = 'none';
+    document.getElementById('modal-form-bg').classList.remove('open');
     await renderPortfolio();
   } catch {
     alert('No se pudo guardar. ¿El backend está corriendo?');
@@ -780,7 +796,6 @@ async function consultarClaude() {
 }
 
 // ─── INIT ──────────────────────────────────────
-document.getElementById('f-fecha').valueAsDate = new Date();
 fetchMarket();
 </script>
 </body>
