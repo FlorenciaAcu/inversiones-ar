@@ -208,24 +208,37 @@ CEDEAR_TICKERS = {
     "PAMP.BA":  "Pampa Energia",
 }
 
-def fetch_byma_sync():
-    if not HAS_YF:
-        return {}
+async def fetch_byma_async():
+    """Precios BYMA via Yahoo Finance API directamente con httpx (funciona en cloud)."""
+    YF_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+        "Accept-Language": "es-AR,es;q=0.9",
+    }
     result = {}
-    try:
-        data   = yf.download(list(CEDEAR_TICKERS.keys()), period="5d", progress=False, auto_adjust=True)
-        closes = data["Close"]
-        for ticker, nombre in CEDEAR_TICKERS.items():
-            try:
-                serie  = closes[ticker].dropna()
-                precio = float(serie.iloc[-1])
-                prev   = float(serie.iloc[-2]) if len(serie) > 1 else precio
+
+    async def fetch_one(ticker, nombre):
+        try:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=5d"
+            async with httpx.AsyncClient(timeout=12, headers=YF_HEADERS, follow_redirects=True) as c:
+                r = await c.get(url)
+                if r.status_code != 200:
+                    raise ValueError(f"HTTP {r.status_code}")
+                data   = r.json()
+                quotes = data["chart"]["result"][0]["indicators"]["quote"][0]
+                closes = [x for x in (quotes.get("close") or []) if x is not None]
+                if not closes:
+                    raise ValueError("sin datos")
+                precio = closes[-1]
+                prev   = closes[-2] if len(closes) > 1 else precio
                 var    = round((precio - prev) / prev * 100, 2) if prev else 0
-                result[ticker] = {"nombre": nombre, "precio": round(precio, 2), "variacion": var, "moneda": "ARS"}
-            except:
-                result[ticker] = {"nombre": nombre, "precio": None, "variacion": None}
-    except Exception as e:
-        result["_error"] = str(e)
+                return ticker, {"nombre": nombre, "precio": round(precio, 2), "variacion": var, "moneda": "ARS"}
+        except Exception as e:
+            return ticker, {"nombre": nombre, "precio": None, "variacion": None, "_err": str(e)}
+
+    tasks = [fetch_one(t, n) for t, n in CEDEAR_TICKERS.items()]
+    for ticker, data in await asyncio.gather(*tasks):
+        result[ticker] = data
     return result
 
 # ─── ENDPOINTS ────────────────────────────────────────────────
@@ -234,8 +247,7 @@ async def market():
     dolar, tasas, bcra, fci = await asyncio.gather(
         fetch_dolar(), fetch_tasas(), fetch_bcra(), fetch_fci()
     )
-    loop = asyncio.get_event_loop()
-    byma = await loop.run_in_executor(None, fetch_byma_sync)
+    byma = await fetch_byma_async()
     return {"dolar": dolar, "tasas": tasas, "bcra": bcra, "fci": fci,
             "byma": byma, "timestamp": datetime.now().isoformat()}
 
