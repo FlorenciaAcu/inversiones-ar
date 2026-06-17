@@ -2,6 +2,7 @@
 Backend de inversiones AR
 - Local: SQLite en portfolio.db
 - Railway: PostgreSQL via DATABASE_URL
+- Análisis de mercado: 3 veces al día (9am, 1pm, 6pm Argentina)
 """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +13,7 @@ import httpx
 import asyncio
 from datetime import datetime, date
 import os
+from zoneinfo import ZoneInfo
 
 try:
     import yfinance as yf
@@ -241,15 +243,54 @@ async def fetch_byma_async():
         result[ticker] = data
     return result
 
-# ─── ENDPOINTS ────────────────────────────────────────────────
-@app.get("/api/market")
-async def market():
+# ─── CACHÉ DE MERCADO (se actualiza 3x/día) ──────────────────
+ARG = ZoneInfo("America/Argentina/Buenos_Aires")
+_cache = {"data": None, "actualizado": None, "turno": None}
+
+async def _refresh_market():
+    """Refresca el caché con datos frescos del mercado."""
     dolar, tasas, bcra, fci = await asyncio.gather(
         fetch_dolar(), fetch_tasas(), fetch_bcra(), fetch_fci()
     )
     byma = await fetch_byma_async()
-    return {"dolar": dolar, "tasas": tasas, "bcra": bcra, "fci": fci,
-            "byma": byma, "timestamp": datetime.now().isoformat()}
+    ahora = datetime.now(ARG)
+    hora  = ahora.hour
+    turno = "Análisis de la mañana" if hora < 12 else "Análisis del mediodía" if hora < 17 else "Análisis de la tarde"
+    _cache["data"] = {"dolar": dolar, "tasas": tasas, "bcra": bcra, "fci": fci, "byma": byma}
+    _cache["actualizado"] = ahora.strftime("%d/%m · %H:%Mhs")
+    _cache["turno"] = turno
+    print(f"[{_cache['actualizado']}] Mercado actualizado — {turno}")
+
+async def _scheduler():
+    """Corre cada minuto y dispara el refresh a las 9, 13 y 18hs Argentina."""
+    HORAS = {9, 13, 18}
+    ultimo = -1
+    while True:
+        ahora = datetime.now(ARG)
+        if ahora.hour in HORAS and ahora.hour != ultimo:
+            ultimo = ahora.hour
+            await _refresh_market()
+        await asyncio.sleep(60)
+
+@app.on_event("startup")
+async def startup():
+    # Primer refresh inmediato al arrancar
+    await _refresh_market()
+    # Lanzar el scheduler en background
+    asyncio.create_task(_scheduler())
+
+# ─── ENDPOINTS ────────────────────────────────────────────────
+@app.get("/api/market")
+async def market():
+    # Si por alguna razón el caché está vacío, refrescar ahora
+    if not _cache["data"]:
+        await _refresh_market()
+    return {
+        **_cache["data"],
+        "timestamp":   datetime.now(ARG).isoformat(),
+        "actualizado": _cache["actualizado"],
+        "turno":       _cache["turno"],
+    }
 
 class Posicion(BaseModel):
     nombre:        str

@@ -357,10 +357,11 @@ async function fetchMarket() {
     renderDolar();
     renderByma();
     onCapChange();
-    document.getElementById('ts').textContent =
-      new Date(MKT.timestamp).toLocaleTimeString('es-AR', {hour:'2-digit',minute:'2-digit'});
+    const turno = MKT.turno || 'Análisis del día';
+    const act   = MKT.actualizado || '—';
+    document.getElementById('ts').textContent = act;
     document.getElementById('backend-status').innerHTML =
-      '<div class="backend-ok">✓ Backend conectado · dolarapi.com · BCRA · Yahoo Finance</div>';
+      `<div class="backend-ok">${turno} · ${act} · Lo que ves refleja ese momento.</div>`;
     renderPortfolio();
   } catch(e) {
     document.getElementById('backend-status').innerHTML = `
