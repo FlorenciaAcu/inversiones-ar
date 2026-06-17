@@ -7,30 +7,69 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+:root {
+  --brand:   #1a5c40;
+  --brand-l: #e6f2ec;
+  --brand-m: #2a7a55;
+  --ink:     #2e2418;
+  --muted:   #a09278;
+  --border:  #d8cebc;
+  --bg:      #f7f3eb;
+  --surface: rgba(255,252,246,.97);
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
-  background-color: #f7f3eb;
+  background-color: var(--bg);
   background-image: linear-gradient(rgba(150,130,90,.10) 1px,transparent 1px),
                     linear-gradient(90deg,rgba(150,130,90,.10) 1px,transparent 1px);
   background-size: 22px 22px;
   padding: 0 0 60px;
 }
 
+/* BRAND HEADER */
+.brand-header {
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  padding: 18px 18px 14px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.brand-mark svg { display:block; }
+.brand-text {}
+.brand-name {
+  font-family: 'Lora', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.4px;
+  line-height: 1;
+}
+.brand-name span { color: var(--brand); }
+.brand-tag {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: .1px;
+}
+
 /* NAV */
-.tab-nav { display:flex; border-bottom:1.5px solid #d8cebc; background:rgba(255,252,246,.97); border-top:1.5px solid #d8cebc; position:sticky; top:0; z-index:10; }
-.tab-btn { flex:1; padding:14px 6px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:#a09278; cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .15s; }
-.tab-btn.active { color:#c04030; border-bottom-color:#c04030; font-weight:600; }
+.tab-nav { display:flex; border-bottom:1.5px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:10; }
+.tab-btn { flex:1; padding:13px 6px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .15s; }
+.tab-btn.active { color:var(--brand); border-bottom-color:var(--brand); font-weight:600; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
-.card { background:rgba(255,252,246,.97); border-bottom:1.5px solid #d8cebc; padding:22px 18px 36px; }
+.card { background:rgba(255,252,246,.97); border-bottom:1.5px solid var(--border); padding:22px 18px 36px; }
 
 /* HEADER */
 .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
-.accent { width:3px; min-height:44px; background:linear-gradient(180deg,#c04030 0%,rgba(192,64,48,0) 100%); border-radius:2px; flex-shrink:0; margin-top:2px; }
-h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418; letter-spacing:-.3px; line-height:1.15; }
-.tagline { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#a09278; margin-top:3px; line-height:1.5; }
+.accent { width:3px; min-height:44px; background:linear-gradient(180deg,var(--brand) 0%,rgba(26,92,64,0) 100%); border-radius:2px; flex-shrink:0; margin-top:2px; }
+h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--ink); letter-spacing:-.3px; line-height:1.15; }
+.tagline { font-family:'Lora',serif; font-style:italic; font-size:12px; color:var(--muted); margin-top:3px; line-height:1.5; }
 .sec { font-family:'Lora',serif; font-size:10px; font-weight:600; color:#b0a488; text-transform:uppercase; letter-spacing:1px; margin:20px 0 9px; }
 
 /* STATUS BAR */
@@ -39,8 +78,8 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .live-dot { width:6px; height:6px; border-radius:50%; background:#6a9e5a; animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
 .live-ts  { font-size:10px; color:#a09278; }
-.btn-refresh { font-size:10px; color:#a07840; background:none; border:1px solid #d0c4a8; border-radius:5px; padding:3px 9px; cursor:pointer; }
-.btn-refresh:hover { background:#f0e8d8; }
+.btn-refresh { font-size:10px; color:var(--brand); background:none; border:1px solid #c0d8cc; border-radius:5px; padding:3px 9px; cursor:pointer; }
+.btn-refresh:hover { background:var(--brand-l); }
 
 /* BACKEND STATUS */
 .backend-ok  { font-size:11px; color:#4a7820; background:rgba(100,160,80,.08); border:1px solid rgba(100,160,80,.3); border-radius:6px; padding:6px 11px; margin-bottom:8px; }
@@ -70,7 +109,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 /* BYMA GRID */
 .byma-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:4px; }
 .byma-card { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:8px; padding:9px 10px; }
-.byma-card.cedear { border-color:#c04030; }
+.byma-card.cedear { border-color:var(--brand); }
 .byma-card.bono   { border-color:#7a5a98; }
 .byma-card.accion { border-color:#e0a840; }
 .byma-t { font-size:9px; font-weight:600; color:#a09278; text-transform:uppercase; }
@@ -85,13 +124,13 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .capital-box { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:12px; padding:16px; margin:14px 0 0; }
 .capital-label { font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.5px; margin-bottom:9px; }
 .capital-row { display:flex; align-items:center; gap:8px; }
-.capital-sym { font-family:'Lora',serif; font-size:1.6rem; font-weight:600; color:#c04030; }
+.capital-sym { font-family:'Lora',serif; font-size:1.6rem; font-weight:600; color:var(--brand); }
 .capital-inp { flex:1; background:transparent; border:none; border-bottom:2px solid #d8cebc; font-family:'Lora',serif; font-size:1.8rem; font-weight:600; color:#2e2418; outline:none; padding-bottom:3px; transition:border-color .2s; width:100%; }
 .capital-inp:focus { border-color:#c04030; }
 .capital-inp::-webkit-outer-spin-button, .capital-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
 .capital-usd { font-size:12px; color:#a09278; margin-top:8px; }
 
-.btn-rec { width:100%; padding:15px; background:#c04030; color:white; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; margin-top:14px; transition:opacity .15s; }
+.btn-rec { width:100%; padding:15px; background:var(--brand); color:white; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; margin-top:14px; transition:opacity .15s; }
 .btn-rec:hover { opacity:.88; }
 
 /* RECOMENDACION */
@@ -110,7 +149,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .instr-desc { font-size:12px; color:#5c3410; line-height:1.6; }
 .instr-como { font-size:12px; color:#7a5a30; margin-top:6px; line-height:1.55; }
 .instr-tag  { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#e8f0d8; color:#4a6820; margin-top:6px; margin-right:4px; }
-.instr-donde { font-size:11px; font-weight:600; color:#c04030; margin-top:7px; }
+.instr-donde { font-size:11px; font-weight:600; color:var(--brand); margin-top:7px; }
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
 
 /* HERO */
@@ -160,7 +199,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .fi:focus { border-color:#a07840; }
 .fi::-webkit-outer-spin-button, .fi::-webkit-inner-spin-button { -webkit-appearance:none; }
 .f2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.btn-add { width:100%; padding:13px; background:#c04030; color:white; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+.btn-add { width:100%; padding:13px; background:var(--brand); color:white; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .15s; }
 .btn-add:hover { opacity:.88; }
 .btn-sec { width:100%; padding:11px; background:transparent; color:#8a7858; border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; margin-top:7px; }
 .nota { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:11px; line-height:1.55; }
@@ -181,14 +220,33 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 
 @media (min-width: 540px) {
   body { display:flex; flex-direction:column; align-items:center; padding:44px 18px 72px; }
-  .tab-nav, .card { width:100%; max-width:480px; }
-  .tab-nav { border-radius:12px 12px 0 0; border:1.5px solid #d8cebc; border-bottom:none; }
-  .card { border:1.5px solid #d8cebc; border-top:none; border-radius:0 0 12px 12px; }
+  .brand-header, .tab-nav, .card { width:100%; max-width:480px; }
+  .brand-header { border-radius:12px 12px 0 0; border:1.5px solid var(--border); border-bottom:1.5px solid var(--border); }
+  .tab-nav { border:1.5px solid var(--border); border-top:none; border-bottom:none; }
+  .card { border:1.5px solid var(--border); border-top:none; border-radius:0 0 12px 12px; }
   .modal { border-radius:16px; margin-bottom:40px; }
 }
 </style>
 </head>
 <body>
+
+<div class="brand-header">
+  <div class="brand-mark">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="10" fill="#1a5c40"/>
+      <polyline points="7,26 14,18 20,12 29,6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="29" cy="6" r="3" fill="#7ecba8"/>
+      <rect x="7" y="27" width="4" height="5" rx="1" fill="rgba(255,255,255,.35)"/>
+      <rect x="13" y="22" width="4" height="10" rx="1" fill="rgba(255,255,255,.5)"/>
+      <rect x="19" y="17" width="4" height="15" rx="1" fill="rgba(255,255,255,.7)"/>
+      <rect x="25" y="12" width="4" height="20" rx="1" fill="white"/>
+    </svg>
+  </div>
+  <div class="brand-text">
+    <div class="brand-name">Gener<span>anding</span></div>
+    <div class="brand-tag">Generando futuro, peso a peso.</div>
+  </div>
+</div>
 
 <div class="tab-nav">
   <button class="tab-btn active" onclick="go('plan')">¿Dónde invierto?</button>
@@ -465,7 +523,7 @@ function recomendar() {
       nombre: 'CEDEARs — SPY + QQQ',
       sub:    'Dolarización en pesos · exposición mercado USA',
       pct:    35,
-      color:  '#c04030',
+      color:  '#1a5c40',
       tags:   ['Exposición USD', 'Alta liquidez', 'Horizonte largo'],
       desc:   `El CEDEAR replica un ETF americano pero cotiza en pesos al MEP implícito. Si el dólar sube, tus pesos suben con él. Históricamente el S&P 500 rinde 8–15% anual en USD.${spy ? ` Hoy SPY cotiza $${fmt(spy)}.` : ''}`,
       como:   'Dividí: 60% en SPY (más diversificado) y 40% en QQQ (tecnología). Comprás en PPI con tu cuenta en pesos.',
