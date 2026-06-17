@@ -216,16 +216,10 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
       </span>
     </div>
 
-    <div class="sec">Dólar hoy</div>
-    <div id="cotiz-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:8px 0;">Conectando con el mercado...</div></div>
+    <div id="cotiz-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:8px 0;">Conectando...</div></div>
 
-    <div class="sec">Macroeconomía (BCRA)</div>
-    <div id="macro-wrap"></div>
-
-    <div id="tasa-wrap"></div>
-
-    <div class="sec">Precios BYMA — CEDEARs &amp; Bonos</div>
-    <div id="byma-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">Cargando cotizaciones de Yahoo Finance...</div></div>
+    <div class="sec">CEDEARs &amp; Bonos — precios de hoy</div>
+    <div id="byma-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">Cargando precios...</div></div>
 
     <div class="capital-box">
       <div class="capital-label">¿Cuánto querés invertir?</div>
@@ -360,7 +354,6 @@ async function fetchMarket() {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     MKT = await r.json();
     renderDolar();
-    renderMacro();
     renderByma();
     onCapChange();
     document.getElementById('ts').textContent =
@@ -391,48 +384,19 @@ function fmt(n) { return n != null ? Math.round(n).toLocaleString('es-AR') : '�
 
 function renderDolar() {
   if (!MKT) return;
-  const d = MKT.dolar;
+  const d   = MKT.dolar;
+  const mep = d.mep || 0;
+  const blue= d.blue || 0;
+  const brecha = mep > 0 && blue > 0 ? ((blue - mep) / mep * 100).toFixed(1) : null;
   document.getElementById('cotiz-wrap').innerHTML = `
-    <div class="cotiz-strip">
-      <div class="cotiz-pill hl">
-        <div class="ct">MEP</div><div class="cv">$${fmt(d.mep)}</div>
-        <div class="cc">compra $${fmt(d.compras?.bolsa)}</div>
+    <div style="background:#2e2418;border-radius:12px;padding:16px 18px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:10px;font-weight:600;color:#8a7858;text-transform:uppercase;letter-spacing:1px;">Dólar MEP</div>
+        <div style="font-family:'Lora',serif;font-size:2rem;font-weight:600;color:#f7f3eb;letter-spacing:-1px;margin-top:3px;">$${fmt(mep)}</div>
+        <div style="font-size:11px;color:#8a7858;margin-top:2px;">Es el dólar de tus inversiones en PPI</div>
       </div>
-      <div class="cotiz-pill">
-        <div class="ct">Blue</div><div class="cv">$${fmt(d.blue)}</div>
-        <div class="cc">compra $${fmt(d.compras?.blue)}</div>
-      </div>
-      <div class="cotiz-pill">
-        <div class="ct">CCL</div><div class="cv">$${fmt(d.ccl)}</div>
-        <div class="cc">compra $${fmt(d.compras?.contadoconliqui)}</div>
-      </div>
-      <div class="cotiz-pill">
-        <div class="ct">Oficial</div><div class="cv">$${fmt(d.oficial)}</div>
-        <div class="cc">compra $${fmt(d.compras?.oficial)}</div>
-      </div>
+      ${brecha ? `<div style="text-align:right;"><div style="font-size:10px;color:#8a7858;">Blue $${fmt(blue)}</div><div style="font-size:11px;color:#c0b898;margin-top:3px;">brecha ${brecha}%</div></div>` : ''}
     </div>`;
-}
-
-function renderMacro() {
-  if (!MKT) return;
-  const b = MKT.bcra || {};
-  let pills = '';
-  if (b.ipc_mensual?.valor != null)
-    pills += `<div class="macro-pill inf"><div class="mt">IPC mensual</div><div class="mv">${b.ipc_mensual.valor}%</div><div class="ms">${b.ipc_mensual.fecha||''}</div></div>`;
-  if (b.ipc_anual?.valor != null)
-    pills += `<div class="macro-pill inf"><div class="mt">IPC anual</div><div class="mv">${b.ipc_anual.valor}%</div><div class="ms">interanual</div></div>`;
-  if (b.uva?.valor != null)
-    pills += `<div class="macro-pill uva"><div class="mt">UVA</div><div class="mv">$${Number(b.uva.valor).toFixed(2)}</div><div class="ms">${b.uva.fecha||''}</div></div>`;
-  if (b.tasa_politica?.valor != null)
-    pills += `<div class="macro-pill tasa"><div class="mt">Tasa BCRA</div><div class="mv">${b.tasa_politica.valor}%</div><div class="ms">TNA política</div></div>`;
-  if (!pills)
-    pills = `<div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">BCRA no disponible ahora.</div>`;
-  document.getElementById('macro-wrap').innerHTML = `<div class="macro-strip">${pills}</div>`;
-
-  const t = MKT.tasas;
-  if (t?.mejor_tna)
-    document.getElementById('tasa-wrap').innerHTML =
-      `<div class="tasa-bar">Mejor plazo fijo hoy: <strong>${t.mejor_banco}</strong> · ${t.mejor_tna}% TNA</div>`;
 }
 
 const BYMA_CAT = {
