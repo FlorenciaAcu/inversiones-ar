@@ -656,7 +656,7 @@ async function renderPortfolio() {
 
   const pEl = document.getElementById('pos-lista');
   if (!PORT.length) {
-    pEl.innerHTML = '<div class="empty">Todavía no registraste ninguna inversión.<br><br>Usá la pestaña <strong>¿Dónde invierto?</strong> para ver el plan y después volvé acá.</div>';
+    pEl.innerHTML = '<div class="empty" style="padding:32px 12px;font-size:12px;color:#c8bca4;">sin posiciones aún</div>';
     return;
   }
   pEl.innerHTML = PORT.map(p => {
