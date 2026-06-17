@@ -219,14 +219,11 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 
     <div id="cotiz-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:8px 0;">Conectando...</div></div>
 
-    <div class="sec">CEDEARs &amp; Bonos — precios de hoy</div>
-    <div id="byma-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">Cargando precios...</div></div>
-
     <div class="capital-box">
       <div class="capital-label">¿Cuánto querés invertir?</div>
       <div class="capital-row">
         <span class="capital-sym">$</span>
-        <input class="capital-inp" type="number" id="capital-inp" placeholder="700000" value="700000" oninput="onCapChange()">
+        <input class="capital-inp" type="number" id="capital-inp" placeholder="ej. 700000" oninput="onCapChange()">
       </div>
       <div class="capital-usd" id="capital-usd">≈ USD — al MEP</div>
     </div>
@@ -439,12 +436,16 @@ function renderByma() {
 }
 
 // ─── CAPITAL ───────────────────────────────────
+let _recTimer = null;
 function onCapChange() {
   const cap = parseFloat(document.getElementById('capital-inp').value) || 0;
   const tc  = MKT?.dolar?.mep || 1456;
   document.getElementById('capital-usd').textContent = cap > 0
     ? `≈ USD ${fmt(cap / tc)} al MEP ($${fmt(tc)})`
     : '≈ USD — al MEP';
+  clearTimeout(_recTimer);
+  if (cap > 0) _recTimer = setTimeout(recomendar, 700);
+  else document.getElementById('rec-section').style.display = 'none';
 }
 
 // ─── RECOMENDACIÓN ─────────────────────────────
