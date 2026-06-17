@@ -419,12 +419,10 @@ async function fetchMarket() {
       `<div class="backend-ok">${turno} · ${act} · Lo que ves refleja ese momento.</div>`;
     renderPortfolio();
   } catch(e) {
-    document.getElementById('backend-status').innerHTML = `
-      <div class="backend-err">
-        <strong>⚠ Backend no disponible</strong> (localhost:8000)<br>
-        Abrí <code>inversiones-backend/instalar_y_correr.bat</code> para iniciarlo.<br>
-        <small style="color:#c09888">Error: ${e.message}</small>
-      </div>`;
+    const esLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost';
+    document.getElementById('backend-status').innerHTML = esLocal
+      ? `<div class="backend-err"><strong>⚠ Backend local no disponible</strong><br>Abrí <code>inversiones-backend/instalar_y_correr.bat</code> para iniciarlo.<br><small style="color:#c09888">${e.message}</small></div>`
+      : `<div class="backend-err"><strong>⚠ Servicio no disponible</strong><br>El servidor de Generanding está tardando en responder. Esperá unos segundos y recargá la página.<br><small style="color:#c09888">${e.message}</small></div>`;
     document.getElementById('ts').textContent = 'sin backend';
   }
 }
