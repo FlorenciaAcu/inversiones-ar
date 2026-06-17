@@ -113,14 +113,14 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418;
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
 
 /* HERO */
-.hero { background:#2e2418; border-radius:12px; padding:18px; margin:14px 0 12px; }
-.hero-lbl { font-size:10px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:1px; }
-.hero-val { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:#f7f3eb; letter-spacing:-1px; margin:4px 0 2px; }
-.hero-sub { font-size:11px; color:#8a7858; }
+.hero { background:#f0ebe0; border:1.5px solid #d8cebc; border-radius:12px; padding:18px; margin:14px 0 12px; }
+.hero-lbl { font-size:10px; font-weight:600; color:#a09278; text-transform:uppercase; letter-spacing:1px; }
+.hero-val { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:#2e2418; letter-spacing:-1px; margin:4px 0 2px; }
+.hero-sub { font-size:11px; color:#a09278; }
 .hero-gan { display:inline-flex; align-items:center; gap:4px; margin-top:9px; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:600; }
-.gp { background:rgba(100,160,80,.2); color:#8eca68; }
-.gn { background:rgba(192,64,48,.2); color:#e08070; }
-.g0 { background:rgba(160,150,120,.2); color:#c0b898; }
+.gp { background:rgba(100,160,80,.15); color:#3a6810; }
+.gn { background:rgba(192,64,48,.1); color:#8a2010; }
+.g0 { background:rgba(160,150,120,.12); color:#6a5840; }
 
 /* ALERTAS */
 .alerta { display:flex; gap:9px; padding:10px 12px; border-radius:8px; border:1.5px solid; margin-bottom:7px; }
@@ -389,13 +389,13 @@ function renderDolar() {
   const blue= d.blue || 0;
   const brecha = mep > 0 && blue > 0 ? ((blue - mep) / mep * 100).toFixed(1) : null;
   document.getElementById('cotiz-wrap').innerHTML = `
-    <div style="background:#2e2418;border-radius:12px;padding:16px 18px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="background:#f0ebe0;border:1.5px solid #d8cebc;border-radius:12px;padding:16px 18px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;">
       <div>
-        <div style="font-size:10px;font-weight:600;color:#8a7858;text-transform:uppercase;letter-spacing:1px;">Dólar MEP</div>
-        <div style="font-family:'Lora',serif;font-size:2rem;font-weight:600;color:#f7f3eb;letter-spacing:-1px;margin-top:3px;">$${fmt(mep)}</div>
-        <div style="font-size:11px;color:#8a7858;margin-top:2px;">Es el dólar de tus inversiones en PPI</div>
+        <div style="font-size:10px;font-weight:600;color:#a09278;text-transform:uppercase;letter-spacing:1px;">Dólar MEP</div>
+        <div style="font-family:'Lora',serif;font-size:2rem;font-weight:600;color:#2e2418;letter-spacing:-1px;margin-top:3px;">$${fmt(mep)}</div>
+        <div style="font-size:11px;color:#a09278;margin-top:2px;">El dólar de tus inversiones en PPI</div>
       </div>
-      ${brecha ? `<div style="text-align:right;"><div style="font-size:10px;color:#8a7858;">Blue $${fmt(blue)}</div><div style="font-size:11px;color:#c0b898;margin-top:3px;">brecha ${brecha}%</div></div>` : ''}
+      ${brecha ? `<div style="text-align:right;"><div style="font-size:11px;color:#6a5840;">Blue $${fmt(blue)}</div><div style="font-size:11px;color:#a09278;margin-top:2px;">brecha ${brecha}%</div></div>` : ''}
     </div>`;
 }
 
