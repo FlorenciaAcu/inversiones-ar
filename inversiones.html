@@ -206,9 +206,11 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .empty { text-align:center; padding:24px 12px; font-family:'Lora',serif; font-style:italic; font-size:13px; color:#b0a488; line-height:1.65; }
 
 /* MODAL */
-.modal-bg { position:fixed; inset:0; background:rgba(46,36,24,.5); z-index:100; display:none; align-items:flex-end; justify-content:center; }
+.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:100; display:none; align-items:flex-end; justify-content:center; }
 .modal-bg.open { display:flex; }
+.modal-bg.centered { align-items:center; }
 .modal { background:#fdfaf4; border-radius:16px 16px 0 0; padding:20px 17px 32px; width:100%; max-width:480px; }
+.modal-bg.centered .modal { border-radius:16px; margin:18px; width:calc(100% - 36px); max-width:460px; }
 .modal-t { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:#2e2418; margin-bottom:2px; }
 .modal-s { font-size:11px; color:#a09278; margin-bottom:12px; }
 .dr { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #ede8e0; }
@@ -330,7 +332,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 </div>
 
 <!-- MODAL FORMULARIO -->
-<div class="modal-bg" id="modal-form-bg" onclick="cerrarFormModal(event)">
+<div class="modal-bg centered" id="modal-form-bg" onclick="cerrarFormModal(event)">
   <div class="modal" style="max-height:88vh;overflow-y:auto;">
     <div class="modal-t">Nueva posición</div>
     <div class="modal-s">Comprás en portfoliopersonal.com y lo registrás acá.</div>
