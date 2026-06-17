@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+portfolio.db
+backend.log
+backend_err.log
+.env

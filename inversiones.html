@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Inversiones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  background-color: #f7f3eb;
+  background-image: linear-gradient(rgba(150,130,90,.10) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(150,130,90,.10) 1px,transparent 1px);
+  background-size: 22px 22px;
+  padding: 0 0 60px;
+}
+
+/* NAV */
+.tab-nav { display:flex; border-bottom:1.5px solid #d8cebc; background:rgba(255,252,246,.97); border-top:1.5px solid #d8cebc; position:sticky; top:0; z-index:10; }
+.tab-btn { flex:1; padding:14px 6px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:#a09278; cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .15s; }
+.tab-btn.active { color:#c04030; border-bottom-color:#c04030; font-weight:600; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+.card { background:rgba(255,252,246,.97); border-bottom:1.5px solid #d8cebc; padding:22px 18px 36px; }
+
+/* HEADER */
+.header { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
+.accent { width:3px; min-height:44px; background:linear-gradient(180deg,#c04030 0%,rgba(192,64,48,0) 100%); border-radius:2px; flex-shrink:0; margin-top:2px; }
+h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:#2e2418; letter-spacing:-.3px; line-height:1.15; }
+.tagline { font-family:'Lora',serif; font-style:italic; font-size:12px; color:#a09278; margin-top:3px; line-height:1.5; }
+.sec { font-family:'Lora',serif; font-size:10px; font-weight:600; color:#b0a488; text-transform:uppercase; letter-spacing:1px; margin:20px 0 9px; }
+
+/* STATUS BAR */
+.status-bar { display:flex; justify-content:space-between; align-items:center; margin:12px 0 6px; }
+.live-lbl { font-size:10px; color:#6a9e5a; display:flex; align-items:center; gap:4px; }
+.live-dot { width:6px; height:6px; border-radius:50%; background:#6a9e5a; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+.live-ts  { font-size:10px; color:#a09278; }
+.btn-refresh { font-size:10px; color:#a07840; background:none; border:1px solid #d0c4a8; border-radius:5px; padding:3px 9px; cursor:pointer; }
+.btn-refresh:hover { background:#f0e8d8; }
+
+/* BACKEND STATUS */
+.backend-ok  { font-size:11px; color:#4a7820; background:rgba(100,160,80,.08); border:1px solid rgba(100,160,80,.3); border-radius:6px; padding:6px 11px; margin-bottom:8px; }
+.backend-err { font-size:11px; color:#8a2010; background:rgba(192,64,48,.07); border:1px solid rgba(192,64,48,.25); border-radius:6px; padding:8px 12px; margin-bottom:8px; line-height:1.55; }
+
+/* COTIZ STRIP */
+.cotiz-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin-bottom:5px; }
+.cotiz-pill { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:8px; padding:9px 7px; text-align:center; }
+.cotiz-pill.hl { border-color:#c04030; background:rgba(192,64,48,.05); }
+.ct { font-size:9px; font-weight:600; color:#a09278; text-transform:uppercase; letter-spacing:.4px; }
+.cv { font-family:'Lora',serif; font-size:.93rem; font-weight:600; color:#2e2418; margin-top:2px; }
+.cc { font-size:9px; color:#a09278; margin-top:1px; }
+
+/* MACRO STRIP */
+.macro-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-bottom:5px; }
+.macro-pill { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:8px; padding:8px 7px; text-align:center; }
+.macro-pill.uva  { border-color:#7a5a98; background:rgba(122,90,152,.05); }
+.macro-pill.inf  { border-color:#e0a840; background:rgba(224,168,64,.05); }
+.macro-pill.tasa { border-color:#5a7898; background:rgba(90,120,152,.05); }
+.mt { font-size:9px; font-weight:600; color:#a09278; text-transform:uppercase; letter-spacing:.4px; }
+.mv { font-family:'Lora',serif; font-size:.95rem; font-weight:600; color:#2e2418; margin-top:2px; }
+.ms { font-size:9px; color:#a09278; margin-top:1px; }
+
+/* TASA INFO */
+.tasa-bar { font-size:11px; color:#4a6820; background:rgba(100,160,80,.07); border:1px solid rgba(100,160,80,.25); border-radius:7px; padding:7px 11px; margin:4px 0; }
+
+/* BYMA GRID */
+.byma-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:4px; }
+.byma-card { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:8px; padding:9px 10px; }
+.byma-card.cedear { border-color:#c04030; }
+.byma-card.bono   { border-color:#7a5a98; }
+.byma-card.accion { border-color:#e0a840; }
+.byma-t { font-size:9px; font-weight:600; color:#a09278; text-transform:uppercase; }
+.byma-n { font-size:10px; color:#5c3410; margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.byma-p { font-family:'Lora',serif; font-size:1.0rem; font-weight:600; color:#2e2418; margin-top:3px; }
+.byma-v { font-size:10px; font-weight:600; margin-top:1px; }
+.pos-v  { color:#4a7820; }
+.neg-v  { color:#c04030; }
+
+/* CAPITAL */
+.capital-box { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:12px; padding:16px; margin:14px 0 0; }
+.capital-label { font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.5px; margin-bottom:9px; }
+.capital-row { display:flex; align-items:center; gap:8px; }
+.capital-sym { font-family:'Lora',serif; font-size:1.6rem; font-weight:600; color:#c04030; }
+.capital-inp { flex:1; background:transparent; border:none; border-bottom:2px solid #d8cebc; font-family:'Lora',serif; font-size:1.8rem; font-weight:600; color:#2e2418; outline:none; padding-bottom:3px; transition:border-color .2s; width:100%; }
+.capital-inp:focus { border-color:#c04030; }
+.capital-inp::-webkit-outer-spin-button, .capital-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
+.capital-usd { font-size:12px; color:#a09278; margin-top:8px; }
+
+.btn-rec { width:100%; padding:15px; background:#c04030; color:white; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; margin-top:14px; transition:opacity .15s; }
+.btn-rec:hover { opacity:.88; }
+
+/* RECOMENDACION */
+.rec-intro { font-family:'Lora',serif; font-style:italic; font-size:13px; color:#6a5030; line-height:1.65; margin:14px 0 12px; padding:13px 14px; background:rgba(240,233,218,.7); border:1.5px solid #d0c4a8; border-radius:9px; }
+.instr-card { border:1.5px solid #d8cebc; border-radius:10px; overflow:hidden; margin-bottom:9px; }
+.instr-bar  { height:4px; background:#e4ddd0; }
+.instr-bar-fill { height:100%; }
+.instr-hd  { display:flex; align-items:center; gap:11px; padding:13px 14px 11px; }
+.instr-cb  { width:4px; align-self:stretch; border-radius:2px; flex-shrink:0; }
+.instr-tit { font-size:14px; font-weight:600; color:#2e2418; }
+.instr-sub { font-size:11px; color:#a09278; margin-top:2px; }
+.instr-mw  { margin-left:auto; text-align:right; flex-shrink:0; }
+.instr-m   { font-family:'Lora',serif; font-size:1.1rem; font-weight:600; color:#5c3410; }
+.instr-p   { font-size:10px; color:#a09278; }
+.instr-bd  { padding:11px 14px 13px; background:#f9f6f0; border-top:1px solid #ede8e0; }
+.instr-desc { font-size:12px; color:#5c3410; line-height:1.6; }
+.instr-como { font-size:12px; color:#7a5a30; margin-top:6px; line-height:1.55; }
+.instr-tag  { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#e8f0d8; color:#4a6820; margin-top:6px; margin-right:4px; }
+.instr-donde { font-size:11px; font-weight:600; color:#c04030; margin-top:7px; }
+.nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
+
+/* HERO */
+.hero { background:#2e2418; border-radius:12px; padding:18px; margin:14px 0 12px; }
+.hero-lbl { font-size:10px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:1px; }
+.hero-val { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:#f7f3eb; letter-spacing:-1px; margin:4px 0 2px; }
+.hero-sub { font-size:11px; color:#8a7858; }
+.hero-gan { display:inline-flex; align-items:center; gap:4px; margin-top:9px; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:600; }
+.gp { background:rgba(100,160,80,.2); color:#8eca68; }
+.gn { background:rgba(192,64,48,.2); color:#e08070; }
+.g0 { background:rgba(160,150,120,.2); color:#c0b898; }
+
+/* ALERTAS */
+.alerta { display:flex; gap:9px; padding:10px 12px; border-radius:8px; border:1.5px solid; margin-bottom:7px; }
+.a-body { flex:1; font-size:12px; line-height:1.5; }
+.a-tit  { font-weight:600; margin-bottom:2px; }
+.a-urg  { border-color:#c04030; background:rgba(192,64,48,.06); color:#6a2010; }
+.a-av   { border-color:#e0a840; background:rgba(224,168,64,.06); color:#6a4810; }
+
+/* POSICIONES */
+.pos-card  { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:10px; padding:13px; margin-bottom:8px; cursor:pointer; transition:border-color .15s; }
+.pos-card:hover { border-color:#a07840; }
+.pos-top   { display:flex; align-items:center; gap:9px; }
+.pos-dot   { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.pos-nom   { font-size:14px; font-weight:600; color:#2e2418; flex:1; }
+.pos-monto { font-family:'Lora',serif; font-size:13.5px; font-weight:600; color:#5c3410; }
+.pos-meta  { display:flex; justify-content:space-between; align-items:center; margin-top:7px; padding-top:7px; border-top:1px solid #e4ddd0; }
+.pos-fecha { font-size:11px; color:#8a7858; }
+.badge { font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; }
+.b-ok   { background:#e8f0d8; color:#4a6820; }
+.b-warn { background:#f5edcc; color:#6a4010; }
+.b-red  { background:rgba(192,64,48,.1); color:#8a2010; }
+.b-gray { background:#ece8e0; color:#6a5840; }
+.vt { height:3px; background:#e4ddd0; border-radius:99px; overflow:hidden; margin-top:6px; }
+.vf { height:100%; border-radius:99px; }
+
+/* TOTAL */
+.divider { height:1px; background:linear-gradient(90deg,#c8bca4,transparent); border:none; margin:14px 0 12px; }
+.total-row { display:flex; justify-content:space-between; align-items:center; padding:12px 15px; background:rgba(240,233,218,.8); border:1.5px solid #d0c4a8; border-radius:9px; }
+.tl { font-family:'Lora',serif; font-size:14px; font-weight:600; color:#2e2418; }
+.tv { font-family:'Lora',serif; font-size:1.3rem; font-weight:600; color:#5c3410; }
+
+/* FORM */
+.form-box { background:#f5f1e8; border:1.5px solid #d8cebc; border-radius:10px; padding:15px; margin-top:12px; }
+.fl { font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.4px; margin-bottom:5px; }
+.fi { width:100%; background:white; border:1.5px solid #d8cebc; border-radius:7px; padding:9px 11px; font-family:'DM Sans',sans-serif; font-size:14px; color:#2e2418; outline:none; transition:border-color .15s; margin-bottom:10px; }
+.fi:focus { border-color:#a07840; }
+.fi::-webkit-outer-spin-button, .fi::-webkit-inner-spin-button { -webkit-appearance:none; }
+.f2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.btn-add { width:100%; padding:13px; background:#c04030; color:white; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .15s; }
+.btn-add:hover { opacity:.88; }
+.btn-sec { width:100%; padding:11px; background:transparent; color:#8a7858; border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; margin-top:7px; }
+.nota { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:11px; line-height:1.55; }
+.empty { text-align:center; padding:24px 12px; font-family:'Lora',serif; font-style:italic; font-size:13px; color:#b0a488; line-height:1.65; }
+
+/* MODAL */
+.modal-bg { position:fixed; inset:0; background:rgba(46,36,24,.5); z-index:100; display:none; align-items:flex-end; justify-content:center; }
+.modal-bg.open { display:flex; }
+.modal { background:#fdfaf4; border-radius:16px 16px 0 0; padding:20px 17px 32px; width:100%; max-width:480px; }
+.modal-t { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:#2e2418; margin-bottom:2px; }
+.modal-s { font-size:11px; color:#a09278; margin-bottom:12px; }
+.dr { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #ede8e0; }
+.dr:last-of-type { border:none; }
+.dl { font-size:12px; color:#5c3410; }
+.dv { font-family:'Lora',serif; font-size:12.5px; font-weight:600; color:#2e2418; }
+.modal-close { width:100%; padding:10px; background:transparent; border:1.5px solid #d8cebc; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; color:#8a7858; cursor:pointer; margin-top:10px; }
+.modal-del   { width:100%; padding:10px; background:transparent; border:1.5px solid #f0b8b0; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; color:#c04030; cursor:pointer; margin-top:7px; }
+
+@media (min-width: 540px) {
+  body { display:flex; flex-direction:column; align-items:center; padding:44px 18px 72px; }
+  .tab-nav, .card { width:100%; max-width:480px; }
+  .tab-nav { border-radius:12px 12px 0 0; border:1.5px solid #d8cebc; border-bottom:none; }
+  .card { border:1.5px solid #d8cebc; border-top:none; border-radius:0 0 12px 12px; }
+  .modal { border-radius:16px; margin-bottom:40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="go('plan')">¿Dónde invierto?</button>
+  <button class="tab-btn" onclick="go('portfolio')">Mis inversiones</button>
+</div>
+
+<div class="card">
+
+  <!-- ══════ TAB 1: PLAN ══════ -->
+  <div class="tab-panel active" id="tab-plan">
+    <div class="header">
+      <div class="accent"></div>
+      <div>
+        <h1>¿Dónde invierto?</h1>
+        <p class="tagline">Datos en vivo del mercado + recomendación concreta.</p>
+      </div>
+    </div>
+
+    <div id="backend-status"></div>
+
+    <div class="status-bar">
+      <span class="live-lbl"><span class="live-dot"></span>Datos en vivo</span>
+      <span>
+        <span class="live-ts" id="ts">cargando...</span>
+        <button class="btn-refresh" onclick="fetchMarket()">↻ Actualizar</button>
+      </span>
+    </div>
+
+    <div class="sec">Dólar hoy</div>
+    <div id="cotiz-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:8px 0;">Conectando con el mercado...</div></div>
+
+    <div class="sec">Macroeconomía (BCRA)</div>
+    <div id="macro-wrap"></div>
+
+    <div id="tasa-wrap"></div>
+
+    <div class="sec">Precios BYMA — CEDEARs &amp; Bonos</div>
+    <div id="byma-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">Cargando cotizaciones de Yahoo Finance...</div></div>
+
+    <div class="capital-box">
+      <div class="capital-label">¿Cuánto querés invertir?</div>
+      <div class="capital-row">
+        <span class="capital-sym">$</span>
+        <input class="capital-inp" type="number" id="capital-inp" placeholder="700000" value="700000" oninput="onCapChange()">
+      </div>
+      <div class="capital-usd" id="capital-usd">≈ USD — al MEP</div>
+    </div>
+
+    <button class="btn-rec" onclick="recomendar()">Ver mi plan de inversión →</button>
+
+    <div id="rec-section" style="display:none;">
+      <div class="rec-intro" id="rec-intro"></div>
+      <div id="rec-instrumentos"></div>
+      <p class="nota-legal">✦ Recomendación basada en datos reales del mercado. Horizonte: 12 meses. Plataforma: portfoliopersonal.com. Esto no es asesoramiento financiero formal.</p>
+    </div>
+  </div>
+
+  <!-- ══════ TAB 2: PORTFOLIO ══════ -->
+  <div class="tab-panel" id="tab-portfolio">
+    <div class="header">
+      <div class="accent"></div>
+      <div>
+        <h1>Mis inversiones</h1>
+        <p class="tagline">Todo guardado en el backend — no se pierde nada.</p>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-lbl">Portafolio total en USD</div>
+      <div class="hero-val">USD <span id="hero-usd">0</span></div>
+      <div class="hero-sub">MEP $<span id="hero-mep">—</span> · <span id="hero-ts2">—</span></div>
+      <div class="hero-gan g0" id="hero-gan">cargando...</div>
+    </div>
+
+    <div id="alertas-wrap"></div>
+
+    <div class="sec">Posiciones</div>
+    <div id="pos-lista"><div class="empty">Cargando...</div></div>
+
+    <hr class="divider">
+    <div class="total-row">
+      <span class="tl">Total invertido</span>
+      <span class="tv">$ <span id="total-pos">0</span></span>
+    </div>
+
+    <div class="sec" style="margin-top:22px;">Registrar nueva posición</div>
+    <div class="form-box">
+      <div class="fl">Instrumento</div>
+      <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
+        <option value="">— elegí —</option>
+        <optgroup label="CEDEARs">
+          <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
+          <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
+          <option value="CEDEAR NVDA|variable|cedear|NVDA.BA">CEDEAR NVDA — NVIDIA</option>
+          <option value="CEDEAR AAPL|variable|cedear|AAPL.BA">CEDEAR AAPL — Apple</option>
+          <option value="CEDEAR MSFT|variable|cedear|MSFT.BA">CEDEAR MSFT — Microsoft</option>
+          <option value="CEDEAR MELI|variable|cedear|MELI.BA">CEDEAR MELI — MercadoLibre</option>
+          <option value="CEDEAR BRK.B|variable|cedear|BRK-B.BA">CEDEAR BRK.B — Berkshire</option>
+          <option value="CEDEAR TSLA|variable|cedear|TSLA.BA">CEDEAR TSLA — Tesla</option>
+        </optgroup>
+        <optgroup label="Fondos (FCI)">
+          <option value="FCI Money Market|72|fondo|">FCI Money Market</option>
+          <option value="FCI Renta Mixta|85|fondo|">FCI Renta Mixta</option>
+          <option value="FCI Renta Variable|variable|fondo|">FCI Renta Variable</option>
+        </optgroup>
+        <optgroup label="Renta fija">
+          <option value="Plazo Fijo UVA|inflacion|plazo|">Plazo Fijo UVA</option>
+          <option value="Plazo Fijo|tasa|plazo|">Plazo Fijo (mejor tasa)</option>
+          <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30</option>
+          <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30</option>
+          <option value="Bono CER TX26|cer|bono|TX26.BA">Bono CER TX26</option>
+        </optgroup>
+        <optgroup label="Acciones">
+          <option value="YPF|variable|accion|YPF.BA">YPF</option>
+          <option value="Galicia GGAL|variable|accion|GGAL.BA">Galicia (GGAL)</option>
+          <option value="Pampa Energía|variable|accion|PAMP.BA">Pampa Energía</option>
+        </optgroup>
+        <option value="Otro|variable|otro|">Otro</option>
+      </select>
+      <div id="f-otro-row" style="display:none;">
+        <div class="fl">Nombre personalizado</div>
+        <input class="fi" id="f-otro" placeholder="ej. Fondo Quinquela">
+      </div>
+      <div class="f2">
+        <div>
+          <div class="fl">Monto ($)</div>
+          <input class="fi" type="number" id="f-monto" placeholder="0">
+        </div>
+        <div>
+          <div class="fl">Fecha compra</div>
+          <input class="fi" type="date" id="f-fecha">
+        </div>
+      </div>
+      <div class="fl">Vencimiento (si aplica)</div>
+      <input class="fi" type="date" id="f-venc">
+      <div class="fl">Notas</div>
+      <input class="fi" id="f-notas" placeholder="ej. renovar el 15 ago, 50 cuotapartes, etc.">
+      <button class="btn-add" onclick="agregar()">Registrar inversión</button>
+      <button class="btn-sec" onclick="consultarClaude()">Pedir consejo a la consejera ↗</button>
+    </div>
+    <p class="nota">✦ Comprás en portfoliopersonal.com y lo registrás acá. El backend guarda todo en SQLite — no se pierde al cerrar el navegador.</p>
+  </div>
+
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-bg" id="modal-bg" onclick="cerrarModal(event)">
+  <div class="modal">
+    <div class="modal-t" id="modal-t"></div>
+    <div class="modal-s" id="modal-s"></div>
+    <div style="background:#f5f1e8;border-radius:8px;padding:11px;" id="modal-b"></div>
+    <button class="modal-close" onclick="cerrarModal()">Cerrar</button>
+    <button class="modal-del"  onclick="eliminar()">Eliminar posición</button>
+  </div>
+</div>
+
+<script>
+// en Railway el backend sirve el HTML desde la misma URL
+const API = window.location.origin === 'null' || window.location.protocol === 'file:'
+  ? 'http://localhost:8000'
+  : window.location.origin;
+let MKT  = null;
+let PORT = [];
+let modalId = null;
+
+// ─── FETCH MERCADO ─────────────────────────────
+async function fetchMarket() {
+  try {
+    const r = await fetch(API + '/api/market');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    MKT = await r.json();
+    renderDolar();
+    renderMacro();
+    renderByma();
+    onCapChange();
+    document.getElementById('ts').textContent =
+      new Date(MKT.timestamp).toLocaleTimeString('es-AR', {hour:'2-digit',minute:'2-digit'});
+    document.getElementById('backend-status').innerHTML =
+      '<div class="backend-ok">✓ Backend conectado · dolarapi.com · BCRA · Yahoo Finance</div>';
+    renderPortfolio();
+  } catch(e) {
+    document.getElementById('backend-status').innerHTML = `
+      <div class="backend-err">
+        <strong>⚠ Backend no disponible</strong> (localhost:8000)<br>
+        Abrí <code>inversiones-backend/instalar_y_correr.bat</code> para iniciarlo.<br>
+        <small style="color:#c09888">Error: ${e.message}</small>
+      </div>`;
+    document.getElementById('ts').textContent = 'sin backend';
+  }
+}
+
+async function fetchPortfolio() {
+  try {
+    const r = await fetch(API + '/api/portfolio');
+    PORT = await r.json();
+  } catch { PORT = []; }
+}
+
+// ─── RENDERS MERCADO ───────────────────────────
+function fmt(n) { return n != null ? Math.round(n).toLocaleString('es-AR') : '—'; }
+
+function renderDolar() {
+  if (!MKT) return;
+  const d = MKT.dolar;
+  document.getElementById('cotiz-wrap').innerHTML = `
+    <div class="cotiz-strip">
+      <div class="cotiz-pill hl">
+        <div class="ct">MEP</div><div class="cv">$${fmt(d.mep)}</div>
+        <div class="cc">compra $${fmt(d.compras?.bolsa)}</div>
+      </div>
+      <div class="cotiz-pill">
+        <div class="ct">Blue</div><div class="cv">$${fmt(d.blue)}</div>
+        <div class="cc">compra $${fmt(d.compras?.blue)}</div>
+      </div>
+      <div class="cotiz-pill">
+        <div class="ct">CCL</div><div class="cv">$${fmt(d.ccl)}</div>
+        <div class="cc">compra $${fmt(d.compras?.contadoconliqui)}</div>
+      </div>
+      <div class="cotiz-pill">
+        <div class="ct">Oficial</div><div class="cv">$${fmt(d.oficial)}</div>
+        <div class="cc">compra $${fmt(d.compras?.oficial)}</div>
+      </div>
+    </div>`;
+}
+
+function renderMacro() {
+  if (!MKT) return;
+  const b = MKT.bcra || {};
+  let pills = '';
+  if (b.ipc_mensual?.valor != null)
+    pills += `<div class="macro-pill inf"><div class="mt">IPC mensual</div><div class="mv">${b.ipc_mensual.valor}%</div><div class="ms">${b.ipc_mensual.fecha||''}</div></div>`;
+  if (b.ipc_anual?.valor != null)
+    pills += `<div class="macro-pill inf"><div class="mt">IPC anual</div><div class="mv">${b.ipc_anual.valor}%</div><div class="ms">interanual</div></div>`;
+  if (b.uva?.valor != null)
+    pills += `<div class="macro-pill uva"><div class="mt">UVA</div><div class="mv">$${Number(b.uva.valor).toFixed(2)}</div><div class="ms">${b.uva.fecha||''}</div></div>`;
+  if (b.tasa_politica?.valor != null)
+    pills += `<div class="macro-pill tasa"><div class="mt">Tasa BCRA</div><div class="mv">${b.tasa_politica.valor}%</div><div class="ms">TNA política</div></div>`;
+  if (!pills)
+    pills = `<div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:4px 0;">BCRA no disponible ahora.</div>`;
+  document.getElementById('macro-wrap').innerHTML = `<div class="macro-strip">${pills}</div>`;
+
+  const t = MKT.tasas;
+  if (t?.mejor_tna)
+    document.getElementById('tasa-wrap').innerHTML =
+      `<div class="tasa-bar">Mejor plazo fijo hoy: <strong>${t.mejor_banco}</strong> · ${t.mejor_tna}% TNA</div>`;
+}
+
+const BYMA_CAT = {
+  'SPY.BA':'cedear','QQQ.BA':'cedear','AAPL.BA':'cedear','MSFT.BA':'cedear',
+  'NVDA.BA':'cedear','AMZN.BA':'cedear','GOOGL.BA':'cedear','BRK-B.BA':'cedear',
+  'MELI.BA':'cedear','TSLA.BA':'cedear',
+  'AL30.BA':'bono','AL35.BA':'bono','GD30.BA':'bono','GD35.BA':'bono','TX26.BA':'bono',
+  'GGAL.BA':'accion','YPF.BA':'accion','BBAR.BA':'accion','PAMP.BA':'accion',
+};
+
+function renderByma() {
+  if (!MKT?.byma) return;
+  const entries = Object.entries(MKT.byma).filter(([k,v]) => !k.startsWith('_') && v.precio);
+  if (!entries.length) {
+    document.getElementById('byma-wrap').innerHTML =
+      `<div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;">Sin datos de BYMA — yfinance puede tardar unos segundos. Actualizá.</div>`;
+    return;
+  }
+  const cards = entries.map(([ticker, v]) => {
+    const cat = BYMA_CAT[ticker] || 'otro';
+    const vv  = v.variacion;
+    const sign= vv != null ? (vv >= 0 ? '+' : '') : '';
+    const vStr= vv != null ? `${sign}${vv.toFixed(2)}%` : '—';
+    const cls = vv != null ? (vv >= 0 ? 'pos-v' : 'neg-v') : '';
+    const short= v.nombre.replace(/^(CEDEAR|Bono)\s+/,'').split('(')[0].trim().split('—')[0].trim();
+    return `<div class="byma-card ${cat}">
+      <div class="byma-t">${ticker}</div>
+      <div class="byma-n">${short}</div>
+      <div class="byma-p">$${fmt(v.precio)}</div>
+      <div class="byma-v ${cls}">${vStr}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('byma-wrap').innerHTML = `<div class="byma-grid">${cards}</div>`;
+}
+
+// ─── CAPITAL ───────────────────────────────────
+function onCapChange() {
+  const cap = parseFloat(document.getElementById('capital-inp').value) || 0;
+  const tc  = MKT?.dolar?.mep || 1456;
+  document.getElementById('capital-usd').textContent = cap > 0
+    ? `≈ USD ${fmt(cap / tc)} al MEP ($${fmt(tc)})`
+    : '≈ USD — al MEP';
+}
+
+// ─── RECOMENDACIÓN ─────────────────────────────
+function recomendar() {
+  const cap = parseFloat(document.getElementById('capital-inp').value);
+  if (!cap || cap <= 0) { alert('Ingresá cuánto querés invertir.'); return; }
+
+  const tc    = MKT?.dolar?.mep     || 1456;
+  const tasa  = MKT?.tasas?.mejor_tna   || 23;
+  const banco = MKT?.tasas?.mejor_banco || 'tu banco';
+  const ipc   = MKT?.bcra?.ipc_mensual?.valor;
+  const spy   = MKT?.byma?.['SPY.BA']?.precio;
+  const al30  = MKT?.byma?.['AL30.BA']?.precio;
+
+  const dist = [
+    {
+      nombre: 'CEDEARs — SPY + QQQ',
+      sub:    'Dolarización en pesos · exposición mercado USA',
+      pct:    35,
+      color:  '#c04030',
+      tags:   ['Exposición USD', 'Alta liquidez', 'Horizonte largo'],
+      desc:   `El CEDEAR replica un ETF americano pero cotiza en pesos al MEP implícito. Si el dólar sube, tus pesos suben con él. Históricamente el S&P 500 rinde 8–15% anual en USD.${spy ? ` Hoy SPY cotiza $${fmt(spy)}.` : ''}`,
+      como:   'Dividí: 60% en SPY (más diversificado) y 40% en QQQ (tecnología). Comprás en PPI con tu cuenta en pesos.',
+      donde:  'portfoliopersonal.com → CEDEARs → buscar SPY y QQQ',
+    },
+    {
+      nombre: 'Bonos soberanos USD (AL30 + GD30)',
+      sub:    'Renta en dólares · cupones semestrales',
+      pct:    20,
+      color:  '#7a5a98',
+      tags:   ['Renta en USD', 'Cupones cada 6 meses', 'Riesgo soberano'],
+      desc:   `AL30 y GD30 pagan cupones en USD hasta 2030. Se compran en pesos al tipo MEP. Si Argentina sigue pagando, recibís dólares directo.${al30 ? ` Hoy AL30 cotiza $${fmt(al30)}.` : ''}`,
+      como:   '50% AL30 (ley Argentina, algo más fácil de operar) y 50% GD30 (ley NY, más demandado internacionalmente).',
+      donde:  'portfoliopersonal.com → Bonos → Soberanos USD',
+    },
+    {
+      nombre: 'Plazo Fijo UVA (90 días renovable)',
+      sub:    'Capital + inflación + adicional garantizado por banco',
+      pct:    25,
+      color:  '#5a7898',
+      tags:   ['Capital garantizado', 'Ajuste inflación', 'Min. 90 días'],
+      desc:   `El UVA ajusta tu depósito por el índice de inflación oficial.${ipc ? ` Con ${ipc}% mensual, a 12 meses tu capital crece protegido.` : ''} Más seguro que cualquier otro instrumento para no perder poder adquisitivo.`,
+      como:   `Mejor tasa hoy: ${tasa}% TNA en ${banco}. Podés abrirlo desde BBVA (ya tenés cuenta) o desde PPI.`,
+      donde:  'BBVA Homebanking → Inversiones → Plazo Fijo UVA · o PPI → Plazo Fijo',
+    },
+    {
+      nombre: 'FCI Money Market',
+      sub:    'Liquidez 24hs · rinde todos los días',
+      pct:    20,
+      color:  '#6a9e5a',
+      tags:   [`~${tasa > 0 ? tasa : 72}% TNA est.`, 'Rescate 24hs', 'Sin plazo'],
+      desc:   'Fondo de maniobra: disponible en 24hs, rinde todos los días. Útil para aprovechar caídas del mercado, emergencias, o mientras esperás precio de entrada en CEDEARs.',
+      como:   'Mercado Pago Inversiones ya lo tenés disponible sin costo. En PPI también.',
+      donde:  'Mercado Pago → Inversiones → Reserva · o PPI → Fondos → Money Market',
+    },
+  ];
+
+  const usd = fmt(cap / tc);
+  document.getElementById('rec-intro').innerHTML =
+    `Tenés <strong>$${fmt(cap)} ARS</strong> (≈ USD ${usd} al MEP de $${fmt(tc)}) para invertir durante 12 meses. Esta distribución apunta a hacer crecer ese capital en dólares, con riesgo moderado y liquidez parcial:`;
+
+  document.getElementById('rec-instrumentos').innerHTML = dist.map(d => {
+    const monto = Math.round(cap * d.pct / 100);
+    const tags  = d.tags.map(t => `<span class="instr-tag">${t}</span>`).join('');
+    return `<div class="instr-card">
+      <div class="instr-bar"><div class="instr-bar-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
+      <div class="instr-hd">
+        <div class="instr-cb" style="background:${d.color}"></div>
+        <div><div class="instr-tit">${d.nombre}</div><div class="instr-sub">${d.sub}</div></div>
+        <div class="instr-mw"><div class="instr-m">$${fmt(monto)}</div><div class="instr-p">${d.pct}%</div></div>
+      </div>
+      <div class="instr-bd">
+        <div class="instr-desc">${d.desc}</div>
+        <div class="instr-como"><strong>Cómo:</strong> ${d.como}</div>
+        <div style="margin-top:6px">${tags}</div>
+        <div class="instr-donde">Dónde: ${d.donde}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('rec-section').style.display = 'block';
+  document.getElementById('rec-section').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ─── PORTFOLIO ─────────────────────────────────
+const COLS = {cedear:'#c04030',fondo:'#6a9e5a',plazo:'#5a7898',bono:'#7a5a98',accion:'#e0a840',otro:'#a09278'};
+function hoy()    { return new Date().toISOString().slice(0,10); }
+function diffD(a,b) { return Math.round((new Date(b)-new Date(a))/86400000); }
+
+function valorEst(p) {
+  const meses = Math.max(diffD(p.fecha, hoy()), 0) / 30.4;
+  let rm = 0;
+  const tna = parseFloat(p.tna);
+  if (!isNaN(tna) && tna > 0)    rm = tna / 100 / 12;
+  else if (p.tna === 'tasa')      rm = (MKT?.tasas?.mejor_tna || 23) / 100 / 12;
+  else if (p.tna === 'inflacion') rm = (MKT?.bcra?.ipc_mensual?.valor || 3) / 100;
+  else if (p.tna === 'cer')       rm = 0.03;
+  return p.monto * Math.pow(1 + rm, meses);
+}
+
+async function renderPortfolio() {
+  await fetchPortfolio();
+  const tc     = MKT?.dolar?.mep || 1456;
+  const total  = PORT.reduce((s,p) => s + p.monto, 0);
+  const valAct = PORT.reduce((s,p) => s + valorEst(p), 0);
+
+  document.getElementById('hero-usd').textContent  = fmt(valAct / tc);
+  document.getElementById('hero-mep').textContent  = MKT?.dolar?.mep ? fmt(MKT.dolar.mep) : '—';
+  document.getElementById('hero-ts2').textContent  = MKT ? new Date(MKT.timestamp).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) : '—';
+  document.getElementById('total-pos').textContent = fmt(total);
+
+  const ganUSD = (valAct - total) / tc;
+  const ganEl  = document.getElementById('hero-gan');
+  if (!total) { ganEl.textContent = 'sin inversiones todavía'; ganEl.className = 'hero-gan g0'; }
+  else {
+    ganEl.textContent = (ganUSD >= 0 ? '+' : '') + 'USD ' + fmt(Math.abs(ganUSD)) + ' estimado';
+    ganEl.className   = 'hero-gan ' + (ganUSD >= 0 ? 'gp' : 'gn');
+  }
+
+  // Alertas de vencimiento
+  const als = PORT.flatMap(p => {
+    if (!p.vencimiento) return [];
+    const d = diffD(hoy(), p.vencimiento);
+    if (d < 0)   return [{t:'a-urg',i:'⚠',tit:`${p.nombre} — VENCIDO`,msg:`Venció hace ${Math.abs(d)} días. Actuá ya.`}];
+    if (d <= 7)  return [{t:'a-urg',i:'⚠',tit:`${p.nombre} — vence en ${d}d`,msg:`$${fmt(valorEst(p))} disponibles. ¿Renovás o retirás?`}];
+    if (d <= 21) return [{t:'a-av', i:'◈',tit:`${p.nombre} — vence en ${d}d`,msg:'Empezá a decidir si renovás o rotás.'}];
+    return [];
+  });
+  document.getElementById('alertas-wrap').innerHTML = als.map(a =>
+    `<div class="alerta ${a.t}" style="margin-top:12px;"><div style="font-size:14px;flex-shrink:0;margin-top:1px;">${a.i}</div><div class="a-body"><div class="a-tit">${a.tit}</div>${a.msg}</div></div>`
+  ).join('');
+
+  const pEl = document.getElementById('pos-lista');
+  if (!PORT.length) {
+    pEl.innerHTML = '<div class="empty">Todavía no registraste ninguna inversión.<br><br>Usá la pestaña <strong>¿Dónde invierto?</strong> para ver el plan y después volvé acá.</div>';
+    return;
+  }
+  pEl.innerHTML = PORT.map(p => {
+    const color  = COLS[p.cat] || '#a09278';
+    const pctCap = total > 0 ? ((p.monto/total)*100).toFixed(1) : 0;
+    let badge = '', vbar = '';
+    if (p.vencimiento) {
+      const d   = diffD(hoy(), p.vencimiento);
+      const tot = Math.max(diffD(p.fecha, p.vencimiento), 1);
+      const vp  = Math.min(((tot-d)/tot)*100, 100);
+      const bc  = d < 0 ? 'b-red' : d <= 7 ? 'b-red' : d <= 21 ? 'b-warn' : 'b-ok';
+      const bt  = d < 0 ? 'VENCIDO' : d === 0 ? 'Vence hoy' : `Vence en ${d}d`;
+      badge = `<span class="badge ${bc}">${bt}</span>`;
+      vbar  = `<div class="vt"><div class="vf" style="width:${vp.toFixed(0)}%;background:${color}"></div></div>`;
+    } else {
+      const tl = p.tna === 'variable' ? 'Variable' : p.tna === 'inflacion' ? 'UVA' : p.tna === 'cer' ? 'CER' : p.tna === 'tasa' ? `${MKT?.tasas?.mejor_tna||'?'}% TNA` : `${p.tna}% TNA`;
+      badge = `<span class="badge b-gray">${tl}</span>`;
+    }
+    return `<div class="pos-card" onclick="abrirModal(${p.id})">
+      <div class="pos-top"><div class="pos-dot" style="background:${color}"></div><div class="pos-nom">${p.nombre}</div><div class="pos-monto">$${fmt(p.monto)}</div></div>
+      <div class="pos-meta"><span class="pos-fecha">${pctCap}% · ${p.fecha}</span>${badge}</div>${vbar}
+    </div>`;
+  }).join('');
+}
+
+// ─── TABS ──────────────────────────────────────
+function go(t) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes(`'${t}'`)) b.classList.add('active');
+  });
+  if (t === 'portfolio') renderPortfolio();
+}
+
+// ─── FORM ──────────────────────────────────────
+function onTipo() {
+  document.getElementById('f-otro-row').style.display =
+    document.getElementById('f-tipo').value.startsWith('Otro') ? 'block' : 'none';
+}
+
+async function agregar() {
+  const raw = document.getElementById('f-tipo').value;
+  if (!raw) { alert('Elegí un instrumento.'); return; }
+  const [nombre0, tna, cat, ticker] = raw.split('|');
+  const otro   = document.getElementById('f-otro').value.trim();
+  const nombre = nombre0 === 'Otro' && otro ? otro : nombre0;
+  const monto  = parseFloat(document.getElementById('f-monto').value);
+  if (!monto || monto <= 0) { alert('Ingresá un monto.'); return; }
+  const fecha  = document.getElementById('f-fecha').value || hoy();
+  const venc   = document.getElementById('f-venc').value  || null;
+  const notas  = document.getElementById('f-notas').value.trim();
+  const precio_compra = MKT?.byma?.[ticker]?.precio || null;
+
+  try {
+    const r = await fetch(API + '/api/portfolio', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({nombre, ticker: ticker||null, cat, tna, monto, precio_compra, fecha, vencimiento: venc, notas}),
+    });
+    if (!r.ok) throw new Error();
+    document.getElementById('f-tipo').value  = '';
+    document.getElementById('f-monto').value = '';
+    document.getElementById('f-fecha').valueAsDate = new Date();
+    document.getElementById('f-venc').value  = '';
+    document.getElementById('f-notas').value = '';
+    document.getElementById('f-otro-row').style.display = 'none';
+    await renderPortfolio();
+  } catch {
+    alert('No se pudo guardar. ¿El backend está corriendo?');
+  }
+}
+
+// ─── MODAL ─────────────────────────────────────
+function abrirModal(id) {
+  modalId = id;
+  const p  = PORT.find(x => x.id === id);
+  if (!p) return;
+  const tc  = MKT?.dolar?.mep || 1456;
+  const vh  = valorEst(p);
+  const gan = vh - p.monto;
+  document.getElementById('modal-t').textContent = p.nombre;
+  document.getElementById('modal-s').textContent = 'Desde ' + p.fecha + (p.notas ? ' · '+p.notas : '');
+  let rows = `
+    <div class="dr"><span class="dl">Invertido</span><span class="dv">$${fmt(p.monto)}</span></div>
+    <div class="dr"><span class="dl">Valor estimado hoy</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">$${fmt(vh)}</span></div>
+    <div class="dr"><span class="dl">Ganancia estimada</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">${gan>=0?'+':''}$${fmt(Math.abs(gan))}</span></div>
+    <div class="dr"><span class="dl">En USD al MEP</span><span class="dv">USD ${fmt(vh/tc)}</span></div>`;
+  if (p.vencimiento) {
+    const d = diffD(hoy(), p.vencimiento);
+    rows += `<div class="dr"><span class="dl">Vencimiento</span><span class="dv">${p.vencimiento} · ${d>=0?'en '+d+'d':'VENCIDO hace '+Math.abs(d)+'d'}</span></div>`;
+  }
+  if (p.precio_compra) rows += `<div class="dr"><span class="dl">Precio de compra</span><span class="dv">$${fmt(p.precio_compra)}</span></div>`;
+  document.getElementById('modal-b').innerHTML = rows;
+  document.getElementById('modal-bg').classList.add('open');
+}
+function cerrarModal(e) {
+  if (!e || e.target === document.getElementById('modal-bg')) {
+    document.getElementById('modal-bg').classList.remove('open');
+    modalId = null;
+  }
+}
+async function eliminar() {
+  if (modalId === null) return;
+  if (!confirm('¿Eliminás esta posición?')) return;
+  try {
+    await fetch(API + '/api/portfolio/' + modalId, {method:'DELETE'});
+    cerrarModal();
+    await renderPortfolio();
+  } catch { alert('Error al eliminar. ¿El backend está corriendo?'); }
+}
+
+// ─── CONSEJERA ─────────────────────────────────
+async function consultarClaude() {
+  try {
+    const r = await fetch(API + '/api/context');
+    const {context} = await r.json();
+    if (typeof sendPrompt === 'function') sendPrompt(context);
+    else {
+      await navigator.clipboard.writeText(context);
+      alert('Contexto copiado al portapapeles. Pegalo en la conversación con Claude.');
+    }
+  } catch {
+    alert('No se pudo obtener el contexto. ¿El backend está corriendo?');
+  }
+}
+
+// ─── INIT ──────────────────────────────────────
+document.getElementById('f-fecha').valueAsDate = new Date();
+fetchMarket();
+</script>
+</body>
+</html>
