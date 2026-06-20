@@ -285,7 +285,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
         <span class="capital-sym">$</span>
         <input class="capital-inp" type="number" id="capital-inp" placeholder="ej. 700000" oninput="onCapChange()">
       </div>
-      <div class="capital-usd" id="capital-usd">≈ USD — al MEP</div>
+      <div class="capital-usd" id="capital-usd">≈ $ — estimado al mes</div>
     </div>
 
     <button class="btn-rec" onclick="recomendar()">Ver mi plan de inversión →</button>
@@ -308,9 +308,9 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     </div>
 
     <div class="hero">
-      <div class="hero-lbl">Portafolio total en USD</div>
-      <div class="hero-val">USD <span id="hero-usd">0</span></div>
-      <div class="hero-sub">MEP $<span id="hero-mep">—</span> · <span id="hero-ts2">—</span></div>
+      <div class="hero-lbl">Portafolio total en ARS</div>
+      <div class="hero-val">$ <span id="hero-usd">0</span></div>
+      <div class="hero-sub">Actualizado <span id="hero-ts2">—</span></div>
       <div class="hero-gan g0" id="hero-gan">cargando...</div>
     </div>
 
@@ -339,32 +339,24 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     <div class="fl">Instrumento</div>
     <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
       <option value="">— elegí —</option>
-      <optgroup label="CEDEARs">
-        <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
-        <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
-        <option value="CEDEAR NVDA|variable|cedear|NVDA.BA">CEDEAR NVDA — NVIDIA</option>
-        <option value="CEDEAR AAPL|variable|cedear|AAPL.BA">CEDEAR AAPL — Apple</option>
-        <option value="CEDEAR MSFT|variable|cedear|MSFT.BA">CEDEAR MSFT — Microsoft</option>
-        <option value="CEDEAR MELI|variable|cedear|MELI.BA">CEDEAR MELI — MercadoLibre</option>
-        <option value="CEDEAR BRK.B|variable|cedear|BRK-B.BA">CEDEAR BRK.B — Berkshire</option>
-        <option value="CEDEAR TSLA|variable|cedear|TSLA.BA">CEDEAR TSLA — Tesla</option>
+      <optgroup label="Letras y Bonos en Pesos (recomendado)">
+        <option value="Lecap S30J6|42|bono|">Lecap S30J6 — vence jun 2026</option>
+        <option value="Lecap S31L6|42|bono|">Lecap S31L6 — vence jul 2026</option>
+        <option value="Lecap S29A7|42|bono|">Lecap S29A7 — vence ago 2026</option>
+        <option value="Lecap S30S6|42|bono|">Lecap S30S6 — vence sep 2026</option>
+        <option value="Boncap T2X6|42|bono|">Boncap T2X6 — tasa fija dic 2026</option>
+        <option value="Boncap T2X7|42|bono|">Boncap T2X7 — tasa fija 2027</option>
       </optgroup>
       <optgroup label="Fondos (FCI)">
-        <option value="FCI Money Market|72|fondo|">FCI Money Market</option>
-        <option value="FCI Renta Mixta|85|fondo|">FCI Renta Mixta</option>
-        <option value="FCI Renta Variable|variable|fondo|">FCI Renta Variable</option>
+        <option value="FCI Money Market MP|38|fondo|">FCI Money Market (Mercado Pago)</option>
+        <option value="FCI Renta Fija|40|fondo|">FCI Renta Fija en Pesos</option>
       </optgroup>
-      <optgroup label="Renta fija">
-        <option value="Plazo Fijo UVA|inflacion|plazo|">Plazo Fijo UVA</option>
-        <option value="Plazo Fijo|tasa|plazo|">Plazo Fijo (mejor tasa)</option>
-        <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30</option>
-        <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30</option>
-        <option value="Bono CER TX26|cer|bono|TX26.BA">Bono CER TX26</option>
-      </optgroup>
-      <optgroup label="Acciones">
-        <option value="YPF|variable|accion|YPF.BA">YPF</option>
-        <option value="Galicia GGAL|variable|accion|GGAL.BA">Galicia (GGAL)</option>
-        <option value="Pampa Energía|variable|accion|PAMP.BA">Pampa Energía</option>
+      <optgroup label="Otros instrumentos">
+        <option value="ON Pampa MGCOO|7|bono|">ON Pampa Energía (USD)</option>
+        <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
+        <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
+        <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30 (USD)</option>
+        <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30 (USD)</option>
       </optgroup>
       <option value="Otro|variable|otro|">Otro</option>
     </select>
@@ -517,10 +509,10 @@ function renderByma() {
 let _recTimer = null;
 function onCapChange() {
   const cap = parseFloat(document.getElementById('capital-inp').value) || 0;
-  const tc  = MKT?.dolar?.mep || 1456;
+  const rendMensual = 0.035;
   document.getElementById('capital-usd').textContent = cap > 0
-    ? `≈ USD ${fmt(cap / tc)} al MEP ($${fmt(tc)})`
-    : '≈ USD — al MEP';
+    ? `≈ $${fmt(cap * rendMensual)} de ganancia estimada el primer mes (3.5%/mes en Lecaps)`
+    : '≈ $ — estimado al mes';
   clearTimeout(_recTimer);
   if (cap > 0) _recTimer = setTimeout(recomendar, 700);
   else document.getElementById('rec-section').style.display = 'none';
@@ -531,59 +523,43 @@ function recomendar() {
   const cap = parseFloat(document.getElementById('capital-inp').value);
   if (!cap || cap <= 0) { alert('Ingresá cuánto querés invertir.'); return; }
 
-  const tc    = MKT?.dolar?.mep     || 1456;
-  const tasa  = MKT?.tasas?.mejor_tna   || 23;
-  const banco = MKT?.tasas?.mejor_banco || 'tu banco';
-  const ipc   = MKT?.bcra?.ipc_mensual?.valor;
-  const spy   = MKT?.byma?.['SPY.BA']?.precio;
-  const al30  = MKT?.byma?.['AL30.BA']?.precio;
+  const ganAnual = fmt(Math.round(cap * Math.pow(1.035, 12) - cap));
 
   const dist = [
     {
-      nombre: 'CEDEARs — SPY + QQQ',
-      sub:    'Dolarización en pesos · exposición mercado USA',
-      pct:    35,
+      nombre: 'Lecaps (Letras del Tesoro en $)',
+      sub:    'Tasa fija en pesos · sin volatilidad · vencimiento 1–6 meses',
+      pct:    60,
       color:  '#1a5c40',
-      tags:   ['Exposición USD', 'Alta liquidez', 'Horizonte largo'],
-      desc:   `El CEDEAR replica un ETF americano pero cotiza en pesos al MEP implícito. Si el dólar sube, tus pesos suben con él. Históricamente el S&P 500 rinde 8–15% anual en USD.${spy ? ` Hoy SPY cotiza $${fmt(spy)}.` : ''}`,
-      como:   'Dividí: 60% en SPY (más diversificado) y 40% en QQQ (tecnología). Comprás en PPI con tu cuenta en pesos.',
-      donde:  'portfoliopersonal.com → CEDEARs → buscar SPY y QQQ',
+      tags:   ['~3.5% mensual', 'Sin volatilidad', 'Renuovo al vencimiento'],
+      desc:   'Las Lecaps son letras del Tesoro Nacional en pesos a tasa fija. Comprás hoy, al vencimiento (1 a 6 meses) recibís el capital más los intereses en tu cuenta PPI. Sin sorpresas, sin fluctuaciones. Es el instrumento estrella en pesos para 2026.',
+      como:   'Entrás a PPI → Renta Fija → Letras. Elegís una que venza en 3–6 meses (ej. S30J6, S29A7). Comprás con orden de mercado. Al vencimiento el dinero vuelve solo y reinvertís.',
+      donde:  'portfoliopersonal.com → Renta Fija → Letras del Tesoro',
     },
     {
-      nombre: 'Bonos soberanos USD (AL30 + GD30)',
-      sub:    'Renta en dólares · cupones semestrales',
-      pct:    20,
-      color:  '#7a5a98',
-      tags:   ['Renta en USD', 'Cupones cada 6 meses', 'Riesgo soberano'],
-      desc:   `AL30 y GD30 pagan cupones en USD hasta 2030. Se compran en pesos al tipo MEP. Si Argentina sigue pagando, recibís dólares directo.${al30 ? ` Hoy AL30 cotiza $${fmt(al30)}.` : ''}`,
-      como:   '50% AL30 (ley Argentina, algo más fácil de operar) y 50% GD30 (ley NY, más demandado internacionalmente).',
-      donde:  'portfoliopersonal.com → Bonos → Soberanos USD',
-    },
-    {
-      nombre: 'Plazo Fijo UVA (90 días renovable)',
-      sub:    'Capital + inflación + adicional garantizado por banco',
+      nombre: 'Boncaps (Bonos del Tesoro en $)',
+      sub:    'Tasa fija en pesos · plazo más largo · rinde igual o más',
       pct:    25,
-      color:  '#5a7898',
-      tags:   ['Capital garantizado', 'Ajuste inflación', 'Min. 90 días'],
-      desc:   `El UVA ajusta tu depósito por el índice de inflación oficial.${ipc ? ` Con ${ipc}% mensual, a 12 meses tu capital crece protegido.` : ''} Más seguro que cualquier otro instrumento para no perder poder adquisitivo.`,
-      como:   `Mejor tasa hoy: ${tasa}% TNA en ${banco}. Podés abrirlo desde BBVA (ya tenés cuenta) o desde PPI.`,
-      donde:  'BBVA Homebanking → Inversiones → Plazo Fijo UVA · o PPI → Plazo Fijo',
+      color:  '#2a7a55',
+      tags:   ['~3.5% mensual', 'Plazo 6–24 meses', 'Paga cupones en $'],
+      desc:   'Son como las Lecaps pero de mayor plazo y pagan cupones periódicos en pesos. Si podés dejar el dinero más de 6 meses sin tocarlo, los Boncaps suelen ofrecer una tasa levemente mejor. También se compran en PPI.',
+      como:   'En PPI buscás "Boncaps" o "T2X" en renta fija. Elegís el plazo que más te convenga. El cupón se acredita automáticamente en tu cuenta.',
+      donde:  'portfoliopersonal.com → Renta Fija → Bonos en Pesos',
     },
     {
-      nombre: 'FCI Money Market',
-      sub:    'Liquidez 24hs · rinde todos los días',
-      pct:    20,
+      nombre: 'FCI Money Market (Mercado Pago)',
+      sub:    'Reserva líquida · rinde todos los días · rescate inmediato',
+      pct:    15,
       color:  '#6a9e5a',
-      tags:   [`~${tasa > 0 ? tasa : 72}% TNA est.`, 'Rescate 24hs', 'Sin plazo'],
-      desc:   'Fondo de maniobra: disponible en 24hs, rinde todos los días. Útil para aprovechar caídas del mercado, emergencias, o mientras esperás precio de entrada en CEDEARs.',
-      como:   'Mercado Pago Inversiones ya lo tenés disponible sin costo. En PPI también.',
-      donde:  'Mercado Pago → Inversiones → Reserva · o PPI → Fondos → Money Market',
+      tags:   ['~TNA 36–38%', 'Rescate inmediato', 'Para aportes mensuales'],
+      desc:   'El fondo conservador de Mercado Pago rinde todos los días y podés retirar cuando quieras. Ideal para guardar el próximo aporte mensual mientras decidís dónde invertirlo, o tener un colchón de liquidez.',
+      como:   'Ya lo tenés activo en Mercado Pago. Dejá acá el 15% como reserva de liquidez. Cuando tengas el próximo aporte, lo movés a Lecaps en PPI.',
+      donde:  'Mercado Pago → Inversiones → Reserva (fondo conservador)',
     },
   ];
 
-  const usd = fmt(cap / tc);
   document.getElementById('rec-intro').innerHTML =
-    `Tenés <strong>$${fmt(cap)} ARS</strong> (≈ USD ${usd} al MEP de $${fmt(tc)}) para invertir durante 12 meses. Esta distribución apunta a hacer crecer ese capital en dólares, con riesgo moderado y liquidez parcial:`;
+    `Tenés <strong>$${fmt(cap)} ARS</strong> para invertir durante 12 meses. Objetivo: crecer en pesos. Esta distribución apunta a maximizar el rendimiento en ARS con tasa fija y sin riesgo de mercado. Ganancia estimada al año: <strong>+$${ganAnual} ARS</strong>.`;
 
   document.getElementById('rec-instrumentos').innerHTML = dist.map(d => {
     const monto = Math.round(cap * d.pct / 100);
@@ -630,17 +606,16 @@ async function renderPortfolio() {
   const total  = PORT.reduce((s,p) => s + p.monto, 0);
   const valAct = PORT.reduce((s,p) => s + valorEst(p), 0);
 
-  document.getElementById('hero-usd').textContent  = fmt(valAct / tc);
-  document.getElementById('hero-mep').textContent  = MKT?.dolar?.mep ? fmt(MKT.dolar.mep) : '—';
+  document.getElementById('hero-usd').textContent  = fmt(valAct);
   document.getElementById('hero-ts2').textContent  = MKT ? new Date(MKT.timestamp).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) : '—';
   document.getElementById('total-pos').textContent = fmt(total);
 
-  const ganUSD = (valAct - total) / tc;
+  const ganARS = valAct - total;
   const ganEl  = document.getElementById('hero-gan');
   if (!total) { ganEl.textContent = 'sin inversiones todavía'; ganEl.className = 'hero-gan g0'; }
   else {
-    ganEl.textContent = (ganUSD >= 0 ? '+' : '') + 'USD ' + fmt(Math.abs(ganUSD)) + ' estimado';
-    ganEl.className   = 'hero-gan ' + (ganUSD >= 0 ? 'gp' : 'gn');
+    ganEl.textContent = (ganARS >= 0 ? '+' : '') + '$ ' + fmt(Math.abs(ganARS)) + ' estimado';
+    ganEl.className   = 'hero-gan ' + (ganARS >= 0 ? 'gp' : 'gn');
   }
 
   // Alertas de vencimiento
@@ -757,7 +732,7 @@ function abrirModal(id) {
     <div class="dr"><span class="dl">Invertido</span><span class="dv">$${fmt(p.monto)}</span></div>
     <div class="dr"><span class="dl">Valor estimado hoy</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">$${fmt(vh)}</span></div>
     <div class="dr"><span class="dl">Ganancia estimada</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">${gan>=0?'+':''}$${fmt(Math.abs(gan))}</span></div>
-    <div class="dr"><span class="dl">En USD al MEP</span><span class="dv">USD ${fmt(vh/tc)}</span></div>`;
+    <div class="dr"><span class="dl">Ganancia en ARS</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">${gan>=0?'+':''}$${fmt(Math.abs(gan))}</span></div>`;
   if (p.vencimiento) {
     const d = diffD(hoy(), p.vencimiento);
     rows += `<div class="dr"><span class="dl">Vencimiento</span><span class="dv">${p.vencimiento} · ${d>=0?'en '+d+'d':'VENCIDO hace '+Math.abs(d)+'d'}</span></div>`;
