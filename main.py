@@ -216,7 +216,11 @@ else:
         con.close()
         return lid
 
-init_db()
+try:
+    init_db()
+except Exception as e:
+    print(f"[DB] ERROR en init_db: {e}")
+    import traceback; traceback.print_exc()
 
 # ─── APP ─────────────────────────────────────────────────────
 app = FastAPI(title="Inversiones AR")
@@ -501,6 +505,17 @@ def update_plan(pid: int, p: PlanMes):
             (p.monto, p.instrumento, p.plataforma, p.tasa_mensual, pid)
         )
     return {"id": pid, **p.dict()}
+
+@app.get("/api/debug")
+def debug():
+    try:
+        c = db_rows("SELECT COUNT(*) as n FROM cuentas")[0]["n"]
+        p = db_rows("SELECT COUNT(*) as n FROM plan_mensual")[0]["n"]
+        pos = db_rows("SELECT COUNT(*) as n FROM posiciones")[0]["n"]
+        return {"ok": True, "cuentas": c, "plan_mensual": p, "posiciones": pos,
+                "db": "postgresql" if DATABASE_URL else "sqlite"}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
 
 @app.get("/api/context")
 async def context():
