@@ -548,11 +548,14 @@ function switchPlano(tipo, btn) {
 
 // ─── AHORROS ───────────────────────────────────
 const GOAL = 40000;
-let accounts = JSON.parse(localStorage.getItem('gen_accounts') || 'null') || [
+const DEFAULTS = [
   { label: 'Ontop',    amount: 2300 },
   { label: 'BBVA',     amount: 9400 },
   { label: 'Efectivo', amount: 4500 },
 ];
+const savedAcc = JSON.parse(localStorage.getItem('gen_accounts') || 'null');
+let accounts = (savedAcc && savedAcc.length > 0 && savedAcc.some(a => a.amount > 0))
+  ? savedAcc : JSON.parse(JSON.stringify(DEFAULTS));
 let todos = JSON.parse(localStorage.getItem('gen_todos') || '[]');
 
 function saveAccounts() { localStorage.setItem('gen_accounts', JSON.stringify(accounts)); }
