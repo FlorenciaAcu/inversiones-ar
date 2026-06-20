@@ -339,24 +339,21 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     <div class="fl">Instrumento</div>
     <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
       <option value="">— elegí —</option>
-      <optgroup label="Letras y Bonos en Pesos (recomendado)">
-        <option value="Lecap S30J6|42|bono|">Lecap S30J6 — vence jun 2026</option>
+      <optgroup label="Mercado Pago (tu plataforma base)">
+        <option value="FCI Conservador MP|36|fondo|">Fondo Conservador — MP</option>
+        <option value="FCI Empresas Argentinas MP|variable|fondo|">Fondo Empresas Argentinas — MP</option>
+      </optgroup>
+      <optgroup label="PPI — Letras y Bonos en Pesos">
         <option value="Lecap S31L6|42|bono|">Lecap S31L6 — vence jul 2026</option>
         <option value="Lecap S29A7|42|bono|">Lecap S29A7 — vence ago 2026</option>
         <option value="Lecap S30S6|42|bono|">Lecap S30S6 — vence sep 2026</option>
         <option value="Boncap T2X6|42|bono|">Boncap T2X6 — tasa fija dic 2026</option>
         <option value="Boncap T2X7|42|bono|">Boncap T2X7 — tasa fija 2027</option>
       </optgroup>
-      <optgroup label="Fondos (FCI)">
-        <option value="FCI Money Market MP|38|fondo|">FCI Money Market (Mercado Pago)</option>
-        <option value="FCI Renta Fija|40|fondo|">FCI Renta Fija en Pesos</option>
-      </optgroup>
-      <optgroup label="Otros instrumentos">
+      <optgroup label="Otros (avanzado)">
         <option value="ON Pampa MGCOO|7|bono|">ON Pampa Energía (USD)</option>
         <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
-        <option value="CEDEAR QQQ|variable|cedear|QQQ.BA">CEDEAR QQQ — Nasdaq 100</option>
         <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30 (USD)</option>
-        <option value="Bono GD30|variable|bono|GD30.BA">Bono GD30 (USD)</option>
       </optgroup>
       <option value="Otro|variable|otro|">Otro</option>
     </select>
@@ -523,43 +520,45 @@ function recomendar() {
   const cap = parseFloat(document.getElementById('capital-inp').value);
   if (!cap || cap <= 0) { alert('Ingresá cuánto querés invertir.'); return; }
 
-  const ganAnual = fmt(Math.round(cap * Math.pow(1.035, 12) - cap));
+  const tnaConservador = MKT?.tasas?.mp_conservador || 36;
+  const rMens = tnaConservador / 100 / 12;
+  const ganAnual = fmt(Math.round(cap * Math.pow(1 + rMens, 12) - cap));
 
   const dist = [
     {
-      nombre: 'Lecaps (Letras del Tesoro en $)',
-      sub:    'Tasa fija en pesos · sin volatilidad · vencimiento 1–6 meses',
-      pct:    60,
+      nombre: 'Fondo Conservador — Mercado Pago',
+      sub:    'Tu base segura · rinde todos los días · retirás cuando querés',
+      pct:    50,
       color:  '#1a5c40',
-      tags:   ['~3.5% mensual', 'Sin volatilidad', 'Renuovo al vencimiento'],
-      desc:   'Las Lecaps son letras del Tesoro Nacional en pesos a tasa fija. Comprás hoy, al vencimiento (1 a 6 meses) recibís el capital más los intereses en tu cuenta PPI. Sin sorpresas, sin fluctuaciones. Es el instrumento estrella en pesos para 2026.',
-      como:   'Entrás a PPI → Renta Fija → Letras. Elegís una que venza en 3–6 meses (ej. S30J6, S29A7). Comprás con orden de mercado. Al vencimiento el dinero vuelve solo y reinvertís.',
-      donde:  'portfoliopersonal.com → Renta Fija → Letras del Tesoro',
-    },
-    {
-      nombre: 'Boncaps (Bonos del Tesoro en $)',
-      sub:    'Tasa fija en pesos · plazo más largo · rinde igual o más',
-      pct:    25,
-      color:  '#2a7a55',
-      tags:   ['~3.5% mensual', 'Plazo 6–24 meses', 'Paga cupones en $'],
-      desc:   'Son como las Lecaps pero de mayor plazo y pagan cupones periódicos en pesos. Si podés dejar el dinero más de 6 meses sin tocarlo, los Boncaps suelen ofrecer una tasa levemente mejor. También se compran en PPI.',
-      como:   'En PPI buscás "Boncaps" o "T2X" en renta fija. Elegís el plazo que más te convenga. El cupón se acredita automáticamente en tu cuenta.',
-      donde:  'portfoliopersonal.com → Renta Fija → Bonos en Pesos',
-    },
-    {
-      nombre: 'FCI Money Market (Mercado Pago)',
-      sub:    'Reserva líquida · rinde todos los días · rescate inmediato',
-      pct:    15,
-      color:  '#6a9e5a',
-      tags:   ['~TNA 36–38%', 'Rescate inmediato', 'Para aportes mensuales'],
-      desc:   'El fondo conservador de Mercado Pago rinde todos los días y podés retirar cuando quieras. Ideal para guardar el próximo aporte mensual mientras decidís dónde invertirlo, o tener un colchón de liquidez.',
-      como:   'Ya lo tenés activo en Mercado Pago. Dejá acá el 15% como reserva de liquidez. Cuando tengas el próximo aporte, lo movés a Lecaps en PPI.',
+      tags:   [`~TNA ${tnaConservador}%`, 'Rescate inmediato', 'Sin riesgo de mercado'],
+      desc:   'Es el fondo que ya tenés activo. Invierte en plazos fijos, cauciones y letras de muy corto plazo. Rinde todos los días sin que hagas nada, y podés retirar en cualquier momento sin costo. La base de tu portafolio.',
+      como:   'Ya lo tenés en Mercado Pago → Inversiones → Reserva. No hace falta mover nada, solo asegurarte de que el dinero esté invertido ahí y no quieto en la cuenta.',
       donde:  'Mercado Pago → Inversiones → Reserva (fondo conservador)',
+    },
+    {
+      nombre: 'Fondo Empresas Argentinas — Mercado Pago',
+      sub:    'Más rendimiento · invierte en empresas argentinas · riesgo moderado',
+      pct:    35,
+      color:  '#2a7a55',
+      tags:   ['Mayor rendimiento potencial', 'Riesgo moderado', 'Mismo app MP'],
+      desc:   'El segundo fondo de Mercado Pago invierte en bonos y acciones de empresas argentinas. Puede rendir más que el conservador pero también puede tener más variación. Ideal para el tramo de tu capital que podés dejar quieto más tiempo.',
+      como:   'En Mercado Pago → Inversiones → buscás la opción "Empresas Argentinas". Movés una parte de tu capital ahí. Podés dividir: 50% conservador (liquidez) y 35% acá (más rendimiento).',
+      donde:  'Mercado Pago → Inversiones → Empresas Argentinas',
+    },
+    {
+      nombre: 'Lecaps en PPI — paso siguiente',
+      sub:    'Cuando acumules más capital · tasa fija · mayor rendimiento',
+      pct:    15,
+      color:  '#5a7898',
+      tags:   ['~3.5% mensual', 'PPI ya abierto', 'Próximo nivel'],
+      desc:   'Cuando el capital de MP empiece a crecer, el siguiente paso es mover una parte a Lecaps en PPI. Son letras del Tesoro en pesos con tasa fija, sin volatilidad, y suelen rendir un poco más que los fondos de billetera. Ya tenés la cuenta PPI lista para operar.',
+      como:   'En PPI → Renta Fija → Letras. Elegís una con vencimiento en 3–6 meses. Comprás con orden de mercado. Al vencimiento el dinero vuelve y reinvertís.',
+      donde:  'portfoliopersonal.com → Renta Fija → Letras del Tesoro',
     },
   ];
 
   document.getElementById('rec-intro').innerHTML =
-    `Tenés <strong>$${fmt(cap)} ARS</strong> para invertir durante 12 meses. Objetivo: crecer en pesos. Esta distribución apunta a maximizar el rendimiento en ARS con tasa fija y sin riesgo de mercado. Ganancia estimada al año: <strong>+$${ganAnual} ARS</strong>.`;
+    `Tenés <strong>$${fmt(cap)} ARS</strong> para invertir durante 12 meses, todo en pesos. Tu plataforma base es Mercado Pago: simple, sin complicaciones. Ganancia estimada al año solo con el fondo conservador: <strong>+$${ganAnual} ARS</strong>. Distribuido así, puede ser más:`;
 
   document.getElementById('rec-instrumentos').innerHTML = dist.map(d => {
     const monto = Math.round(cap * d.pct / 100);
