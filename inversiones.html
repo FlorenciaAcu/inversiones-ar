@@ -567,8 +567,7 @@ function renderPlan() {
             <select class="mes-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
               ${opciones}
             </select>
-            <div style="font-size:10px;color:${platColor};font-weight:600;margin-top:2px;">${row.plataforma}</div>
-          </div>
+              </div>
           <div style="display:flex;align-items:center;gap:2px;flex-shrink:0;">
             <span style="font-size:11px;color:#8a7858;">$</span>
             <input type="number" value="${Math.round(row.monto)}" placeholder="190000"
