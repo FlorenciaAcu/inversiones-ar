@@ -84,15 +84,6 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .tl { font-family:'Lora',serif; font-size:14px; font-weight:600; color:var(--ink); }
 .tv { font-family:'Lora',serif; font-size:1.3rem; font-weight:600; color:#5c3410; }
 
-/* TODOS */
-.todo-item { display:flex; align-items:flex-start; gap:10px; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:8px; }
-.todo-check { width:22px; height:22px; border:2px solid #c8bca8; border-radius:5px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; background:white; margin-top:1px; }
-.todo-check:active { background:var(--red); border-color:var(--red); }
-.todo-body { flex:1; min-width:0; }
-.todo-desc { font-size:14px; font-weight:500; color:var(--ink); line-height:1.4; }
-.todo-meta { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:3px; }
-.todo-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 8px; flex-shrink:0; }
-.todo-del:active { color:var(--red); }
 
 /* TIPS */
 .tip-card { background:rgba(255,252,246,.7); border:1.5px solid var(--border); border-left:3px solid var(--red); border-radius:9px; padding:16px; cursor:pointer; margin-top:22px; }
@@ -195,8 +186,6 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
       <span class="tv">USD <span id="total">0,00</span></span>
     </div>
 
-    <div class="sec" style="margin-top:26px;">Pendientes</div>
-    <div id="todos"></div>
 
     <div class="tip-card" onclick="nextTip()">
       <div class="tip-tag">✦ sabiduría financiera</div>
@@ -448,23 +437,6 @@ function updateGoal() {
   }
 }
 
-function renderTodos() {
-  const c = document.getElementById('todos');
-  c.innerHTML = '';
-  todos.forEach((t,i) => {
-    const el = document.createElement('div');
-    el.className = 'todo-item';
-    el.innerHTML = `
-      <div class="todo-check" onclick="todos.splice(${i},1);saveAll();renderTodos()"></div>
-      <div class="todo-body">
-        <div class="todo-desc">${t.desc}</div>
-        <div class="todo-meta">${t.date}</div>
-      </div>
-      <button class="todo-del" onclick="todos.splice(${i},1);saveAll();renderTodos()">✕</button>`;
-    c.appendChild(el);
-  });
-}
-
 const tips = [
   "La abundancia no se mide por cuánto gastás, sino por cuánto construís. Un ingreso mayor es una oportunidad de crecer, no de expandir gastos.",
   "El dinero fluye hacia quienes lo cuidan. Guardar no es privarte — es enviarte un regalo al futuro.",
@@ -551,7 +523,6 @@ function renderPlan() {
 // ─── INIT ──────────────────────────────────────
 document.getElementById('tip-text').textContent = tips[tipIdx];
 loadAccounts();
-renderTodos();
 renderPlan();
 </script>
 </body>
