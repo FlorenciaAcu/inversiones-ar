@@ -86,7 +86,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .rows-wrap { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
 .row { display:flex; align-items:center; gap:8px; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:13px 14px; transition:border-color .15s; }
 .row:focus-within { border-color:#a07840; }
-.label-input { flex:1; background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; color:var(--ink); min-width:0; }
+.label-input { flex:1; background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:500; color:var(--ink); min-width:0; }
 .label-input::placeholder { color:#c0b8a8; }
 .sep { width:1px; height:20px; background:#d0c8b8; flex-shrink:0; }
 .amount-wrap { display:flex; align-items:center; gap:3px; flex-shrink:0; }
@@ -106,12 +106,10 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 
 /* TODOS */
 .todo-item { display:flex; align-items:flex-start; gap:10px; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:8px; }
-.todo-item.done { opacity:.45; }
 .todo-check { width:20px; height:20px; border:2px solid #c8bca8; border-radius:5px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; margin-top:1px; transition:all .15s; background:white; }
-.todo-item.done .todo-check { background:var(--red); border-color:var(--red); color:white; }
+.todo-check:active { background:var(--red); border-color:var(--red); color:white; }
 .todo-body { flex:1; min-width:0; }
 .todo-desc { font-size:14px; font-weight:500; color:var(--ink); line-height:1.4; }
-.todo-item.done .todo-desc { text-decoration:line-through; color:var(--muted); }
 .todo-meta { font-family:'Lora',serif; font-style:italic; font-size:11.5px; color:#b0a488; margin-top:3px; }
 .todo-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:14px; padding:2px 4px; }
 
@@ -612,9 +610,9 @@ function renderTodos() {
   c.innerHTML = '';
   todos.forEach((t,i) => {
     const el = document.createElement('div');
-    el.className = 'todo-item'+(t.done?' done':'');
+    el.className = 'todo-item';
     el.innerHTML = `
-      <div class="todo-check" onclick="todos[${i}].done=!todos[${i}].done;saveTodos();renderTodos()">${t.done?'✓':''}</div>
+      <div class="todo-check" onclick="todos.splice(${i},1);saveTodos();renderTodos()"></div>
       <div class="todo-body"><div class="todo-desc">${t.desc}</div><div class="todo-meta">${t.date}</div></div>
       <button class="todo-del" onclick="todos.splice(${i},1);saveTodos();renderTodos()">✕</button>`;
     c.appendChild(el);
