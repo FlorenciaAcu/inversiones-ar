@@ -470,6 +470,48 @@ async function savePlanMes(id, monto, instrumento, plataforma, tasa_mensual) {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({monto, instrumento, plataforma, tasa_mensual})
     });
+    const el = document.getElementById('saved-'+id);
+    if (el) { el.style.display='block'; setTimeout(()=>el.style.display='none', 2000); }
+  } catch(e) {}
+}
+
+function cambiarInstrumento(id, i, value) {
+  const [inst, plat, tasa] = value.split('|');
+  planData[i].instrumento = inst;
+  planData[i].plataforma  = plat;
+  planData[i].tasa_mensual = parseFloat(tasa);
+  savePlanMes(id, planData[i].monto, inst, plat, parseFloat(tasa));
+  // actualizar feedback y color sin re-renderizar todo
+  const fb = document.getElementById('fb-'+id);
+  if (fb) fb.textContent = FEEDBACK[inst] || '';
+  const platEl = document.querySelector(`#fila-${id} [style*="font-weight:600;margin-top:2px"]`);
+  if (platEl) { platEl.textContent = plat; platEl.style.color = plat==='PPI'?'#7a5898':'var(--brand)'; }
+}
+
+function cambiarMonto(id, i, value) {
+  const monto = parseFloat(value) || 0;
+  planData[i].monto = monto;
+  savePlanMes(id, monto, planData[i].instrumento, planData[i].plataforma, planData[i].tasa_mensual);
+}
+
+async function agregarFila(mesKey) {
+  const inst = INSTRUMENTOS[0];
+  try {
+    const r = await fetch(API + '/api/plan', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({mes: mesKey, monto: 190000, instrumento: inst.label, plataforma: inst.plat, tasa_mensual: inst.tasa})
+    });
+    const data = await r.json();
+    planData.push({id: data.id, mes: mesKey, monto: 190000, instrumento: inst.label, plataforma: inst.plat, tasa_mensual: inst.tasa});
+  } catch(e) {}
+  renderPlan();
+}
+
+async function eliminarFila(id, mesKey) {
+  try {
+    await fetch(API + '/api/plan/' + id, {method: 'DELETE'});
+    planData = planData.filter(p => p.id !== id);
   } catch(e) {}
   renderPlan();
 }
@@ -484,6 +526,14 @@ function hoyMes() {
   return `${h.getFullYear()}-${String(h.getMonth()+1).padStart(2,'0')}`;
 }
 
+const FEEDBACK = {
+  'Fondo Conservador MP':   '✓ Liquidez inmediata, tasa ~3%/mes. Ideal para plata que puede necesitarse pronto.',
+  'Empresas Argentinas MP': '✓ Más rendimiento que el conservador, algo más de riesgo. Buen complemento.',
+  'Lecap PPI':              '✓ Tasa fija garantizada ~3.5%/mes. Sin volatilidad si llegás al vencimiento.',
+  'Boncap PPI':             '✓ Tasa fija ~3.7%/mes, mayor plazo. Ideal si no necesitás tocarlo.',
+  'Otro':                   '— Instrumento personalizado. Revisá la tasa antes de confirmar.',
+};
+
 function renderPlan() {
   if (!planData.length) {
     document.getElementById('plan-meses').innerHTML =
@@ -492,33 +542,64 @@ function renderPlan() {
   }
 
   const hoy = hoyMes();
-  let rows = '';
 
-  planData.forEach((mes, i) => {
-    const esActual = mes.mes === hoy;
-    const platColor = mes.plataforma === 'PPI' ? '#7a5898' : 'var(--brand)';
-    const opciones = INSTRUMENTOS.map(o =>
-      `<option value="${o.label}|${o.plat}|${o.tasa}" ${mes.instrumento===o.label?'selected':''}>${o.label}</option>`
-    ).join('');
+  // agrupar por mes
+  const meses = {};
+  planData.forEach((row, i) => {
+    if (!meses[row.mes]) meses[row.mes] = [];
+    meses[row.mes].push({...row, _i: i});
+  });
+
+  let rows = '';
+  Object.keys(meses).sort().forEach(mesKey => {
+    const filas = meses[mesKey];
+    const esActual = mesKey === hoy;
+
+    let filasHtml = filas.map(row => {
+      const i = row._i;
+      const platColor = row.plataforma === 'PPI' ? '#7a5898' : 'var(--brand)';
+      const opciones = INSTRUMENTOS.map(o =>
+        `<option value="${o.label}|${o.plat}|${o.tasa}" ${row.instrumento===o.label?'selected':''}>${o.label}</option>`
+      ).join('');
+      const fb = FEEDBACK[row.instrumento] || '';
+      const puedeEliminar = filas.length > 1;
+
+      return `
+      <div id="fila-${row.id}" style="margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;min-width:0;">
+            <select class="mes-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
+              ${opciones}
+            </select>
+            <div style="font-size:10px;color:${platColor};font-weight:600;margin-top:2px;">${row.plataforma}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:2px;flex-shrink:0;">
+            <span style="font-size:11px;color:#8a7858;">$</span>
+            <input type="number" value="${Math.round(row.monto)}" placeholder="190000"
+              style="width:90px;background:transparent;border:none;outline:none;font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);text-align:right;"
+              onchange="cambiarMonto(${row.id},${i},this.value)"
+              onblur="cambiarMonto(${row.id},${i},this.value)">
+          </div>
+          ${puedeEliminar ? `<button onclick="eliminarFila(${row.id},'${mesKey}')" style="background:none;border:none;cursor:pointer;color:#c8bca8;font-size:14px;padding:4px;">✕</button>` : ''}
+        </div>
+        ${fb ? `<div id="fb-${row.id}" style="font-size:11px;color:#6a8858;margin-top:5px;line-height:1.45;">${fb}</div>` : ''}
+        <div id="saved-${row.id}" style="font-size:10px;color:#6a9e5a;display:none;margin-top:3px;">✓ guardado</div>
+      </div>`;
+    }).join('');
 
     rows += `
-    <div class="mes-card${esActual?' activo':''}">
-      <div class="mes-label">
-        <div class="mes-nombre" style="color:${esActual?'var(--brand)':'var(--muted)'};">${mesLabel(mes.mes)}</div>
-        ${esActual?'<div class="mes-tag">← este mes</div>':''}
+    <div class="mes-card${esActual?' activo':''}" style="flex-direction:column;align-items:stretch;gap:0;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="mes-label" style="min-width:54px;">
+          <div class="mes-nombre" style="color:${esActual?'var(--brand)':'var(--muted)'};">${mesLabel(mesKey)}</div>
+          ${esActual?'<div class="mes-tag">← este mes</div>':''}
+        </div>
       </div>
-      <div class="mes-body">
-        <select class="mes-select" onchange="
-          const [inst,plat,tasa]=this.value.split('|');
-          planData[${i}].instrumento=inst;planData[${i}].plataforma=plat;planData[${i}].tasa_mensual=parseFloat(tasa);
-          savePlanMes(${mes.id},planData[${i}].monto,inst,plat,parseFloat(tasa))">
-          ${opciones}
-        </select>
-        <div style="font-size:10px;color:${platColor};font-weight:600;margin-top:3px;">${mes.plataforma}</div>
-      </div>
-      <div class="mes-total">
-        <div class="mes-val">$${fmt(parseFloat(mes.monto))}</div>
-      </div>
+      ${filasHtml}
+      <button onclick="agregarFila('${mesKey}')"
+        style="margin-top:6px;background:none;border:1px dashed #c8bca8;border-radius:6px;padding:6px 10px;font-size:11px;color:var(--muted);cursor:pointer;width:100%;text-align:left;">
+        + otro instrumento este mes
+      </button>
     </div>`;
   });
 

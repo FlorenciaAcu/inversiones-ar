@@ -483,6 +483,7 @@ def del_cuenta(cid: int):
     return {"ok": True}
 
 class PlanMes(BaseModel):
+    mes:          Optional[str] = None
     monto:        float
     instrumento:  str
     plataforma:   str
@@ -505,6 +506,28 @@ def update_plan(pid: int, p: PlanMes):
             (p.monto, p.instrumento, p.plataforma, p.tasa_mensual, pid)
         )
     return {"id": pid, **p.dict()}
+
+@app.post("/api/plan")
+def add_plan_mes(p: PlanMes):
+    if DATABASE_URL:
+        pid = db_exec(
+            "INSERT INTO plan_mensual (mes, monto, instrumento, plataforma, tasa_mensual) VALUES (%s,%s,%s,%s,%s) RETURNING id",
+            (p.mes if hasattr(p,'mes') else '', p.monto, p.instrumento, p.plataforma, p.tasa_mensual)
+        )
+    else:
+        pid = db_exec(
+            "INSERT INTO plan_mensual (mes, monto, instrumento, plataforma, tasa_mensual) VALUES (?,?,?,?,?)",
+            (p.mes if hasattr(p,'mes') else '', p.monto, p.instrumento, p.plataforma, p.tasa_mensual)
+        )
+    return {"id": pid, **p.dict()}
+
+@app.delete("/api/plan/{pid}")
+def delete_plan_mes(pid: int):
+    if DATABASE_URL:
+        db_exec("DELETE FROM plan_mensual WHERE id=%s", (pid,))
+    else:
+        db_exec("DELETE FROM plan_mensual WHERE id=?", (pid,))
+    return {"ok": True}
 
 @app.get("/api/debug")
 def debug():
