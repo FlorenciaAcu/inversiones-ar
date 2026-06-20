@@ -110,7 +110,16 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .resumen-gan { font-size:12px; color:#4a7820; font-weight:600; }
 .resumen-sub { font-size:11px; color:var(--muted); margin-top:4px; }
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
-.mes-select { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; color:var(--ink); width:100%; cursor:pointer; padding:0; }
+/* ── DESIGN SYSTEM ── */
+/* Input base */
+.ds-input { background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--ink); outline:none; width:100%; transition:border-color .15s; }
+.ds-input:focus { border-color:#a07840; }
+.ds-input::placeholder { color:#c0b8a8; font-weight:400; }
+/* Select */
+.ds-select-wrap { position:relative; }
+.ds-select-wrap::after { content:'↓'; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:11px; font-weight:600; pointer-events:none; }
+.ds-select { -webkit-appearance:none; appearance:none; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:10px 32px 10px 12px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--ink); cursor:pointer; width:100%; outline:none; transition:border-color .15s; }
+.ds-select:focus { border-color:#a07840; }
 
 /* MI CASA */
 .planos-toggle { display:flex; gap:8px; margin-bottom:16px; }
@@ -564,9 +573,11 @@ function renderPlan() {
       <div id="fila-${row.id}" style="margin-bottom:8px;">
         <div style="display:flex;align-items:center;gap:8px;">
           <div style="flex:1;min-width:0;">
-            <select class="mes-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
+            <div class="ds-select-wrap" style="flex:1;">
+            <select class="ds-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
               ${opciones}
             </select>
+          </div>
               </div>
           <div style="display:flex;align-items:center;gap:2px;flex-shrink:0;">
             <span style="font-size:11px;color:#8a7858;">$</span>
