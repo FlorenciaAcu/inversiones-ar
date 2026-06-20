@@ -8,70 +8,50 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --brand:   #1a5c40;
-  --brand-l: #e6f2ec;
-  --brand-m: #2a7a55;
-  --ink:     #2e2418;
-  --muted:   #a09278;
-  --border:  #d8cebc;
-  --bg:      #f7f3eb;
-  --surface: rgba(255,252,246,.97);
-  --red:     #c04030;
+  --brand:  #1a5c40;
+  --ink:    #2e2418;
+  --muted:  #a09278;
+  --border: #d8cebc;
+  --bg:     #f7f3eb;
+  --red:    #c04030;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 body {
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  background-color: var(--bg);
-  background-image: linear-gradient(rgba(150,130,90,.10) 1px,transparent 1px),
-                    linear-gradient(90deg,rgba(150,130,90,.10) 1px,transparent 1px);
-  background-size: 22px 22px;
-  padding: 0 0 60px;
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  background-color:var(--bg);
+  background-image:linear-gradient(rgba(150,130,90,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(150,130,90,.10) 1px,transparent 1px);
+  background-size:22px 22px;
+  padding:0 0 60px;
 }
 
 /* BRAND */
-.brand-header {
-  background: var(--surface);
-  border-bottom: 1.5px solid var(--border);
-  padding: 18px 18px 14px;
-}
-.brand-name {
-  font-family: 'Lora', serif;
-  font-size: 1.35rem; font-weight: 600;
-  color: var(--ink); letter-spacing: -.4px; line-height: 1;
-}
-.brand-name span { color: var(--brand); }
-.brand-tag {
-  font-family: 'Lora', serif; font-style: italic;
-  font-size: 11px; color: var(--muted); margin-top: 4px;
-}
+.brand-header { background:rgba(255,252,246,.97); border-bottom:1.5px solid var(--border); padding:18px 18px 14px; }
+.brand-name { font-family:'Lora',serif; font-size:1.35rem; font-weight:600; color:var(--ink); letter-spacing:-.4px; }
+.brand-name span { color:var(--brand); }
+.brand-tag { font-family:'Lora',serif; font-style:italic; font-size:11px; color:var(--muted); margin-top:4px; }
 
 /* NAV */
-.tab-nav { display:flex; border-bottom:1.5px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:10; overflow-x:auto; }
-.tab-btn { flex:1; min-width:0; padding:12px 4px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .15s; white-space:nowrap; }
+.tab-nav { display:flex; border-bottom:1.5px solid var(--border); background:rgba(255,252,246,.97); position:sticky; top:0; z-index:10; }
+.tab-btn { flex:1; padding:12px 4px; background:none; border:none; font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:2.5px solid transparent; margin-bottom:-1.5px; transition:all .15s; }
 .tab-btn.active { color:var(--brand); border-bottom-color:var(--brand); font-weight:600; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
-.card { background:rgba(255,252,246,.97); border-bottom:1.5px solid var(--border); padding:22px 18px 36px; }
+.card { background:rgba(255,252,246,.97); border-bottom:1.5px solid var(--border); padding:22px 18px 40px; }
 
-/* HEADERS */
+/* HEADER */
 .header { display:flex; align-items:flex-start; gap:12px; margin-bottom:8px; }
 .accent { width:3px; min-height:44px; border-radius:2px; flex-shrink:0; margin-top:2px; }
-.accent-green { background:linear-gradient(180deg,var(--brand) 0%,rgba(26,92,64,0) 100%); }
-.accent-red   { background:linear-gradient(180deg,var(--red) 0%,rgba(192,64,48,0) 100%); }
+.accent-g { background:linear-gradient(180deg,var(--brand) 0%,rgba(26,92,64,0) 100%); }
+.accent-r { background:linear-gradient(180deg,var(--red) 0%,rgba(192,64,48,0) 100%); }
 h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--ink); letter-spacing:-.3px; line-height:1.15; }
 .tagline { font-family:'Lora',serif; font-style:italic; font-size:12px; color:var(--muted); margin-top:3px; line-height:1.5; }
 .sec { font-family:'Lora',serif; font-size:10px; font-weight:600; color:#b0a488; text-transform:uppercase; letter-spacing:1px; margin:20px 0 9px; }
 
-/* PROGRESS USD */
-.progress-section {
-  margin: 18px 0 16px;
-  padding: 18px 16px;
-  background: rgba(240,233,218,.6);
-  border: 1.5px solid #d0c4a8; border-radius: 10px;
-}
+/* PROGRESS */
+.progress-section { margin:18px 0 16px; padding:18px 16px; background:rgba(240,233,218,.6); border:1.5px solid #d0c4a8; border-radius:10px; }
 .progress-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:12px; }
-.progress-label { font-family:'Lora',serif; font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.8px; line-height:1.3; }
+.progress-label { font-family:'Lora',serif; font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.8px; }
 .progress-pct { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:var(--red); line-height:1; letter-spacing:-1px; }
 .progress-pct span { font-size:1.1rem; opacity:.7; }
 .track-wrap { position:relative; height:16px; background:#e4ddd0; border-radius:99px; overflow:visible; margin-bottom:12px; }
@@ -79,138 +59,91 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .track-fill::after { content:''; position:absolute; right:-1px; top:50%; transform:translateY(-50%); width:22px; height:22px; background:var(--red); border:3px solid #fff8f0; border-radius:50%; box-shadow:0 2px 8px rgba(192,64,48,.4); }
 .progress-meta { display:flex; justify-content:space-between; align-items:center; }
 .meta-current { font-size:13px; font-weight:600; color:#5c3410; }
-.meta-goal    { font-size:13px; color:var(--muted); }
+.meta-goal { font-size:13px; color:var(--muted); }
 .meta-message { font-family:'Lora',serif; font-style:italic; font-size:12.5px; color:#9a7d5a; text-align:center; margin-top:12px; line-height:1.55; }
 
 /* ACCOUNTS */
 .rows-wrap { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
 .row { display:flex; align-items:center; gap:8px; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:13px 14px; transition:border-color .15s; }
 .row:focus-within { border-color:#a07840; }
-.label-input { flex:1; background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:500; color:var(--ink); min-width:0; }
-.label-input::placeholder { color:#c0b8a8; }
+.label-inp { flex:1; background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:500; color:var(--ink); min-width:0; }
+.label-inp::placeholder { color:#c0b8a8; }
 .sep { width:1px; height:20px; background:#d0c8b8; flex-shrink:0; }
-.amount-wrap { display:flex; align-items:center; gap:3px; flex-shrink:0; }
-.currency-sym { font-size:11px; color:#8a7858; font-weight:600; }
-.amount-input { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; color:#5c3410; text-align:right; width:110px; }
-.amount-input::placeholder { color:#c0b8a8; font-weight:400; }
-.amount-input::-webkit-outer-spin-button, .amount-input::-webkit-inner-spin-button { -webkit-appearance:none; }
-.delete-btn { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 6px; border-radius:4px; transition:color .15s; line-height:1; }
-.delete-btn:active { color:var(--red); }
-.add-btn { width:100%; padding:13px; background:transparent; color:var(--muted); border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all .15s; margin-top:4px; }
+.sym { font-size:11px; color:#8a7858; font-weight:600; }
+.amt-inp { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; color:#5c3410; text-align:right; width:110px; }
+.amt-inp::placeholder { color:#c0b8a8; font-weight:400; }
+.amt-inp::-webkit-outer-spin-button, .amt-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
+.del-btn { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 8px; border-radius:4px; }
+.del-btn:active { color:var(--red); }
+.add-btn { width:100%; padding:14px; background:transparent; color:var(--muted); border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; margin-top:4px; }
+.add-btn:active { background:rgba(160,130,80,.07); }
 
-/* TOTAL ROW */
-.divider { height:1px; background:linear-gradient(90deg,#c8bca4,transparent); border:none; margin:14px 0 12px; }
+/* TOTAL */
+.divider { height:1px; background:linear-gradient(90deg,#c8bca4,transparent); border:none; margin:16px 0 14px; }
 .total-row { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; background:rgba(240,233,218,.8); border:1.5px solid #d0c4a8; border-radius:9px; }
 .tl { font-family:'Lora',serif; font-size:14px; font-weight:600; color:var(--ink); }
 .tv { font-family:'Lora',serif; font-size:1.3rem; font-weight:600; color:#5c3410; }
 
 /* TODOS */
 .todo-item { display:flex; align-items:flex-start; gap:10px; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:8px; }
-.todo-check { width:20px; height:20px; border:2px solid #c8bca8; border-radius:5px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; margin-top:1px; transition:all .15s; background:white; }
-.todo-check:active { background:var(--red); border-color:var(--red); color:white; }
+.todo-check { width:22px; height:22px; border:2px solid #c8bca8; border-radius:5px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; background:white; margin-top:1px; }
+.todo-check:active { background:var(--red); border-color:var(--red); }
 .todo-body { flex:1; min-width:0; }
 .todo-desc { font-size:14px; font-weight:500; color:var(--ink); line-height:1.4; }
-.todo-meta { font-family:'Lora',serif; font-style:italic; font-size:11.5px; color:#b0a488; margin-top:3px; }
-.todo-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:14px; padding:2px 4px; }
+.todo-meta { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:3px; }
+.todo-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 8px; flex-shrink:0; }
+.todo-del:active { color:var(--red); }
 
 /* TIPS */
 .tip-card { background:rgba(255,252,246,.7); border:1.5px solid var(--border); border-left:3px solid var(--red); border-radius:9px; padding:16px; cursor:pointer; margin-top:22px; }
+.tip-card:active { background:rgba(245,241,232,.9); }
 .tip-tag { font-size:10px; font-weight:600; color:var(--red); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-.tip-text { font-family:'Lora',serif; font-style:italic; font-size:14px; color:#4a3820; line-height:1.65; }
+.tip-text { font-family:'Lora',serif; font-style:italic; font-size:14.5px; color:#4a3820; line-height:1.65; }
 .tip-hint { font-size:11px; color:#c4b8a4; margin-top:11px; text-align:right; }
 
-/* PLAN MENSUAL */
-.status-bar { display:flex; justify-content:space-between; align-items:center; margin:12px 0 6px; }
-.live-lbl { font-size:10px; color:#6a9e5a; display:flex; align-items:center; gap:4px; }
-.live-dot { width:6px; height:6px; border-radius:50%; background:#6a9e5a; animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
-.live-ts { font-size:10px; color:var(--muted); }
-.btn-refresh { font-size:10px; color:var(--brand); background:none; border:1px solid #c0d8cc; border-radius:5px; padding:3px 9px; cursor:pointer; }
-.backend-ok  { font-size:11px; color:#4a7820; background:rgba(100,160,80,.08); border:1px solid rgba(100,160,80,.3); border-radius:6px; padding:6px 11px; margin-bottom:8px; }
-.backend-err { font-size:11px; color:#8a2010; background:rgba(192,64,48,.07); border:1px solid rgba(192,64,48,.25); border-radius:6px; padding:8px 12px; margin-bottom:8px; line-height:1.55; }
-
-/* PORTFOLIO */
-.hero { background:#f0ebe0; border:1.5px solid var(--border); border-radius:12px; padding:18px; margin:14px 0 12px; }
-.hero-lbl { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
-.hero-val { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:var(--ink); letter-spacing:-1px; margin:4px 0 2px; }
-.hero-sub { font-size:11px; color:var(--muted); }
-.hero-gan { display:inline-flex; align-items:center; gap:4px; margin-top:9px; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:600; }
-.gp { background:rgba(100,160,80,.15); color:#3a6810; }
-.gn { background:rgba(192,64,48,.1); color:#8a2010; }
-.g0 { background:rgba(160,150,120,.12); color:#6a5840; }
-.alerta { display:flex; gap:9px; padding:10px 12px; border-radius:8px; border:1.5px solid; margin-bottom:7px; }
-.a-body { flex:1; font-size:12px; line-height:1.5; }
-.a-tit  { font-weight:600; margin-bottom:2px; }
-.a-urg  { border-color:var(--red); background:rgba(192,64,48,.06); color:#6a2010; }
-.a-av   { border-color:#e0a840; background:rgba(224,168,64,.06); color:#6a4810; }
-.pos-card  { background:#f5f1e8; border:1.5px solid var(--border); border-radius:10px; padding:13px; margin-bottom:8px; cursor:pointer; transition:border-color .15s; }
-.pos-card:hover { border-color:#a07840; }
-.pos-top   { display:flex; align-items:center; gap:9px; }
-.pos-dot   { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-.pos-nom   { font-size:14px; font-weight:600; color:var(--ink); flex:1; }
-.pos-monto { font-family:'Lora',serif; font-size:13.5px; font-weight:600; color:#5c3410; }
-.pos-meta  { display:flex; justify-content:space-between; align-items:center; margin-top:7px; padding-top:7px; border-top:1px solid #e4ddd0; }
-.pos-fecha { font-size:11px; color:#8a7858; }
-.badge { font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; }
-.b-ok   { background:#e8f0d8; color:#4a6820; }
-.b-warn { background:#f5edcc; color:#6a4010; }
-.b-red  { background:rgba(192,64,48,.1); color:#8a2010; }
-.b-gray { background:#ece8e0; color:#6a5840; }
-.vt { height:3px; background:#e4ddd0; border-radius:99px; overflow:hidden; margin-top:6px; }
-.vf { height:100%; border-radius:99px; }
-.btn-rec { width:100%; padding:15px; background:var(--brand); color:white; border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600; cursor:pointer; margin-top:14px; transition:opacity .15s; }
-.btn-rec:hover { opacity:.88; }
-.btn-sec { width:100%; padding:11px; background:transparent; color:#8a7858; border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; margin-top:7px; }
+/* PLAN */
+.mes-card { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:10px; margin-bottom:7px; border:1.5px solid var(--border); background:#f9f6f0; }
+.mes-card.activo { background:rgba(26,92,64,.06); border-color:var(--brand); }
+.mes-label { min-width:54px; }
+.mes-nombre { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+.mes-tag { font-size:9px; font-weight:600; color:var(--brand); margin-top:2px; }
+.mes-body { flex:1; }
+.mes-fondo { font-size:12px; font-weight:600; color:var(--ink); }
+.mes-sub { font-size:10px; color:var(--muted); margin-top:2px; }
+.mes-total { text-align:right; flex-shrink:0; }
+.mes-val { font-family:'Lora',serif; font-size:13px; font-weight:600; color:var(--ink); }
+.mes-gan { font-size:10px; color:#4a7820; margin-top:2px; }
+.resumen-card { background:#f0ebe0; border:1.5px solid #c0b898; border-radius:10px; padding:16px; margin-top:8px; }
+.resumen-lbl { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+.resumen-val { font-family:'Lora',serif; font-size:1.8rem; font-weight:600; color:var(--ink); margin:4px 0 2px; }
+.resumen-gan { font-size:12px; color:#4a7820; font-weight:600; }
+.resumen-sub { font-size:11px; color:var(--muted); margin-top:4px; }
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
-.empty { text-align:center; padding:32px 12px; font-size:12px; color:#c8bca4; }
-
-/* MODAL */
-.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:100; display:none; align-items:flex-end; justify-content:center; }
-.modal-bg.open { display:flex; }
-.modal-bg.centered { align-items:center; }
-.modal { background:#fdfaf4; border-radius:16px 16px 0 0; padding:20px 17px 32px; width:100%; max-width:480px; }
-.modal-bg.centered .modal { border-radius:16px; margin:18px; width:calc(100% - 36px); max-width:460px; }
-.modal-t { font-family:'Lora',serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin-bottom:2px; }
-.modal-s { font-size:11px; color:var(--muted); margin-bottom:12px; }
-.dr { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #ede8e0; }
-.dr:last-of-type { border:none; }
-.dl { font-size:12px; color:#5c3410; }
-.dv { font-family:'Lora',serif; font-size:12.5px; font-weight:600; color:var(--ink); }
-.modal-close { width:100%; padding:10px; background:transparent; border:1.5px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; color:#8a7858; cursor:pointer; margin-top:10px; }
-.modal-del   { width:100%; padding:10px; background:transparent; border:1.5px solid #f0b8b0; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--red); cursor:pointer; margin-top:7px; }
-.fl { font-size:11px; font-weight:600; color:#8a7858; text-transform:uppercase; letter-spacing:.4px; margin-bottom:5px; }
-.fi { width:100%; background:white; border:1.5px solid var(--border); border-radius:7px; padding:9px 11px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--ink); outline:none; transition:border-color .15s; margin-bottom:10px; }
-.fi:focus { border-color:#a07840; }
-.fi::-webkit-outer-spin-button, .fi::-webkit-inner-spin-button { -webkit-appearance:none; }
-.f2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.btn-add { width:100%; padding:13px; background:var(--brand); color:white; border:none; border-radius:9px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .15s; }
-.btn-add:hover { opacity:.88; }
 
 /* MI CASA */
 .planos-toggle { display:flex; gap:8px; margin-bottom:16px; }
-.plano-btn { flex:1; padding:10px 8px; background:#f0ece4; border:1.5px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:#8a7858; cursor:pointer; transition:all .15s; text-align:center; }
-.plano-btn.active { background:var(--red); border-color:var(--red); color:white; font-weight:600; }
+.plano-btn { flex:1; padding:10px 8px; background:#f0ece4; border:1.5px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; color:#8a7858; cursor:pointer; text-align:center; }
+.plano-btn:active, .plano-btn.active { background:var(--red); border-color:var(--red); color:white; font-weight:600; }
 .plano-wrap { display:none; }
 .plano-wrap.active { display:block; }
 .plano-card { background:#f5f1e8; border:1.5px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:16px; }
 .plano-header { padding:12px 14px 10px; border-bottom:1px solid #e0d8cc; }
 .plano-title { font-family:'Lora',serif; font-size:14px; font-weight:600; color:var(--ink); }
-.plano-subtitle { font-size:12px; color:var(--muted); margin-top:2px; }
+.plano-sub { font-size:12px; color:var(--muted); margin-top:2px; }
 .plano-svg-wrap { padding:16px; display:flex; justify-content:center; }
 .plano-svg-wrap svg { width:100%; max-width:320px; height:auto; }
-.ambientes-list { padding:0 14px 14px; display:flex; flex-wrap:wrap; gap:6px; }
-.ambiente-tag { background:white; border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; color:#5c4a28; font-weight:500; }
+.amb-list { padding:0 14px 14px; display:flex; flex-wrap:wrap; gap:6px; }
+.amb-tag { background:white; border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; color:#5c4a28; font-weight:500; }
 .casa-quote { margin-top:20px; background:rgba(255,252,246,.7); border:1.5px solid var(--border); border-left:3px solid var(--red); border-radius:9px; padding:16px; }
 .casa-quote p { font-family:'Lora',serif; font-style:italic; font-size:14px; color:#4a3820; line-height:1.65; }
 .quote-author { font-size:11px; color:#c4b8a4; margin-top:8px; text-align:right; }
 
-@media (min-width: 540px) {
+@media (min-width:540px) {
   body { display:flex; flex-direction:column; align-items:center; padding:44px 18px 72px; }
   .brand-header, .tab-nav, .card { width:100%; max-width:480px; }
   .brand-header { border-radius:12px 12px 0 0; border:1.5px solid var(--border); }
   .tab-nav { border:1.5px solid var(--border); border-top:none; border-bottom:none; }
   .card { border:1.5px solid var(--border); border-top:none; border-radius:0 0 12px 12px; }
-  .modal { border-radius:16px; margin-bottom:40px; }
 }
 </style>
 </head>
@@ -218,13 +151,12 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 
 <div class="brand-header">
   <div class="brand-name">Gener<span>anding</span></div>
-  <div class="brand-tag">Generando futuro, peso a peso.</div>
+  <div class="brand-tag">Generando, produciendo, construyendo.</div>
 </div>
 
 <div class="tab-nav">
   <button class="tab-btn active" onclick="go('ahorros')">Mis ahorros</button>
   <button class="tab-btn" onclick="go('plan')">Mi plan</button>
-  <button class="tab-btn" onclick="go('portfolio')">Inversiones</button>
   <button class="tab-btn" onclick="go('casa')">Mi casa</button>
 </div>
 
@@ -233,7 +165,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
   <!-- ══ TAB 1: MIS AHORROS ══ -->
   <div class="tab-panel active" id="tab-ahorros">
     <div class="header">
-      <div class="accent accent-red"></div>
+      <div class="accent accent-r"></div>
       <div>
         <h1>Mis ahorros</h1>
         <p class="tagline">La abundancia fluye hacia mí.<br>Cada decisión me acerca a donde ya voy.</p>
@@ -245,9 +177,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
         <div class="progress-label">Objetivo: USD 40.000</div>
         <div class="progress-pct" id="pct">0<span>%</span></div>
       </div>
-      <div class="track-wrap">
-        <div class="track-fill" id="track" style="width:0%"></div>
-      </div>
+      <div class="track-wrap"><div class="track-fill" id="track" style="width:0%"></div></div>
       <div class="progress-meta">
         <span class="meta-current" id="meta-current">USD 0</span>
         <span class="meta-goal">✦ USD 40.000</span>
@@ -275,91 +205,46 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     </div>
   </div>
 
-  <!-- ══ TAB 2: MI PLAN MENSUAL ══ -->
+  <!-- ══ TAB 2: MI PLAN ══ -->
   <div class="tab-panel" id="tab-plan">
     <div class="header">
-      <div class="accent accent-green"></div>
+      <div class="accent accent-g"></div>
       <div>
-        <h1>Mi plan mensual</h1>
-        <p class="tagline">$190.000 por mes, generando futuro.</p>
+        <h1>Mi plan</h1>
+        <p class="tagline">$190.000 por mes, alternando entre fondos.</p>
       </div>
     </div>
 
-    <div id="backend-status"></div>
-    <div class="status-bar">
-      <span class="live-lbl"><span class="live-dot"></span>Datos en vivo</span>
-      <span>
-        <span class="live-ts" id="ts">cargando...</span>
-        <button class="btn-refresh" onclick="fetchMarket()">↻ Actualizar</button>
-      </span>
-    </div>
-
-    <div class="sec">Dónde va cada aporte</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+    <div class="sec">Distribución mensual</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;">
       <div style="background:#f0ebe0;border:1.5px solid var(--brand);border-radius:10px;padding:13px;">
-        <div style="font-size:9px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;">60% · $114.000</div>
+        <div style="font-size:9px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;">Meses impares</div>
         <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Fondo Conservador</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · liquidez inmediata</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · liquidez total</div>
       </div>
       <div style="background:#f0ebe0;border:1.5px solid #2a7a55;border-radius:10px;padding:13px;">
-        <div style="font-size:9px;font-weight:600;color:#2a7a55;text-transform:uppercase;letter-spacing:.5px;">40% · $76.000</div>
+        <div style="font-size:9px;font-weight:600;color:#2a7a55;text-transform:uppercase;letter-spacing:.5px;">Meses pares</div>
         <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Empresas Argentinas</div>
         <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · más rendimiento</div>
       </div>
     </div>
 
-    <div class="sec">Proyección a 12 meses</div>
+    <div class="sec">Proyección 12 meses</div>
     <div id="plan-meses"></div>
-    <div id="plan-total" style="margin-top:8px;"></div>
-
-    <p class="nota-legal" style="margin-top:16px;">✦ Proyección estimada. Las tasas varían mes a mes. Plataforma base: Mercado Pago Inversiones. Esto no es asesoramiento financiero formal.</p>
+    <div id="plan-resumen"></div>
+    <p class="nota-legal" style="margin-top:16px;">✦ Proyección estimada. Las tasas varían. Todo en Mercado Pago. Esto no es asesoramiento financiero formal.</p>
   </div>
 
-  <!-- ══ TAB 3: MIS INVERSIONES ══ -->
-  <div class="tab-panel" id="tab-portfolio">
-    <div class="header">
-      <div class="accent accent-green"></div>
-      <div>
-        <h1>Mis inversiones</h1>
-        <p class="tagline">Todo guardado en el servidor — no se pierde nada.</p>
-      </div>
-    </div>
-
-    <div class="hero">
-      <div class="hero-lbl">Portafolio total en ARS</div>
-      <div class="hero-val">$ <span id="hero-usd">0</span></div>
-      <div class="hero-sub">Actualizado <span id="hero-ts2">—</span></div>
-      <div class="hero-gan g0" id="hero-gan">cargando...</div>
-    </div>
-
-    <div id="alertas-wrap"></div>
-
-    <div class="sec">Posiciones</div>
-    <div id="pos-lista"><div class="empty">Cargando...</div></div>
-
-    <hr class="divider">
-    <div class="total-row">
-      <span class="tl">Total invertido</span>
-      <span class="tv">$ <span id="total-pos">0</span></span>
-    </div>
-
-    <button class="btn-rec" style="margin-top:18px;" onclick="abrirFormModal()">+ Registrar nueva posición</button>
-    <button class="btn-sec" style="margin-top:8px;" onclick="consultarClaude()">Pedir consejo a la consejera ↗</button>
-  </div>
-
-  <!-- ══ TAB 4: MI CASA ══ -->
+  <!-- ══ TAB 3: MI CASA ══ -->
   <div class="tab-panel" id="tab-casa">
     <div class="header">
-      <div class="accent accent-red"></div>
+      <div class="accent accent-r"></div>
       <div>
         <h1>Mi casa</h1>
         <p class="tagline">El lugar que estoy construyendo,<br>un mes a la vez.</p>
       </div>
     </div>
-
-    <p style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--muted);line-height:1.6;margin:14px 0 20px;">
-      Terreno de esquina · 10,60 × 21 m · Patio, jardín y cochera. Dos versiones para elegir cuando llegue el momento.
-    </p>
+    <p style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--muted);line-height:1.6;margin:14px 0 20px;">Terreno de esquina · 10,60 × 21 m · Patio, jardín y cochera. Dos versiones para elegir cuando llegue el momento.</p>
 
     <div class="planos-toggle">
       <button class="plano-btn active" onclick="switchPlano('mono',this)">Monoambiente<br><span style="font-size:10px;opacity:.8;">~30 m²</span></button>
@@ -368,10 +253,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 
     <div class="plano-wrap active" id="plano-mono">
       <div class="plano-card">
-        <div class="plano-header">
-          <div class="plano-title">Planta E30E — Monoambiente</div>
-          <div class="plano-subtitle">Estar · Comedor · Cocina · Baño</div>
-        </div>
+        <div class="plano-header"><div class="plano-title">Planta E30E — Monoambiente</div><div class="plano-sub">Estar · Comedor · Cocina · Baño</div></div>
         <div class="plano-svg-wrap">
           <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" width="220" height="320" fill="#c8d8b0" rx="2"/>
@@ -387,11 +269,9 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
             <rect x="62" y="120" width="48" height="22" fill="#ede8d8" stroke="#c8bca0" stroke-width="1"/>
             <text x="86" y="134" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#6a5a40">COCINA</text>
             <rect x="62" y="142" width="98" height="86" fill="#f5f0e4" stroke="#c8bca0" stroke-width="1"/>
-            <text x="111" y="182" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">ESTAR</text>
-            <text x="111" y="194" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">COMEDOR</text>
-            <text x="111" y="206" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,40 × 5,40</text>
+            <text x="111" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">ESTAR · COMEDOR</text>
+            <text x="111" y="200" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,40 × 5,40</text>
             <rect x="58" y="118" width="10" height="112" fill="#ddd8cc" stroke="#c8bca0" stroke-width="1"/>
-            <text x="63" y="180" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6.5" fill="#8a7858" transform="rotate(-90,63,180)">PASO</text>
             <rect x="0" y="305" width="220" height="15" fill="#b8b4a8"/>
             <text x="110" y="315" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#6a6860">VEREDA PÚBLICA</text>
             <rect x="207" y="0" width="13" height="305" fill="#b8b4a8"/>
@@ -399,23 +279,17 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
             <text x="108" y="11" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">10,60 m</text>
           </svg>
         </div>
-        <div class="ambientes-list">
-          <span class="ambiente-tag">Estar / Comedor</span>
-          <span class="ambiente-tag">Cocina</span>
-          <span class="ambiente-tag">Baño 2,40×1,60</span>
-          <span class="ambiente-tag">Cochera liviana</span>
-          <span class="ambiente-tag">Patio</span>
-          <span class="ambiente-tag">Jardín</span>
+        <div class="amb-list">
+          <span class="amb-tag">Estar / Comedor</span><span class="amb-tag">Cocina</span>
+          <span class="amb-tag">Baño 2,40×1,60</span><span class="amb-tag">Cochera</span>
+          <span class="amb-tag">Patio</span><span class="amb-tag">Jardín</span>
         </div>
       </div>
     </div>
 
     <div class="plano-wrap" id="plano-dorm">
       <div class="plano-card">
-        <div class="plano-header">
-          <div class="plano-title">Planta E43E — Con dormitorio</div>
-          <div class="plano-subtitle">Dormitorio · Estar · Comedor · Cocina · Baño</div>
-        </div>
+        <div class="plano-header"><div class="plano-title">Planta E43E — Con dormitorio</div><div class="plano-sub">Dormitorio · Estar · Comedor · Cocina · Baño</div></div>
         <div class="plano-svg-wrap">
           <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" width="220" height="320" fill="#c8d8b0" rx="2"/>
@@ -427,18 +301,15 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
             <text x="32" y="266" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#7a7060">COCHERA</text>
             <rect x="62" y="108" width="98" height="120" fill="#f0ece0" stroke="#8a7858" stroke-width="2" rx="2"/>
             <rect x="8" y="148" width="56" height="78" fill="#ede4d4" stroke="#8a7858" stroke-width="1.5" rx="1"/>
-            <text x="36" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#5c3410" font-weight="600">DORM.</text>
-            <text x="36" y="195" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,10×4,00</text>
+            <text x="36" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#5c3410" font-weight="600">DORMITORIO</text>
+            <text x="36" y="198" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,10×4,00</text>
             <rect x="112" y="110" width="46" height="38" fill="#e8e0c8" stroke="#c8bca0" stroke-width="1"/>
             <text x="135" y="133" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#6a5a40">BAÑO</text>
             <rect x="62" y="110" width="48" height="22" fill="#ede8d8" stroke="#c8bca0" stroke-width="1"/>
             <text x="86" y="124" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#6a5a40">COCINA</text>
             <rect x="62" y="132" width="98" height="94" fill="#f5f0e4" stroke="#c8bca0" stroke-width="1"/>
-            <text x="111" y="172" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">ESTAR</text>
-            <text x="111" y="184" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">COMEDOR</text>
-            <text x="111" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,40 × 5,00</text>
-            <rect x="58" y="108" width="10" height="120" fill="#ddd8cc" stroke="#c8bca0" stroke-width="1"/>
-            <text x="63" y="175" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6.5" fill="#8a7858" transform="rotate(-90,63,175)">PASO</text>
+            <text x="111" y="176" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8.5" fill="#5c3410" font-weight="600">ESTAR · COMEDOR</text>
+            <text x="111" y="190" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">3,40 × 5,00</text>
             <rect x="0" y="305" width="220" height="15" fill="#b8b4a8"/>
             <text x="110" y="315" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="#6a6860">VEREDA PÚBLICA</text>
             <rect x="207" y="0" width="13" height="305" fill="#b8b4a8"/>
@@ -446,14 +317,10 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
             <text x="108" y="11" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" fill="#8a7858">10,60 m</text>
           </svg>
         </div>
-        <div class="ambientes-list">
-          <span class="ambiente-tag">Dormitorio 3,10×4,00</span>
-          <span class="ambiente-tag">Estar / Comedor</span>
-          <span class="ambiente-tag">Cocina</span>
-          <span class="ambiente-tag">Baño 2,40×1,60</span>
-          <span class="ambiente-tag">Cochera liviana</span>
-          <span class="ambiente-tag">Patio</span>
-          <span class="ambiente-tag">Jardín</span>
+        <div class="amb-list">
+          <span class="amb-tag">Dormitorio 3,10×4,00</span><span class="amb-tag">Estar / Comedor</span>
+          <span class="amb-tag">Cocina</span><span class="amb-tag">Baño 2,40×1,60</span>
+          <span class="amb-tag">Cochera</span><span class="amb-tag">Patio</span><span class="amb-tag">Jardín</span>
         </div>
       </div>
     </div>
@@ -464,79 +331,19 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     </div>
   </div>
 
-</div><!-- /card -->
-
-<!-- MODAL FORMULARIO -->
-<div class="modal-bg centered" id="modal-form-bg" onclick="cerrarFormModal(event)">
-  <div class="modal" style="max-height:88vh;overflow-y:auto;">
-    <div class="modal-t">Nueva posición</div>
-    <div class="modal-s">Comprás en portfoliopersonal.com y lo registrás acá.</div>
-    <div class="fl">Instrumento</div>
-    <select class="fi" id="f-tipo" onchange="onTipo()" style="cursor:pointer;">
-      <option value="">— elegí —</option>
-      <optgroup label="Mercado Pago (tu plataforma base)">
-        <option value="FCI Conservador MP|36|fondo|">Fondo Conservador — MP</option>
-        <option value="FCI Empresas Argentinas MP|variable|fondo|">Fondo Empresas Argentinas — MP</option>
-      </optgroup>
-      <optgroup label="PPI — Letras y Bonos en Pesos">
-        <option value="Lecap S31L6|42|bono|">Lecap S31L6 — vence jul 2026</option>
-        <option value="Lecap S29A7|42|bono|">Lecap S29A7 — vence ago 2026</option>
-        <option value="Lecap S30S6|42|bono|">Lecap S30S6 — vence sep 2026</option>
-        <option value="Boncap T2X6|42|bono|">Boncap T2X6 — tasa fija dic 2026</option>
-        <option value="Boncap T2X7|42|bono|">Boncap T2X7 — tasa fija 2027</option>
-      </optgroup>
-      <optgroup label="Otros (avanzado)">
-        <option value="ON Pampa MGCOO|7|bono|">ON Pampa Energía (USD)</option>
-        <option value="CEDEAR SPY|variable|cedear|SPY.BA">CEDEAR SPY — S&P 500</option>
-        <option value="Bono AL30|variable|bono|AL30.BA">Bono AL30 (USD)</option>
-      </optgroup>
-      <option value="Otro|variable|otro|">Otro</option>
-    </select>
-    <div id="f-otro-row" style="display:none;">
-      <div class="fl">Nombre personalizado</div>
-      <input class="fi" id="f-otro" placeholder="ej. Fondo Quinquela">
-    </div>
-    <div class="f2">
-      <div><div class="fl">Monto ($)</div><input class="fi" type="number" id="f-monto" placeholder="0"></div>
-      <div><div class="fl">Fecha compra</div><input class="fi" type="date" id="f-fecha"></div>
-    </div>
-    <div class="fl">Vencimiento (si aplica)</div>
-    <input class="fi" type="date" id="f-venc">
-    <div class="fl">Notas</div>
-    <input class="fi" id="f-notas" placeholder="ej. renovar el 15 ago, 50 cuotapartes, etc.">
-    <button class="btn-add" onclick="agregar()">Registrar inversión</button>
-    <button class="modal-close" style="margin-top:8px;" onclick="cerrarFormModal()">Cancelar</button>
-  </div>
-</div>
-
-<!-- MODAL DETALLE -->
-<div class="modal-bg" id="modal-bg" onclick="cerrarModal(event)">
-  <div class="modal">
-    <div class="modal-t" id="modal-t"></div>
-    <div class="modal-s" id="modal-s"></div>
-    <div style="background:#f5f1e8;border-radius:8px;padding:11px;" id="modal-b"></div>
-    <button class="modal-close" onclick="cerrarModal()">Cerrar</button>
-    <button class="modal-del"  onclick="eliminar()">Eliminar posición</button>
-  </div>
 </div>
 
 <script>
-const API = window.location.origin === 'null' || window.location.protocol === 'file:'
-  ? 'http://localhost:8000' : window.location.origin;
-let MKT = null, PORT = [], modalId = null;
-
 // ─── TABS ──────────────────────────────────────
 function go(t) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.getAttribute('onclick').includes(`'${t}'`)) b.classList.add('active');
+    if (b.getAttribute('onclick').includes("'"+t+"'")) b.classList.add('active');
   });
-  if (t === 'portfolio') renderPortfolio();
 }
 
-// ─── PLANOS ────────────────────────────────────
 function switchPlano(tipo, btn) {
   document.querySelectorAll('.plano-wrap').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.plano-btn').forEach(b => b.classList.remove('active'));
@@ -546,18 +353,33 @@ function switchPlano(tipo, btn) {
 
 // ─── AHORROS ───────────────────────────────────
 const GOAL = 40000;
-const DEFAULTS = [
+
+// Valores hardcodeados — se actualizan cuando la usuaria los cambia en pantalla
+let accounts = [
   { label: 'Ontop',    amount: 2300 },
   { label: 'BBVA',     amount: 9400 },
   { label: 'Efectivo', amount: 4500 },
 ];
-const savedAcc = JSON.parse(localStorage.getItem('gen_accounts') || 'null');
-let accounts = (savedAcc && savedAcc.length > 0 && savedAcc.some(a => a.amount > 0))
-  ? savedAcc : JSON.parse(JSON.stringify(DEFAULTS));
-let todos = JSON.parse(localStorage.getItem('gen_todos') || '[]');
 
-function saveAccounts() { localStorage.setItem('gen_accounts', JSON.stringify(accounts)); }
-function saveTodos()    { localStorage.setItem('gen_todos',    JSON.stringify(todos)); }
+// Restaurar desde localStorage solo si tiene datos válidos con montos
+(function() {
+  try {
+    const s = JSON.parse(localStorage.getItem('gen_acc'));
+    if (s && s.length > 0 && s.some(a => (parseFloat(a.amount)||0) > 0)) accounts = s;
+  } catch(e) {}
+})();
+
+let todos = [];
+try { todos = JSON.parse(localStorage.getItem('gen_todos') || '[]'); } catch(e) {}
+
+function saveAll() {
+  try {
+    localStorage.setItem('gen_acc',   JSON.stringify(accounts));
+    localStorage.setItem('gen_todos', JSON.stringify(todos));
+  } catch(e) {}
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('es-AR'); }
 
 function renderAccounts() {
   const c = document.getElementById('rows');
@@ -566,30 +388,32 @@ function renderAccounts() {
     const row = document.createElement('div');
     row.className = 'row';
     row.innerHTML = `
-      <input class="label-input" value="${acc.label}" placeholder="Nombre"
-        oninput="accounts[${i}].label=this.value;saveAccounts()">
+      <input class="label-inp" value="${acc.label}" placeholder="Nombre"
+        oninput="accounts[${i}].label=this.value;saveAll()">
       <div class="sep"></div>
-      <div class="amount-wrap">
-        <span class="currency-sym">USD</span>
-        <input class="amount-input" type="number" value="${acc.amount||''}" placeholder="0.00"
-          oninput="accounts[${i}].amount=parseFloat(this.value)||0;saveAccounts();updateGoal()">
+      <div style="display:flex;align-items:center;gap:3px;flex-shrink:0;">
+        <span class="sym">USD</span>
+        <input class="amt-inp" type="number" value="${acc.amount > 0 ? acc.amount : ''}" placeholder="0"
+          oninput="accounts[${i}].amount=parseFloat(this.value)||0;saveAll();updateGoal()">
       </div>
-      <button class="delete-btn" onclick="accounts.splice(${i},1);saveAccounts();renderAccounts()">✕</button>`;
+      <button class="del-btn" onclick="accounts.splice(${i},1);saveAll();renderAccounts()">✕</button>`;
     c.appendChild(row);
   });
   updateGoal();
 }
 
-function addRow() { accounts.push({label:'',amount:0}); saveAccounts(); renderAccounts(); }
+function addRow() { accounts.push({label:'',amount:0}); saveAll(); renderAccounts(); }
 
 function updateGoal() {
   const total = accounts.reduce((s,a) => s+(parseFloat(a.amount)||0), 0);
   const pct   = Math.min((total/GOAL)*100, 100);
   const rem   = GOAL - total;
-  document.getElementById('total').textContent = total.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('total').textContent =
+    total.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
   document.getElementById('track').style.width = pct.toFixed(1)+'%';
   document.getElementById('pct').innerHTML = Math.floor(pct)+'<span>%</span>';
-  document.getElementById('meta-current').textContent = 'USD '+total.toLocaleString('es-AR',{maximumFractionDigits:0});
+  document.getElementById('meta-current').textContent =
+    'USD '+total.toLocaleString('es-AR',{maximumFractionDigits:0});
   const msg = document.getElementById('meta-message');
   if (total >= GOAL) {
     msg.textContent = '✦ Lo lograste. La vida que construiste es real. ✦';
@@ -612,9 +436,12 @@ function renderTodos() {
     const el = document.createElement('div');
     el.className = 'todo-item';
     el.innerHTML = `
-      <div class="todo-check" onclick="todos.splice(${i},1);saveTodos();renderTodos()"></div>
-      <div class="todo-body"><div class="todo-desc">${t.desc}</div><div class="todo-meta">${t.date}</div></div>
-      <button class="todo-del" onclick="todos.splice(${i},1);saveTodos();renderTodos()">✕</button>`;
+      <div class="todo-check" onclick="todos.splice(${i},1);saveAll();renderTodos()"></div>
+      <div class="todo-body">
+        <div class="todo-desc">${t.desc}</div>
+        <div class="todo-meta">${t.date}</div>
+      </div>
+      <button class="todo-del" onclick="todos.splice(${i},1);saveAll();renderTodos()">✕</button>`;
     c.appendChild(el);
   });
 }
@@ -630,223 +457,83 @@ const tips = [
   "Automatizá el ahorro antes de ver el dinero disponible. Lo que no pasa por tu cuenta corriente, no existe como tentación.",
   "Los pequeños montos importan: USD 200 mensuales extra son USD 2.400 por año. Los hábitos chicos construyen fortunas grandes.",
   "Vivís desde la abundancia cuando gastás con intención, no por impulso. La diferencia está en la pregunta: ¿esto me suma de verdad?",
+  "El lifestyle creep es silencioso: sube un plan, sube una suscripción, sube un hábito. Revisá tus gastos fijos cada tres meses con ojos frescos.",
 ];
-let tipIndex = Math.floor(Math.random()*tips.length);
-function nextTip() { tipIndex=(tipIndex+1)%tips.length; document.getElementById('tip-text').textContent=tips[tipIndex]; }
+let tipIdx = Math.floor(Math.random()*tips.length);
+function nextTip() { tipIdx=(tipIdx+1)%tips.length; document.getElementById('tip-text').textContent=tips[tipIdx]; }
 
 // ─── PLAN MENSUAL ──────────────────────────────
-function renderPlanMeses() {
-  const APORTE  = 190000;
-  const R_CONS  = (MKT?.tasas?.mp_conservador || 36) / 100 / 12;
-  const R_EMP   = (MKT?.tasas?.mp_empresas    || 42) / 100 / 12;
-  const MESES   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const hoyDate = new Date();
-  const mesBase = hoyDate.getMonth();
-  const anioBase= hoyDate.getFullYear();
-  let acumCons=0, acumEmp=0, rows='';
+function renderPlan() {
+  const APORTE   = 190000;
+  const R_CONS   = 0.036;  // ~TNA 43% → 3.6%/mes conservador
+  const R_EMP    = 0.042;  // ~TNA 50% → 4.2%/mes empresas argentinas (más riesgoso)
+  const MESES    = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const hoyDate  = new Date();
+  const mesBase  = hoyDate.getMonth();
+  const anioBase = hoyDate.getFullYear();
 
-  for (let i=0; i<12; i++) {
-    const mesIdx = (mesBase+i)%12;
-    const anio   = anioBase+Math.floor((mesBase+i)/12);
-    const label  = `${MESES[mesIdx]} ${anio}`;
-    const esMes0 = i===0;
-    acumCons = acumCons*(1+R_CONS)+APORTE*0.60;
-    acumEmp  = acumEmp*(1+R_EMP)+APORTE*0.40;
-    const total   = acumCons+acumEmp;
-    const ganancia= total-APORTE*(i+1);
+  let acumCons = 190000; // ya tiene $190k en conservador
+  let acumEmp  = 0;
+  let rows = '';
+
+  for (let i = 0; i < 12; i++) {
+    const mesIdx  = (mesBase + i) % 12;
+    const anio    = anioBase + Math.floor((mesBase + i) / 12);
+    const label   = `${MESES[mesIdx]} ${anio}`;
+    const esMes0  = i === 0;
+
+    // aplicar rendimiento del mes anterior
+    acumCons *= (1 + R_CONS);
+    acumEmp  *= (1 + R_EMP);
+
+    // mes impar (1,3,5...) → conservador / mes par (2,4,6...) → empresas argentinas
+    const esConservador = (i % 2 === 0); // mes 0 = actual = conservador
+    if (esConservador) acumCons += APORTE;
+    else               acumEmp  += APORTE;
+
+    const total    = acumCons + acumEmp;
+    const invertido= APORTE * (i + 1) + 190000; // ya tenía $190k
+    const ganancia = total - invertido;
+
+    const fondo    = esConservador ? 'Fondo Conservador' : 'Empresas Argentinas';
+    const fondoCol = esConservador ? 'var(--brand)' : '#2a7a55';
+
     rows += `
-    <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:${esMes0?'rgba(26,92,64,.06)':'#f9f6f0'};border:1.5px solid ${esMes0?'var(--brand)':'var(--border)'};border-radius:10px;margin-bottom:6px;">
-      <div style="min-width:52px;">
-        <div style="font-size:10px;font-weight:600;color:${esMes0?'var(--brand)':'var(--muted)'};text-transform:uppercase;letter-spacing:.4px;">${label}</div>
-        ${esMes0?'<div style="font-size:9px;color:var(--brand);font-weight:600;">← este mes</div>':''}
+    <div class="mes-card ${esMes0 ? 'activo' : ''}">
+      <div class="mes-label">
+        <div class="mes-nombre" style="color:${esMes0 ? 'var(--brand)' : 'var(--muted)'};">${label}</div>
+        ${esMes0 ? '<div class="mes-tag">← este mes</div>' : ''}
       </div>
-      <div style="flex:1;">
-        <div style="font-size:11px;color:var(--muted);">Aporte: <strong style="color:var(--ink);">$${fmt(APORTE)}</strong></div>
-        <div style="display:flex;gap:6px;margin-top:3px;">
-          <div style="height:4px;flex:0.6;background:var(--brand);border-radius:2px;"></div>
-          <div style="height:4px;flex:0.4;background:#2a7a55;border-radius:2px;"></div>
-        </div>
+      <div class="mes-body">
+        <div class="mes-fondo">$${fmt(APORTE)} → <span style="color:${fondoCol}">${fondo}</span></div>
+        <div class="mes-sub">Mercado Pago</div>
       </div>
-      <div style="text-align:right;flex-shrink:0;">
-        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);">$${fmt(Math.round(total))}</div>
-        <div style="font-size:10px;color:#4a7820;">+$${fmt(Math.round(ganancia))}</div>
+      <div class="mes-total">
+        <div class="mes-val">$${fmt(Math.round(total))}</div>
+        <div class="mes-gan">+$${fmt(Math.round(Math.max(ganancia,0)))}</div>
       </div>
     </div>`;
   }
 
-  const totalFinal   = acumCons+acumEmp;
-  const totalAportes = APORTE*12;
-  const gananciaTotal= totalFinal-totalAportes;
+  const totalFinal   = acumCons + acumEmp;
+  const totalAportes = APORTE * 12 + 190000;
+  const gananciaTotal= totalFinal - totalAportes;
+
   document.getElementById('plan-meses').innerHTML = rows;
-  document.getElementById('plan-total').innerHTML = `
-    <div style="background:#f0ebe0;border:1.5px solid #c0b898;border-radius:10px;padding:15px 16px;">
-      <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Al cabo de 12 meses</div>
-      <div style="font-family:'Lora',serif;font-size:1.8rem;font-weight:600;color:var(--ink);margin:4px 0 2px;">$${fmt(Math.round(totalFinal))}</div>
-      <div style="font-size:12px;color:#4a7820;font-weight:600;">+$${fmt(Math.round(gananciaTotal))} de ganancia estimada</div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px;">sobre $${fmt(totalAportes)} aportados · todo en Mercado Pago</div>
+  document.getElementById('plan-resumen').innerHTML = `
+    <div class="resumen-card">
+      <div class="resumen-lbl">Al cabo de 12 meses</div>
+      <div class="resumen-val">$${fmt(Math.round(totalFinal))}</div>
+      <div class="resumen-gan">+$${fmt(Math.round(gananciaTotal))} de ganancia estimada</div>
+      <div class="resumen-sub">sobre $${fmt(totalAportes)} aportados · Mercado Pago</div>
     </div>`;
-}
-
-// ─── FETCH MERCADO ─────────────────────────────
-async function fetchMarket(intento=1) {
-  const MAX=4;
-  const esLocal=window.location.protocol==='file:'||window.location.hostname==='localhost';
-  document.getElementById('backend-status').innerHTML = intento===1
-    ? `<div class="backend-ok" style="color:#7a6040;">Conectando con el servidor…</div>`
-    : `<div class="backend-ok" style="color:#7a6040;">Despertando el servidor… (intento ${intento}/${MAX})</div>`;
-  try {
-    const r=await fetch(API+'/api/market');
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    MKT=await r.json();
-    renderPlanMeses();
-    const act=MKT.actualizado||'—';
-    document.getElementById('ts').textContent=act;
-    document.getElementById('backend-status').innerHTML=`<div class="backend-ok">${MKT.turno||'Análisis del día'} · ${act}</div>`;
-    renderPortfolio();
-  } catch(e) {
-    if(intento<MAX) { setTimeout(()=>fetchMarket(intento+1),6000); }
-    else {
-      document.getElementById('backend-status').innerHTML=esLocal
-        ? `<div class="backend-err"><strong>⚠ Backend local no disponible</strong><br>Iniciá el backend local.<br><small>${e.message}</small></div>`
-        : `<div class="backend-err"><strong>⚠ El servidor no respondió</strong><br>Recargá la página en unos segundos.<br><small>${e.message}</small></div>`;
-      document.getElementById('ts').textContent='sin conexión';
-    }
-  }
-}
-
-async function fetchPortfolio() {
-  try { const r=await fetch(API+'/api/portfolio'); PORT=await r.json(); } catch { PORT=[]; }
-}
-
-// ─── PORTFOLIO ─────────────────────────────────
-function fmt(n) { return n!=null?Math.round(n).toLocaleString('es-AR'):'—'; }
-function hoy()  { return new Date().toISOString().slice(0,10); }
-function diffD(a,b) { return Math.round((new Date(b)-new Date(a))/86400000); }
-
-function valorEst(p) {
-  const meses=Math.max(diffD(p.fecha,hoy()),0)/30.4;
-  let rm=0;
-  const tna=parseFloat(p.tna);
-  if(!isNaN(tna)&&tna>0)    rm=tna/100/12;
-  else if(p.tna==='tasa')    rm=(MKT?.tasas?.mejor_tna||23)/100/12;
-  else if(p.tna==='inflacion') rm=(MKT?.bcra?.ipc_mensual?.valor||3)/100;
-  else if(p.tna==='cer')     rm=0.03;
-  return p.monto*Math.pow(1+rm,meses);
-}
-
-const COLS={cedear:'#c04030',fondo:'#6a9e5a',plazo:'#5a7898',bono:'#7a5a98',accion:'#e0a840',otro:'#a09278'};
-
-async function renderPortfolio() {
-  await fetchPortfolio();
-  const total =PORT.reduce((s,p)=>s+p.monto,0);
-  const valAct=PORT.reduce((s,p)=>s+valorEst(p),0);
-  document.getElementById('hero-usd').textContent  =fmt(valAct);
-  document.getElementById('hero-ts2').textContent  =MKT?new Date(MKT.timestamp).toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}):'—';
-  document.getElementById('total-pos').textContent =fmt(total);
-  const ganARS=valAct-total;
-  const ganEl=document.getElementById('hero-gan');
-  if(!total){ ganEl.textContent='sin inversiones todavía'; ganEl.className='hero-gan g0'; }
-  else { ganEl.textContent=(ganARS>=0?'+':'')+'$ '+fmt(Math.abs(ganARS))+' estimado'; ganEl.className='hero-gan '+(ganARS>=0?'gp':'gn'); }
-  const als=PORT.flatMap(p=>{
-    if(!p.vencimiento) return [];
-    const d=diffD(hoy(),p.vencimiento);
-    if(d<0)   return [{t:'a-urg',i:'⚠',tit:`${p.nombre} — VENCIDO`,msg:`Venció hace ${Math.abs(d)} días.`}];
-    if(d<=7)  return [{t:'a-urg',i:'⚠',tit:`${p.nombre} — vence en ${d}d`,msg:`$${fmt(valorEst(p))} disponibles.`}];
-    if(d<=21) return [{t:'a-av', i:'◈',tit:`${p.nombre} — vence en ${d}d`,msg:'Empezá a decidir si renovás o rotás.'}];
-    return [];
-  });
-  document.getElementById('alertas-wrap').innerHTML=als.map(a=>`<div class="alerta ${a.t}" style="margin-top:12px;"><div style="font-size:14px;flex-shrink:0;margin-top:1px;">${a.i}</div><div class="a-body"><div class="a-tit">${a.tit}</div>${a.msg}</div></div>`).join('');
-  const pEl=document.getElementById('pos-lista');
-  if(!PORT.length){ pEl.innerHTML='<div class="empty">sin posiciones aún</div>'; return; }
-  pEl.innerHTML=PORT.map(p=>{
-    const color=COLS[p.cat]||'#a09278';
-    const pctCap=total>0?((p.monto/total)*100).toFixed(1):0;
-    let badge='',vbar='';
-    if(p.vencimiento){
-      const d=diffD(hoy(),p.vencimiento);
-      const tot=Math.max(diffD(p.fecha,p.vencimiento),1);
-      const vp=Math.min(((tot-d)/tot)*100,100);
-      const bc=d<0?'b-red':d<=7?'b-red':d<=21?'b-warn':'b-ok';
-      const bt=d<0?'VENCIDO':d===0?'Vence hoy':`Vence en ${d}d`;
-      badge=`<span class="badge ${bc}">${bt}</span>`;
-      vbar=`<div class="vt"><div class="vf" style="width:${vp.toFixed(0)}%;background:${color}"></div></div>`;
-    } else {
-      const tl=p.tna==='variable'?'Variable':p.tna==='inflacion'?'UVA':p.tna==='cer'?'CER':p.tna==='tasa'?`${MKT?.tasas?.mejor_tna||'?'}% TNA`:`${p.tna}% TNA`;
-      badge=`<span class="badge b-gray">${tl}</span>`;
-    }
-    return `<div class="pos-card" onclick="abrirModal(${p.id})">
-      <div class="pos-top"><div class="pos-dot" style="background:${color}"></div><div class="pos-nom">${p.nombre}</div><div class="pos-monto">$${fmt(p.monto)}</div></div>
-      <div class="pos-meta"><span class="pos-fecha">${pctCap}% · ${p.fecha}</span>${badge}</div>${vbar}
-    </div>`;
-  }).join('');
-}
-
-// ─── MODAL FORMULARIO ──────────────────────────
-function abrirFormModal() { document.getElementById('f-fecha').valueAsDate=new Date(); document.getElementById('modal-form-bg').classList.add('open'); }
-function cerrarFormModal(e) { if(!e||e.target===document.getElementById('modal-form-bg')) document.getElementById('modal-form-bg').classList.remove('open'); }
-function onTipo() { document.getElementById('f-otro-row').style.display=document.getElementById('f-tipo').value.startsWith('Otro')?'block':'none'; }
-
-async function agregar() {
-  const raw=document.getElementById('f-tipo').value;
-  if(!raw){ alert('Elegí un instrumento.'); return; }
-  const [nombre0,tna,cat,ticker]=raw.split('|');
-  const otro=document.getElementById('f-otro').value.trim();
-  const nombre=nombre0==='Otro'&&otro?otro:nombre0;
-  const monto=parseFloat(document.getElementById('f-monto').value);
-  if(!monto||monto<=0){ alert('Ingresá un monto.'); return; }
-  const fecha=document.getElementById('f-fecha').value||hoy();
-  const venc=document.getElementById('f-venc').value||null;
-  const notas=document.getElementById('f-notas').value.trim();
-  const precio_compra=MKT?.byma?.[ticker]?.precio||null;
-  try {
-    const r=await fetch(API+'/api/portfolio',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre,ticker:ticker||null,cat,tna,monto,precio_compra,fecha,vencimiento:venc,notas})});
-    if(!r.ok) throw new Error();
-    ['f-tipo','f-monto','f-venc','f-notas','f-otro'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-otro-row').style.display='none';
-    document.getElementById('modal-form-bg').classList.remove('open');
-    await renderPortfolio();
-  } catch { alert('No se pudo guardar. ¿El backend está corriendo?'); }
-}
-
-// ─── MODAL DETALLE ─────────────────────────────
-function abrirModal(id) {
-  modalId=id;
-  const p=PORT.find(x=>x.id===id); if(!p) return;
-  const vh=valorEst(p); const gan=vh-p.monto;
-  document.getElementById('modal-t').textContent=p.nombre;
-  document.getElementById('modal-s').textContent='Desde '+p.fecha+(p.notas?' · '+p.notas:'');
-  let rows=`
-    <div class="dr"><span class="dl">Invertido</span><span class="dv">$${fmt(p.monto)}</span></div>
-    <div class="dr"><span class="dl">Valor estimado hoy</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">$${fmt(vh)}</span></div>
-    <div class="dr"><span class="dl">Ganancia ARS</span><span class="dv" style="color:${gan>=0?'#4a7820':'#c04030'}">${gan>=0?'+':''}$${fmt(Math.abs(gan))}</span></div>`;
-  if(p.vencimiento){ const d=diffD(hoy(),p.vencimiento); rows+=`<div class="dr"><span class="dl">Vencimiento</span><span class="dv">${p.vencimiento} · ${d>=0?'en '+d+'d':'VENCIDO hace '+Math.abs(d)+'d'}</span></div>`; }
-  if(p.precio_compra) rows+=`<div class="dr"><span class="dl">Precio de compra</span><span class="dv">$${fmt(p.precio_compra)}</span></div>`;
-  document.getElementById('modal-b').innerHTML=rows;
-  document.getElementById('modal-bg').classList.add('open');
-}
-function cerrarModal(e) { if(!e||e.target===document.getElementById('modal-bg')){ document.getElementById('modal-bg').classList.remove('open'); modalId=null; } }
-async function eliminar() {
-  if(modalId===null) return;
-  if(!confirm('¿Eliminás esta posición?')) return;
-  try { await fetch(API+'/api/portfolio/'+modalId,{method:'DELETE'}); cerrarModal(); await renderPortfolio(); }
-  catch { alert('Error al eliminar.'); }
-}
-
-// ─── CONSEJERA ─────────────────────────────────
-async function consultarClaude() {
-  try {
-    const r=await fetch(API+'/api/context'); const {context}=await r.json();
-    if(typeof sendPrompt==='function') sendPrompt(context);
-    else { await navigator.clipboard.writeText(context); alert('Contexto copiado. Pegalo en la conversación con Claude.'); }
-  } catch { alert('No se pudo obtener el contexto.'); }
 }
 
 // ─── INIT ──────────────────────────────────────
-document.getElementById('tip-text').textContent = tips[tipIndex];
+document.getElementById('tip-text').textContent = tips[tipIdx];
 renderAccounts();
 renderTodos();
-renderPlanMeses();
-fetchMarket();
+renderPlan();
 </script>
 </body>
 </html>
