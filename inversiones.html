@@ -353,33 +353,40 @@ function switchPlano(tipo, btn) {
 
 // ─── AHORROS ───────────────────────────────────
 const GOAL = 40000;
+let accounts = [];
 
-// Valores hardcodeados — se actualizan cuando la usuaria los cambia en pantalla
-let accounts = [
-  { label: 'Ontop',    amount: 2300 },
-  { label: 'BBVA',     amount: 9400 },
-  { label: 'Efectivo', amount: 4500 },
-];
+function fmt(n) { return Math.round(n).toLocaleString('es-AR'); }
 
-// Restaurar desde localStorage solo si tiene datos válidos con montos
-(function() {
+async function loadAccounts() {
   try {
-    const s = JSON.parse(localStorage.getItem('gen_acc'));
-    if (s && s.length > 0 && s.some(a => (parseFloat(a.amount)||0) > 0)) accounts = s;
-  } catch(e) {}
-})();
+    const r = await fetch(API + '/api/cuentas');
+    accounts = await r.json();
+  } catch(e) { accounts = []; }
+  renderAccounts();
+}
 
-let todos = [];
-try { todos = JSON.parse(localStorage.getItem('gen_todos') || '[]'); } catch(e) {}
-
-function saveAll() {
+async function saveAccount(acc) {
   try {
-    localStorage.setItem('gen_acc',   JSON.stringify(accounts));
-    localStorage.setItem('gen_todos', JSON.stringify(todos));
+    if (acc.id) {
+      await fetch(API + '/api/cuentas/' + acc.id, {
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({label: acc.label, amount: acc.amount, orden: acc.orden || 0})
+      });
+    } else {
+      const r = await fetch(API + '/api/cuentas', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({label: acc.label, amount: acc.amount, orden: acc.orden || 0})
+      });
+      acc.id = (await r.json()).id;
+    }
   } catch(e) {}
 }
 
-function fmt(n) { return Math.round(n).toLocaleString('es-AR'); }
+async function deleteAccount(id) {
+  try { await fetch(API + '/api/cuentas/' + id, {method:'DELETE'}); } catch(e) {}
+}
 
 function renderAccounts() {
   const c = document.getElementById('rows');
@@ -388,21 +395,33 @@ function renderAccounts() {
     const row = document.createElement('div');
     row.className = 'row';
     row.innerHTML = `
-      <input class="label-inp" value="${acc.label}" placeholder="Nombre"
-        oninput="accounts[${i}].label=this.value;saveAll()">
+      <input class="label-inp" value="${acc.label || ''}" placeholder="Nombre"
+        onchange="accounts[${i}].label=this.value;saveAccount(accounts[${i}])">
       <div class="sep"></div>
       <div style="display:flex;align-items:center;gap:3px;flex-shrink:0;">
         <span class="sym">USD</span>
         <input class="amt-inp" type="number" value="${acc.amount > 0 ? acc.amount : ''}" placeholder="0"
-          oninput="accounts[${i}].amount=parseFloat(this.value)||0;saveAll();updateGoal()">
+          onchange="accounts[${i}].amount=parseFloat(this.value)||0;saveAccount(accounts[${i}]);updateGoal()">
       </div>
-      <button class="del-btn" onclick="accounts.splice(${i},1);saveAll();renderAccounts()">✕</button>`;
+      <button class="del-btn" onclick="deleteAccount(accounts[${i}].id);accounts.splice(${i},1);renderAccounts()">✕</button>`;
     c.appendChild(row);
   });
   updateGoal();
 }
 
-function addRow() { accounts.push({label:'',amount:0}); saveAll(); renderAccounts(); }
+async function addRow() {
+  const nuevo = {label:'', amount:0, orden: accounts.length};
+  try {
+    const r = await fetch(API + '/api/cuentas', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(nuevo)
+    });
+    nuevo.id = (await r.json()).id;
+  } catch(e) {}
+  accounts.push(nuevo);
+  renderAccounts();
+}
 
 function updateGoal() {
   const total = accounts.reduce((s,a) => s+(parseFloat(a.amount)||0), 0);
@@ -531,7 +550,7 @@ function renderPlan() {
 
 // ─── INIT ──────────────────────────────────────
 document.getElementById('tip-text').textContent = tips[tipIdx];
-renderAccounts();
+loadAccounts();
 renderTodos();
 renderPlan();
 </script>

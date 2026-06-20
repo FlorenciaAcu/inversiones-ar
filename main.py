@@ -33,7 +33,8 @@ if DATABASE_URL:
 
     def init_db():
         con = get_con()
-        con.cursor().execute("""
+        cur = con.cursor()
+        cur.execute("""
             CREATE TABLE IF NOT EXISTS posiciones (
                 id            SERIAL PRIMARY KEY,
                 nombre        TEXT    NOT NULL,
@@ -49,6 +50,21 @@ if DATABASE_URL:
                 creado        TEXT DEFAULT current_date
             )
         """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS cuentas (
+                id     SERIAL PRIMARY KEY,
+                label  TEXT  NOT NULL,
+                amount FLOAT NOT NULL DEFAULT 0,
+                orden  INT   NOT NULL DEFAULT 0
+            )
+        """)
+        # sembrar datos iniciales solo si la tabla está vacía
+        cur.execute("SELECT COUNT(*) FROM cuentas")
+        if cur.fetchone()[0] == 0:
+            cur.executemany(
+                "INSERT INTO cuentas (label, amount, orden) VALUES (%s, %s, %s)",
+                [("Ontop", 2300, 0), ("BBVA", 9400, 1), ("Efectivo", 4500, 2)]
+            )
         con.commit(); con.close()
 
     def db_rows(sql, params=()):
@@ -91,6 +107,20 @@ else:
                 creado        TEXT DEFAULT (date('now'))
             )
         """)
+        con.execute("""
+            CREATE TABLE IF NOT EXISTS cuentas (
+                id     INTEGER PRIMARY KEY AUTOINCREMENT,
+                label  TEXT  NOT NULL,
+                amount REAL  NOT NULL DEFAULT 0,
+                orden  INTEGER NOT NULL DEFAULT 0
+            )
+        """)
+        # sembrar datos iniciales solo si la tabla está vacía
+        if con.execute("SELECT COUNT(*) FROM cuentas").fetchone()[0] == 0:
+            con.executemany(
+                "INSERT INTO cuentas (label, amount, orden) VALUES (?,?,?)",
+                [("Ontop", 2300, 0), ("BBVA", 9400, 1), ("Efectivo", 4500, 2)]
+            )
         con.commit(); con.close()
 
     def db_rows(sql, params=()):
@@ -329,6 +359,45 @@ def del_posicion(pid: int):
         db_exec("DELETE FROM posiciones WHERE id=%s", (pid,))
     else:
         db_exec("DELETE FROM posiciones WHERE id=?", (pid,))
+    return {"ok": True}
+
+class Cuenta(BaseModel):
+    label:  str
+    amount: float
+    orden:  Optional[int] = 0
+
+@app.get("/api/cuentas")
+def get_cuentas():
+    return db_rows("SELECT * FROM cuentas ORDER BY orden, id")
+
+@app.post("/api/cuentas")
+def add_cuenta(c: Cuenta):
+    if DATABASE_URL:
+        cid = db_exec(
+            "INSERT INTO cuentas (label, amount, orden) VALUES (%s,%s,%s) RETURNING id",
+            (c.label, c.amount, c.orden)
+        )
+    else:
+        cid = db_exec(
+            "INSERT INTO cuentas (label, amount, orden) VALUES (?,?,?)",
+            (c.label, c.amount, c.orden)
+        )
+    return {"id": cid, **c.dict()}
+
+@app.put("/api/cuentas/{cid}")
+def update_cuenta(cid: int, c: Cuenta):
+    if DATABASE_URL:
+        db_exec("UPDATE cuentas SET label=%s, amount=%s WHERE id=%s", (c.label, c.amount, cid))
+    else:
+        db_exec("UPDATE cuentas SET label=?, amount=? WHERE id=?", (c.label, c.amount, cid))
+    return {"id": cid, **c.dict()}
+
+@app.delete("/api/cuentas/{cid}")
+def del_cuenta(cid: int):
+    if DATABASE_URL:
+        db_exec("DELETE FROM cuentas WHERE id=%s", (cid,))
+    else:
+        db_exec("DELETE FROM cuentas WHERE id=?", (cid,))
     return {"ok": True}
 
 @app.get("/api/context")
