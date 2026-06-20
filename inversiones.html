@@ -94,10 +94,13 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 
 /* PLAN */
 .mes-card { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:10px; margin-bottom:7px; border:1.5px solid var(--border); background:#f9f6f0; }
+.mes-card--col { flex-direction:column; align-items:stretch; gap:0; }
 .mes-card.activo { background:rgba(26,92,64,.06); border-color:var(--brand); }
 .mes-label { min-width:54px; }
-.mes-nombre { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+.mes-nombre { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); }
+.mes-nombre--activo { color:var(--brand); }
 .mes-tag { font-size:9px; font-weight:600; color:var(--brand); margin-top:2px; }
+.add-btn--sm { margin-top:8px; padding:9px 14px; font-size:12px; }
 .mes-body { flex:1; }
 .mes-fondo { font-size:12px; font-weight:600; color:var(--ink); }
 .mes-sub { font-size:10px; color:var(--muted); margin-top:2px; }
@@ -111,15 +114,25 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .resumen-sub { font-size:11px; color:var(--muted); margin-top:4px; }
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
 /* ── DESIGN SYSTEM ── */
-/* Input base */
 .ds-input { background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; color:var(--ink); outline:none; width:100%; transition:border-color .15s; }
 .ds-input:focus { border-color:#a07840; }
 .ds-input::placeholder { color:#c0b8a8; font-weight:400; }
-/* Select */
-.ds-select-wrap { position:relative; }
+.ds-select-wrap { position:relative; flex:1; min-width:0; }
 .ds-select-wrap::after { content:'↓'; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:11px; font-weight:600; pointer-events:none; }
 .ds-select { -webkit-appearance:none; appearance:none; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:10px 32px 10px 12px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--ink); cursor:pointer; width:100%; outline:none; transition:border-color .15s; }
 .ds-select:focus { border-color:#a07840; }
+/* Plan rows */
+.plan-fila { margin-bottom:8px; }
+.plan-fila-row { display:flex; align-items:center; gap:8px; }
+.plan-monto-wrap { display:flex; align-items:center; gap:3px; flex-shrink:0; background:#f5f1e8; border:1.5px solid var(--border); border-radius:8px; padding:9px 10px; }
+.plan-monto-sym { font-size:11px; color:#8a7858; font-weight:600; }
+.plan-monto-inp { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--ink); text-align:right; width:80px; }
+.plan-monto-inp::-webkit-outer-spin-button, .plan-monto-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
+.plan-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 6px; flex-shrink:0; }
+.plan-del:active { color:var(--red); }
+.plan-feedback { font-family:'Lora',serif; font-style:italic; font-size:11.5px; color:#6a8858; margin-top:6px; line-height:1.5; }
+.plan-saved { font-size:10px; color:#4a8a3a; margin-top:3px; display:none; }
+.mes-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 
 /* MI CASA */
 .planos-toggle { display:flex; gap:8px; margin-bottom:16px; }
@@ -570,41 +583,37 @@ function renderPlan() {
       const puedeEliminar = filas.length > 1;
 
       return `
-      <div id="fila-${row.id}" style="margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div style="flex:1;min-width:0;">
-            <div class="ds-select-wrap" style="flex:1;">
+      <div id="fila-${row.id}" class="plan-fila">
+        <div class="plan-fila-row">
+          <div class="ds-select-wrap">
             <select class="ds-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
               ${opciones}
             </select>
           </div>
-              </div>
-          <div style="display:flex;align-items:center;gap:2px;flex-shrink:0;">
-            <span style="font-size:11px;color:#8a7858;">$</span>
+          <div class="plan-monto-wrap">
+            <span class="plan-monto-sym">$</span>
             <input type="number" value="${Math.round(row.monto)}" placeholder="190000"
-              style="width:90px;background:transparent;border:none;outline:none;font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);text-align:right;"
+              class="plan-monto-inp"
               onchange="cambiarMonto(${row.id},${i},this.value)"
               onblur="cambiarMonto(${row.id},${i},this.value)">
           </div>
-          ${puedeEliminar ? `<button onclick="eliminarFila(${row.id},'${mesKey}')" style="background:none;border:none;cursor:pointer;color:#c8bca8;font-size:14px;padding:4px;">✕</button>` : ''}
+          ${puedeEliminar ? `<button class="plan-del" onclick="eliminarFila(${row.id},'${mesKey}')">✕</button>` : ''}
         </div>
-        ${fb ? `<div id="fb-${row.id}" style="font-size:11px;color:#6a8858;margin-top:5px;line-height:1.45;">${fb}</div>` : ''}
-        <div id="saved-${row.id}" style="font-size:10px;color:#6a9e5a;display:none;margin-top:3px;">✓ guardado</div>
+        ${fb ? `<div id="fb-${row.id}" class="plan-feedback">${fb}</div>` : ''}
+        <div id="saved-${row.id}" class="plan-saved">✓ guardado</div>
       </div>`;
     }).join('');
 
     rows += `
-    <div class="mes-card${esActual?' activo':''}" style="flex-direction:column;align-items:stretch;gap:0;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div class="mes-label" style="min-width:54px;">
-          <div class="mes-nombre" style="color:${esActual?'var(--brand)':'var(--muted)'};">${mesLabel(mesKey)}</div>
+    <div class="mes-card mes-card--col${esActual?' activo':''}">
+      <div class="mes-header">
+        <div class="mes-label">
+          <div class="mes-nombre${esActual?' mes-nombre--activo':''}">${mesLabel(mesKey)}</div>
           ${esActual?'<div class="mes-tag">← este mes</div>':''}
         </div>
       </div>
       ${filasHtml}
-      <button onclick="agregarFila('${mesKey}')" class="add-btn" style="margin-top:6px;">
-        + otro instrumento este mes
-      </button>
+      <button onclick="agregarFila('${mesKey}')" class="add-btn add-btn--sm">+ otro instrumento este mes</button>
     </div>`;
   });
 
