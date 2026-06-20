@@ -492,17 +492,10 @@ function renderPlan() {
   }
 
   const hoy = hoyMes();
-  let acum = 190000; // ya tiene $190k en conservador al empezar
-  let totalAportado = 190000;
   let rows = '';
 
   planData.forEach((mes, i) => {
     const esActual = mes.mes === hoy;
-    const tasa = parseFloat(mes.tasa_mensual) || 0.030;
-    acum = acum * (1 + tasa) + parseFloat(mes.monto);
-    totalAportado += parseFloat(mes.monto);
-    const ganancia = acum - totalAportado;
-
     const platColor = mes.plataforma === 'PPI' ? '#7a5898' : 'var(--brand)';
     const opciones = INSTRUMENTOS.map(o =>
       `<option value="${o.label}|${o.plat}|${o.tasa}" ${mes.instrumento===o.label?'selected':''}>${o.label}</option>`
@@ -524,20 +517,18 @@ function renderPlan() {
         <div style="font-size:10px;color:${platColor};font-weight:600;margin-top:3px;">${mes.plataforma}</div>
       </div>
       <div class="mes-total">
-        <div class="mes-val">$${fmt(Math.round(acum))}</div>
-        <div class="mes-gan">+$${fmt(Math.round(Math.max(ganancia,0)))}</div>
+        <div class="mes-val">$${fmt(parseFloat(mes.monto))}</div>
       </div>
     </div>`;
   });
 
-  const gananciaTotal = acum - totalAportado;
+  const totalAportado = planData.reduce((s,m) => s + parseFloat(m.monto), 0) + 190000;
   document.getElementById('plan-meses').innerHTML = rows;
   document.getElementById('plan-resumen').innerHTML = `
     <div class="resumen-card">
-      <div class="resumen-lbl">Al cabo de 12 meses</div>
-      <div class="resumen-val">$${fmt(Math.round(acum))}</div>
-      <div class="resumen-gan">+$${fmt(Math.round(gananciaTotal))} de ganancia estimada</div>
-      <div class="resumen-sub">sobre $${fmt(totalAportado)} aportados · MP + PPI</div>
+      <div class="resumen-lbl">Total a aportar en 12 meses</div>
+      <div class="resumen-val">$${fmt(totalAportado)}</div>
+      <div class="resumen-sub">más los $190.000 que ya tenés en Mercado Pago</div>
     </div>`;
 }
 
