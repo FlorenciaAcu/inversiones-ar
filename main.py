@@ -23,6 +23,9 @@ except ImportError:
 
 # ─── DB: PostgreSQL en Railway, SQLite local ──────────────────
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
+# Railway entrega postgres:// pero psycopg2 necesita postgresql://
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 if DATABASE_URL:
     import psycopg2
@@ -32,6 +35,7 @@ if DATABASE_URL:
         return psycopg2.connect(DATABASE_URL)
 
     def init_db():
+        print("[DB] Conectando a PostgreSQL...")
         con = get_con()
         cur = con.cursor()
         cur.execute("""
@@ -58,14 +62,17 @@ if DATABASE_URL:
                 orden  INT   NOT NULL DEFAULT 0
             )
         """)
-        # sembrar datos iniciales solo si la tabla está vacía
         cur.execute("SELECT COUNT(*) FROM cuentas")
-        if cur.fetchone()[0] == 0:
+        count = cur.fetchone()[0]
+        print(f"[DB] Tabla cuentas: {count} registros")
+        if count == 0:
             cur.executemany(
                 "INSERT INTO cuentas (label, amount, orden) VALUES (%s, %s, %s)",
                 [("Ontop", 2300, 0), ("BBVA", 9400, 1), ("Efectivo", 4500, 2)]
             )
+            print("[DB] Seed de cuentas insertado")
         con.commit(); con.close()
+        print("[DB] init_db OK")
 
     def db_rows(sql, params=()):
         con = get_con()
