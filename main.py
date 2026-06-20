@@ -62,15 +62,52 @@ if DATABASE_URL:
                 orden  INT   NOT NULL DEFAULT 0
             )
         """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS plan_mensual (
+                id           SERIAL PRIMARY KEY,
+                mes          TEXT  NOT NULL,
+                monto        FLOAT NOT NULL DEFAULT 190000,
+                instrumento  TEXT  NOT NULL,
+                plataforma   TEXT  NOT NULL,
+                tasa_mensual FLOAT NOT NULL DEFAULT 0.03
+            )
+        """)
+        # seed cuentas
         cur.execute("SELECT COUNT(*) FROM cuentas")
-        count = cur.fetchone()[0]
-        print(f"[DB] Tabla cuentas: {count} registros")
-        if count == 0:
+        if cur.fetchone()[0] == 0:
             cur.executemany(
-                "INSERT INTO cuentas (label, amount, orden) VALUES (%s, %s, %s)",
+                "INSERT INTO cuentas (label, amount, orden) VALUES (%s,%s,%s)",
                 [("Ontop", 2300, 0), ("BBVA", 9400, 1), ("Efectivo", 4500, 2)]
             )
-            print("[DB] Seed de cuentas insertado")
+            print("[DB] Seed cuentas OK")
+        # seed plan 12 meses
+        cur.execute("SELECT COUNT(*) FROM plan_mensual")
+        if cur.fetchone()[0] == 0:
+            from datetime import date
+            hoy = date.today()
+            propuesta = [
+                ("Fondo Conservador MP", "Mercado Pago", 0.030),
+                ("Empresas Argentinas MP", "Mercado Pago", 0.035),
+                ("Lecap PPI",             "PPI",          0.035),
+                ("Fondo Conservador MP",  "Mercado Pago", 0.030),
+                ("Boncap PPI",            "PPI",          0.037),
+                ("Empresas Argentinas MP","Mercado Pago", 0.035),
+                ("Lecap PPI",             "PPI",          0.035),
+                ("Fondo Conservador MP",  "Mercado Pago", 0.030),
+                ("Boncap PPI",            "PPI",          0.037),
+                ("Empresas Argentinas MP","Mercado Pago", 0.035),
+                ("Lecap PPI",             "PPI",          0.035),
+                ("Fondo Conservador MP",  "Mercado Pago", 0.030),
+            ]
+            for i, (inst, plat, tasa) in enumerate(propuesta):
+                m = hoy.month + i
+                y = hoy.year + (m - 1) // 12
+                m = ((m - 1) % 12) + 1
+                cur.execute(
+                    "INSERT INTO plan_mensual (mes, monto, instrumento, plataforma, tasa_mensual) VALUES (%s,%s,%s,%s,%s)",
+                    (f"{y}-{m:02d}", 190000, inst, plat, tasa)
+                )
+            print("[DB] Seed plan_mensual OK")
         con.commit(); con.close()
         print("[DB] init_db OK")
 
@@ -122,12 +159,46 @@ else:
                 orden  INTEGER NOT NULL DEFAULT 0
             )
         """)
-        # sembrar datos iniciales solo si la tabla está vacía
+        con.execute("""
+            CREATE TABLE IF NOT EXISTS plan_mensual (
+                id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                mes          TEXT  NOT NULL,
+                monto        REAL  NOT NULL DEFAULT 190000,
+                instrumento  TEXT  NOT NULL,
+                plataforma   TEXT  NOT NULL,
+                tasa_mensual REAL  NOT NULL DEFAULT 0.03
+            )
+        """)
         if con.execute("SELECT COUNT(*) FROM cuentas").fetchone()[0] == 0:
             con.executemany(
                 "INSERT INTO cuentas (label, amount, orden) VALUES (?,?,?)",
                 [("Ontop", 2300, 0), ("BBVA", 9400, 1), ("Efectivo", 4500, 2)]
             )
+        if con.execute("SELECT COUNT(*) FROM plan_mensual").fetchone()[0] == 0:
+            from datetime import date
+            hoy = date.today()
+            propuesta = [
+                ("Fondo Conservador MP", "Mercado Pago", 0.030),
+                ("Empresas Argentinas MP","Mercado Pago", 0.035),
+                ("Lecap PPI",            "PPI",          0.035),
+                ("Fondo Conservador MP", "Mercado Pago", 0.030),
+                ("Boncap PPI",           "PPI",          0.037),
+                ("Empresas Argentinas MP","Mercado Pago",0.035),
+                ("Lecap PPI",            "PPI",          0.035),
+                ("Fondo Conservador MP", "Mercado Pago", 0.030),
+                ("Boncap PPI",           "PPI",          0.037),
+                ("Empresas Argentinas MP","Mercado Pago",0.035),
+                ("Lecap PPI",            "PPI",          0.035),
+                ("Fondo Conservador MP", "Mercado Pago", 0.030),
+            ]
+            for i, (inst, plat, tasa) in enumerate(propuesta):
+                m = hoy.month + i
+                y = hoy.year + (m - 1) // 12
+                m = ((m - 1) % 12) + 1
+                con.execute(
+                    "INSERT INTO plan_mensual (mes, monto, instrumento, plataforma, tasa_mensual) VALUES (?,?,?,?,?)",
+                    (f"{y}-{m:02d}", 190000, inst, plat, tasa)
+                )
         con.commit(); con.close()
 
     def db_rows(sql, params=()):
@@ -406,6 +477,30 @@ def del_cuenta(cid: int):
     else:
         db_exec("DELETE FROM cuentas WHERE id=?", (cid,))
     return {"ok": True}
+
+class PlanMes(BaseModel):
+    monto:        float
+    instrumento:  str
+    plataforma:   str
+    tasa_mensual: float
+
+@app.get("/api/plan")
+def get_plan():
+    return db_rows("SELECT * FROM plan_mensual ORDER BY mes")
+
+@app.put("/api/plan/{pid}")
+def update_plan(pid: int, p: PlanMes):
+    if DATABASE_URL:
+        db_exec(
+            "UPDATE plan_mensual SET monto=%s, instrumento=%s, plataforma=%s, tasa_mensual=%s WHERE id=%s",
+            (p.monto, p.instrumento, p.plataforma, p.tasa_mensual, pid)
+        )
+    else:
+        db_exec(
+            "UPDATE plan_mensual SET monto=?, instrumento=?, plataforma=?, tasa_mensual=? WHERE id=?",
+            (p.monto, p.instrumento, p.plataforma, p.tasa_mensual, pid)
+        )
+    return {"id": pid, **p.dict()}
 
 @app.get("/api/context")
 async def context():

@@ -110,6 +110,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .resumen-gan { font-size:12px; color:#4a7820; font-weight:600; }
 .resumen-sub { font-size:11px; color:var(--muted); margin-top:4px; }
 .nota-legal { font-family:'Lora',serif; font-style:italic; font-size:11px; color:#b0a488; margin-top:14px; line-height:1.55; }
+.mes-select { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; color:var(--ink); width:100%; cursor:pointer; padding:0; }
 
 /* MI CASA */
 .planos-toggle { display:flex; gap:8px; margin-bottom:16px; }
@@ -176,6 +177,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
       <p class="meta-message" id="meta-message"></p>
     </div>
 
+    <div id="cuentas-status"></div>
     <div class="sec">Dónde vive mi abundancia</div>
     <div class="rows-wrap" id="rows"></div>
     <button class="add-btn" onclick="addRow()">+ agregar cuenta</button>
@@ -200,28 +202,14 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
       <div class="accent accent-g"></div>
       <div>
         <h1>Mi plan</h1>
-        <p class="tagline">$190.000 por mes, alternando entre fondos.</p>
-      </div>
-    </div>
-
-    <div class="sec">Distribución mensual</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;">
-      <div style="background:#f0ebe0;border:1.5px solid var(--brand);border-radius:10px;padding:13px;">
-        <div style="font-size:9px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;">Meses impares</div>
-        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Fondo Conservador</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · liquidez total</div>
-      </div>
-      <div style="background:#f0ebe0;border:1.5px solid #2a7a55;border-radius:10px;padding:13px;">
-        <div style="font-size:9px;font-weight:600;color:#2a7a55;text-transform:uppercase;letter-spacing:.5px;">Meses pares</div>
-        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Empresas Argentinas</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · más rendimiento</div>
+        <p class="tagline">12 meses, mes a mes, donde va cada peso.</p>
       </div>
     </div>
 
     <div class="sec">Proyección 12 meses</div>
     <div id="plan-meses"></div>
     <div id="plan-resumen"></div>
-    <p class="nota-legal" style="margin-top:16px;">✦ Proyección estimada. Las tasas varían. Todo en Mercado Pago. Esto no es asesoramiento financiero formal.</p>
+    <p class="nota-legal" style="margin-top:16px;">✦ Proyección estimada. Tasas variables. Tocá cualquier mes para cambiar el instrumento o el monto.</p>
   </div>
 
   <!-- ══ TAB 3: MI CASA ══ -->
@@ -453,77 +441,127 @@ const tips = [
 let tipIdx = Math.floor(Math.random()*tips.length);
 function nextTip() { tipIdx=(tipIdx+1)%tips.length; document.getElementById('tip-text').textContent=tips[tipIdx]; }
 
-// ─── PLAN MENSUAL ──────────────────────────────
-function renderPlan() {
-  const APORTE   = 190000;
-  const R_CONS   = 0.036;  // ~TNA 43% → 3.6%/mes conservador
-  const R_EMP    = 0.042;  // ~TNA 50% → 4.2%/mes empresas argentinas (más riesgoso)
-  const MESES    = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const hoyDate  = new Date();
-  const mesBase  = hoyDate.getMonth();
-  const anioBase = hoyDate.getFullYear();
+// ─── PLAN MENSUAL (desde BD) ───────────────────
+const MESES_NOM = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const INSTRUMENTOS = [
+  {label:'Fondo Conservador MP',  plat:'Mercado Pago', tasa:0.030},
+  {label:'Empresas Argentinas MP',plat:'Mercado Pago', tasa:0.035},
+  {label:'Lecap PPI',             plat:'PPI',          tasa:0.035},
+  {label:'Boncap PPI',            plat:'PPI',          tasa:0.037},
+  {label:'Otro',                  plat:'',             tasa:0.030},
+];
 
-  let acumCons = 190000; // ya tiene $190k en conservador
-  let acumEmp  = 0;
+let planData = [];
+
+async function loadPlan() {
+  try {
+    const r = await fetch(API + '/api/plan');
+    planData = await r.json();
+  } catch(e) { planData = []; }
+  renderPlan();
+}
+
+async function savePlanMes(id, monto, instrumento, plataforma, tasa_mensual) {
+  try {
+    await fetch(API + '/api/plan/' + id, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({monto, instrumento, plataforma, tasa_mensual})
+    });
+  } catch(e) {}
+  renderPlan();
+}
+
+function mesLabel(mesStr) {
+  const [y, m] = mesStr.split('-');
+  return `${MESES_NOM[parseInt(m)-1]} ${y}`;
+}
+
+function hoyMes() {
+  const h = new Date();
+  return `${h.getFullYear()}-${String(h.getMonth()+1).padStart(2,'0')}`;
+}
+
+function renderPlan() {
+  if (!planData.length) {
+    document.getElementById('plan-meses').innerHTML =
+      '<div style="font-size:13px;color:var(--muted);padding:20px 0;">Cargando plan...</div>';
+    return;
+  }
+
+  const hoy = hoyMes();
+  let acum = 190000; // ya tiene $190k en conservador al empezar
+  let totalAportado = 190000;
   let rows = '';
 
-  for (let i = 0; i < 12; i++) {
-    const mesIdx  = (mesBase + i) % 12;
-    const anio    = anioBase + Math.floor((mesBase + i) / 12);
-    const label   = `${MESES[mesIdx]} ${anio}`;
-    const esMes0  = i === 0;
+  planData.forEach((mes, i) => {
+    const esActual = mes.mes === hoy;
+    const tasa = parseFloat(mes.tasa_mensual) || 0.030;
+    acum = acum * (1 + tasa) + parseFloat(mes.monto);
+    totalAportado += parseFloat(mes.monto);
+    const ganancia = acum - totalAportado;
 
-    // aplicar rendimiento del mes anterior
-    acumCons *= (1 + R_CONS);
-    acumEmp  *= (1 + R_EMP);
-
-    // mes impar (1,3,5...) → conservador / mes par (2,4,6...) → empresas argentinas
-    const esConservador = (i % 2 === 0); // mes 0 = actual = conservador
-    if (esConservador) acumCons += APORTE;
-    else               acumEmp  += APORTE;
-
-    const total    = acumCons + acumEmp;
-    const invertido= APORTE * (i + 1) + 190000; // ya tenía $190k
-    const ganancia = total - invertido;
-
-    const fondo    = esConservador ? 'Fondo Conservador' : 'Empresas Argentinas';
-    const fondoCol = esConservador ? 'var(--brand)' : '#2a7a55';
+    const platColor = mes.plataforma === 'PPI' ? '#7a5898' : 'var(--brand)';
+    const opciones = INSTRUMENTOS.map(o =>
+      `<option value="${o.label}|${o.plat}|${o.tasa}" ${mes.instrumento===o.label?'selected':''}>${o.label}</option>`
+    ).join('');
 
     rows += `
-    <div class="mes-card ${esMes0 ? 'activo' : ''}">
+    <div class="mes-card${esActual?' activo':''}">
       <div class="mes-label">
-        <div class="mes-nombre" style="color:${esMes0 ? 'var(--brand)' : 'var(--muted)'};">${label}</div>
-        ${esMes0 ? '<div class="mes-tag">← este mes</div>' : ''}
+        <div class="mes-nombre" style="color:${esActual?'var(--brand)':'var(--muted)'};">${mesLabel(mes.mes)}</div>
+        ${esActual?'<div class="mes-tag">← este mes</div>':''}
       </div>
       <div class="mes-body">
-        <div class="mes-fondo">$${fmt(APORTE)} → <span style="color:${fondoCol}">${fondo}</span></div>
-        <div class="mes-sub">Mercado Pago</div>
+        <select class="mes-select" onchange="
+          const [inst,plat,tasa]=this.value.split('|');
+          planData[${i}].instrumento=inst;planData[${i}].plataforma=plat;planData[${i}].tasa_mensual=parseFloat(tasa);
+          savePlanMes(${mes.id},planData[${i}].monto,inst,plat,parseFloat(tasa))">
+          ${opciones}
+        </select>
+        <div style="font-size:10px;color:${platColor};font-weight:600;margin-top:3px;">${mes.plataforma}</div>
       </div>
       <div class="mes-total">
-        <div class="mes-val">$${fmt(Math.round(total))}</div>
+        <div class="mes-val">$${fmt(Math.round(acum))}</div>
         <div class="mes-gan">+$${fmt(Math.round(Math.max(ganancia,0)))}</div>
       </div>
     </div>`;
-  }
+  });
 
-  const totalFinal   = acumCons + acumEmp;
-  const totalAportes = APORTE * 12 + 190000;
-  const gananciaTotal= totalFinal - totalAportes;
-
+  const gananciaTotal = acum - totalAportado;
   document.getElementById('plan-meses').innerHTML = rows;
   document.getElementById('plan-resumen').innerHTML = `
     <div class="resumen-card">
       <div class="resumen-lbl">Al cabo de 12 meses</div>
-      <div class="resumen-val">$${fmt(Math.round(totalFinal))}</div>
+      <div class="resumen-val">$${fmt(Math.round(acum))}</div>
       <div class="resumen-gan">+$${fmt(Math.round(gananciaTotal))} de ganancia estimada</div>
-      <div class="resumen-sub">sobre $${fmt(totalAportes)} aportados · Mercado Pago</div>
+      <div class="resumen-sub">sobre $${fmt(totalAportado)} aportados · MP + PPI</div>
     </div>`;
+}
+
+// ─── CUENTAS — carga con diagnóstico ───────────
+async function loadAccounts() {
+  const status = document.getElementById('cuentas-status');
+  try {
+    const r = await fetch(API + '/api/cuentas');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    accounts = await r.json();
+    if (status) status.innerHTML = '';
+  } catch(e) {
+    if (status) status.innerHTML =
+      `<div style="font-size:11px;color:#8a2010;background:rgba(192,64,48,.07);border:1px solid rgba(192,64,48,.25);border-radius:6px;padding:8px 12px;margin-bottom:10px;">
+        ⚠ No se pudieron cargar las cuentas desde la base de datos.<br>
+        <small>${e.message}</small>
+      </div>`;
+    accounts = [];
+  }
+  renderAccounts();
 }
 
 // ─── INIT ──────────────────────────────────────
 document.getElementById('tip-text').textContent = tips[tipIdx];
 loadAccounts();
-renderPlan();
+loadPlan();
 </script>
 </body>
 </html>
