@@ -73,8 +73,8 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .amt-inp { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:16px; font-weight:600; color:#5c3410; text-align:right; width:110px; }
 .amt-inp::placeholder { color:#c0b8a8; font-weight:400; }
 .amt-inp::-webkit-outer-spin-button, .amt-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
-.del-btn { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 8px; border-radius:4px; }
-.del-btn:active { color:var(--red); }
+.ds-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 8px; flex-shrink:0; }
+.ds-del:active { color:var(--red); }
 .add-btn { width:100%; padding:14px; background:transparent; color:var(--muted); border:1.5px dashed #c8bca8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; margin-top:4px; }
 .add-btn:active { background:rgba(160,130,80,.07); }
 
@@ -128,8 +128,8 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 .plan-monto-sym { font-size:11px; color:#8a7858; font-weight:600; }
 .plan-monto-inp { background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--ink); text-align:right; width:80px; }
 .plan-monto-inp::-webkit-outer-spin-button, .plan-monto-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
-.plan-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 6px; flex-shrink:0; }
-.plan-del:active { color:var(--red); }
+.ds-del { background:none; border:none; cursor:pointer; color:#c8bca8; font-size:15px; padding:4px 6px; flex-shrink:0; }
+.ds-del:active { color:var(--red); }
 .plan-feedback { font-family:'Lora',serif; font-style:italic; font-size:11.5px; color:#6a8858; margin-top:6px; line-height:1.5; }
 .plan-saved { font-size:10px; color:#4a8a3a; margin-top:3px; display:none; }
 .mes-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
@@ -196,7 +196,7 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     </div>
 
     <div id="cuentas-status"></div>
-    <div class="sec">Dónde vive mi abundancia</div>
+    <div class="sec">Mis cuentas</div>
     <div class="rows-wrap" id="rows"></div>
 
     <hr class="divider">
@@ -395,12 +395,12 @@ function renderAccounts() {
       <input class="label-inp" value="${acc.label || ''}" placeholder="Nombre"
         onchange="accounts[${i}].label=this.value;saveAccount(accounts[${i}])">
       <div class="sep"></div>
-      <div style="display:flex;align-items:center;gap:3px;flex-shrink:0;">
-        <span class="sym">USD</span>
-        <input class="amt-inp" type="number" value="${acc.amount > 0 ? acc.amount : ''}" placeholder="0"
+      <div class="plan-monto-wrap">
+        <span class="plan-monto-sym">USD</span>
+        <input class="plan-monto-inp" type="number" value="${acc.amount > 0 ? acc.amount : ''}" placeholder="0"
           onchange="accounts[${i}].amount=parseFloat(this.value)||0;saveAccount(accounts[${i}]);updateGoal()">
       </div>
-      <button class="del-btn" onclick="deleteAccount(accounts[${i}].id);accounts.splice(${i},1);renderAccounts()">✕</button>`;
+      <button class="ds-del" onclick="deleteAccount(accounts[${i}].id);accounts.splice(${i},1);renderAccounts()">✕</button>`;
     c.appendChild(row);
   });
   updateGoal();
@@ -597,7 +597,7 @@ function renderPlan() {
               onchange="cambiarMonto(${row.id},${i},this.value)"
               onblur="cambiarMonto(${row.id},${i},this.value)">
           </div>
-          ${puedeEliminar ? `<button class="plan-del" onclick="eliminarFila(${row.id},'${mesKey}')">✕</button>` : ''}
+          ${puedeEliminar ? `<button class="ds-del" onclick="eliminarFila(${row.id},'${mesKey}')">✕</button>` : ''}
         </div>
         ${fb ? `<div id="fb-${row.id}" class="plan-feedback">${fb}</div>` : ''}
         <div id="saved-${row.id}" class="plan-saved">✓ guardado</div>
