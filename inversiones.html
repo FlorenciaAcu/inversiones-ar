@@ -311,6 +311,9 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 </div>
 
 <script>
+const API = (window.location.protocol === 'file:' || window.location.origin === 'null')
+  ? 'http://localhost:8000' : window.location.origin;
+
 // ─── TABS ──────────────────────────────────────
 function go(t) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
