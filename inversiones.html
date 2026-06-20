@@ -233,17 +233,6 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
 <body>
 
 <div class="brand-header">
-  <div class="brand-mark">
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="36" height="36" rx="10" fill="#1a5c40"/>
-      <polyline points="7,26 14,18 20,12 29,6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="29" cy="6" r="3" fill="#7ecba8"/>
-      <rect x="7" y="27" width="4" height="5" rx="1" fill="rgba(255,255,255,.35)"/>
-      <rect x="13" y="22" width="4" height="10" rx="1" fill="rgba(255,255,255,.5)"/>
-      <rect x="19" y="17" width="4" height="15" rx="1" fill="rgba(255,255,255,.7)"/>
-      <rect x="25" y="12" width="4" height="20" rx="1" fill="white"/>
-    </svg>
-  </div>
   <div class="brand-text">
     <div class="brand-name">Gener<span>anding</span></div>
     <div class="brand-tag">Generando futuro, peso a peso.</div>
@@ -262,39 +251,36 @@ h1 { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; color:var(--in
     <div class="header">
       <div class="accent"></div>
       <div>
-        <h1>¿Dónde invierto?</h1>
-        <p class="tagline">Datos en vivo del mercado + recomendación concreta.</p>
+        <h1>Mi plan mensual</h1>
+        <p class="tagline">$190.000 por mes, generando futuro.</p>
       </div>
     </div>
 
     <div id="backend-status"></div>
 
-    <div class="status-bar">
-      <span class="live-lbl"><span class="live-dot"></span>Datos en vivo</span>
-      <span>
-        <span class="live-ts" id="ts">cargando...</span>
-        <button class="btn-refresh" onclick="fetchMarket()">↻ Actualizar</button>
-      </span>
-    </div>
-
-    <div id="cotiz-wrap"><div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#b0a488;padding:8px 0;">Conectando...</div></div>
-
-    <div class="capital-box">
-      <div class="capital-label">¿Cuánto querés invertir?</div>
-      <div class="capital-row">
-        <span class="capital-sym">$</span>
-        <input class="capital-inp" type="number" id="capital-inp" placeholder="ej. 700000" oninput="onCapChange()">
+    <!-- DÓNDE VA CADA APORTE -->
+    <div class="sec">Dónde va cada aporte</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:#f0ebe0;border:1.5px solid var(--brand);border-radius:10px;padding:13px;">
+        <div style="font-size:9px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:.5px;">60% · $114.000</div>
+        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Fondo Conservador</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · liquidez inmediata</div>
       </div>
-      <div class="capital-usd" id="capital-usd">≈ $ — estimado al mes</div>
+      <div style="background:#f0ebe0;border:1.5px solid #2a7a55;border-radius:10px;padding:13px;">
+        <div style="font-size:9px;font-weight:600;color:#2a7a55;text-transform:uppercase;letter-spacing:.5px;">40% · $76.000</div>
+        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);margin-top:4px;">Empresas Argentinas</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Mercado Pago · más rendimiento</div>
+      </div>
     </div>
 
-    <button class="btn-rec" onclick="recomendar()">Ver mi plan de inversión →</button>
+    <!-- PROYECCIÓN 12 MESES -->
+    <div class="sec">Proyección a 12 meses</div>
+    <div id="plan-meses"></div>
 
-    <div id="rec-section" style="display:none;">
-      <div class="rec-intro" id="rec-intro"></div>
-      <div id="rec-instrumentos"></div>
-      <p class="nota-legal">✦ Recomendación basada en datos reales del mercado. Horizonte: 12 meses. Plataforma: portfoliopersonal.com. Esto no es asesoramiento financiero formal.</p>
-    </div>
+    <!-- TOTAL ESTIMADO -->
+    <div id="plan-total" style="margin-top:8px;"></div>
+
+    <p class="nota-legal" style="margin-top:16px;">✦ Proyección estimada. Las tasas varían mes a mes. Plataforma base: Mercado Pago Inversiones. Esto no es asesoramiento financiero formal.</p>
   </div>
 
   <!-- ══════ TAB 2: PORTFOLIO ══════ -->
@@ -418,8 +404,7 @@ async function fetchMarket(intento = 1) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     MKT = await r.json();
     renderDolar();
-    renderByma();
-    onCapChange();
+    renderPlanMeses();
     const turno = MKT.turno || 'Análisis del día';
     const act   = MKT.actualizado || '—';
     document.getElementById('ts').textContent = act;
@@ -502,85 +487,64 @@ function renderByma() {
   document.getElementById('byma-wrap').innerHTML = `<div class="byma-grid">${cards}</div>`;
 }
 
-// ─── CAPITAL ───────────────────────────────────
-let _recTimer = null;
-function onCapChange() {
-  const cap = parseFloat(document.getElementById('capital-inp').value) || 0;
-  const rendMensual = 0.035;
-  document.getElementById('capital-usd').textContent = cap > 0
-    ? `≈ $${fmt(cap * rendMensual)} de ganancia estimada el primer mes (3.5%/mes en Lecaps)`
-    : '≈ $ — estimado al mes';
-  clearTimeout(_recTimer);
-  if (cap > 0) _recTimer = setTimeout(recomendar, 700);
-  else document.getElementById('rec-section').style.display = 'none';
-}
+// ─── PLAN MENSUAL ──────────────────────────────
+function renderPlanMeses() {
+  const APORTE   = 190000;
+  const R_CONS   = (MKT?.tasas?.mp_conservador || 36) / 100 / 12;
+  const R_EMP    = (MKT?.tasas?.mp_empresas    || 42) / 100 / 12;
+  const MESES    = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const hoyDate  = new Date();
+  const mesBase  = hoyDate.getMonth();
+  const anioBase = hoyDate.getFullYear();
 
-// ─── RECOMENDACIÓN ─────────────────────────────
-function recomendar() {
-  const cap = parseFloat(document.getElementById('capital-inp').value);
-  if (!cap || cap <= 0) { alert('Ingresá cuánto querés invertir.'); return; }
+  let acumCons = 0, acumEmp = 0;
+  let rows = '';
 
-  const tnaConservador = MKT?.tasas?.mp_conservador || 36;
-  const rMens = tnaConservador / 100 / 12;
-  const ganAnual = fmt(Math.round(cap * Math.pow(1 + rMens, 12) - cap));
+  for (let i = 0; i < 12; i++) {
+    const mesIdx  = (mesBase + i) % 12;
+    const anio    = anioBase + Math.floor((mesBase + i) / 12);
+    const label   = `${MESES[mesIdx]} ${anio}`;
+    const esMes0  = i === 0;
 
-  const dist = [
-    {
-      nombre: 'Fondo Conservador — Mercado Pago',
-      sub:    'Tu base segura · rinde todos los días · retirás cuando querés',
-      pct:    50,
-      color:  '#1a5c40',
-      tags:   [`~TNA ${tnaConservador}%`, 'Rescate inmediato', 'Sin riesgo de mercado'],
-      desc:   'Es el fondo que ya tenés activo. Invierte en plazos fijos, cauciones y letras de muy corto plazo. Rinde todos los días sin que hagas nada, y podés retirar en cualquier momento sin costo. La base de tu portafolio.',
-      como:   'Ya lo tenés en Mercado Pago → Inversiones → Reserva. No hace falta mover nada, solo asegurarte de que el dinero esté invertido ahí y no quieto en la cuenta.',
-      donde:  'Mercado Pago → Inversiones → Reserva (fondo conservador)',
-    },
-    {
-      nombre: 'Fondo Empresas Argentinas — Mercado Pago',
-      sub:    'Más rendimiento · invierte en empresas argentinas · riesgo moderado',
-      pct:    35,
-      color:  '#2a7a55',
-      tags:   ['Mayor rendimiento potencial', 'Riesgo moderado', 'Mismo app MP'],
-      desc:   'El segundo fondo de Mercado Pago invierte en bonos y acciones de empresas argentinas. Puede rendir más que el conservador pero también puede tener más variación. Ideal para el tramo de tu capital que podés dejar quieto más tiempo.',
-      como:   'En Mercado Pago → Inversiones → buscás la opción "Empresas Argentinas". Movés una parte de tu capital ahí. Podés dividir: 50% conservador (liquidez) y 35% acá (más rendimiento).',
-      donde:  'Mercado Pago → Inversiones → Empresas Argentinas',
-    },
-    {
-      nombre: 'Lecaps en PPI — paso siguiente',
-      sub:    'Cuando acumules más capital · tasa fija · mayor rendimiento',
-      pct:    15,
-      color:  '#5a7898',
-      tags:   ['~3.5% mensual', 'PPI ya abierto', 'Próximo nivel'],
-      desc:   'Cuando el capital de MP empiece a crecer, el siguiente paso es mover una parte a Lecaps en PPI. Son letras del Tesoro en pesos con tasa fija, sin volatilidad, y suelen rendir un poco más que los fondos de billetera. Ya tenés la cuenta PPI lista para operar.',
-      como:   'En PPI → Renta Fija → Letras. Elegís una con vencimiento en 3–6 meses. Comprás con orden de mercado. Al vencimiento el dinero vuelve y reinvertís.',
-      donde:  'portfoliopersonal.com → Renta Fija → Letras del Tesoro',
-    },
-  ];
+    // aplicar rendimiento del mes anterior antes del nuevo aporte
+    acumCons = acumCons * (1 + R_CONS) + APORTE * 0.60;
+    acumEmp  = acumEmp  * (1 + R_EMP)  + APORTE * 0.40;
+    const total = acumCons + acumEmp;
+    const invertido = APORTE * (i + 1);
+    const ganancia  = total - invertido;
 
-  document.getElementById('rec-intro').innerHTML =
-    `Tenés <strong>$${fmt(cap)} ARS</strong> para invertir durante 12 meses, todo en pesos. Tu plataforma base es Mercado Pago: simple, sin complicaciones. Ganancia estimada al año solo con el fondo conservador: <strong>+$${ganAnual} ARS</strong>. Distribuido así, puede ser más:`;
-
-  document.getElementById('rec-instrumentos').innerHTML = dist.map(d => {
-    const monto = Math.round(cap * d.pct / 100);
-    const tags  = d.tags.map(t => `<span class="instr-tag">${t}</span>`).join('');
-    return `<div class="instr-card">
-      <div class="instr-bar"><div class="instr-bar-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
-      <div class="instr-hd">
-        <div class="instr-cb" style="background:${d.color}"></div>
-        <div><div class="instr-tit">${d.nombre}</div><div class="instr-sub">${d.sub}</div></div>
-        <div class="instr-mw"><div class="instr-m">$${fmt(monto)}</div><div class="instr-p">${d.pct}%</div></div>
+    rows += `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 13px;background:${esMes0 ? 'rgba(26,92,64,.06)' : '#f9f6f0'};border:1.5px solid ${esMes0 ? 'var(--brand)' : 'var(--border)'};border-radius:10px;margin-bottom:6px;">
+      <div style="min-width:52px;">
+        <div style="font-size:10px;font-weight:600;color:${esMes0 ? 'var(--brand)' : 'var(--muted)'};text-transform:uppercase;letter-spacing:.4px;">${label}</div>
+        ${esMes0 ? '<div style="font-size:9px;color:var(--brand);font-weight:600;">← este mes</div>' : ''}
       </div>
-      <div class="instr-bd">
-        <div class="instr-desc">${d.desc}</div>
-        <div class="instr-como"><strong>Cómo:</strong> ${d.como}</div>
-        <div style="margin-top:6px">${tags}</div>
-        <div class="instr-donde">Dónde: ${d.donde}</div>
+      <div style="flex:1;">
+        <div style="font-size:11px;color:var(--muted);">Aporte: <strong style="color:var(--ink);">$${fmt(APORTE)}</strong></div>
+        <div style="display:flex;gap:6px;margin-top:3px;">
+          <div style="height:4px;flex:0.6;background:var(--brand);border-radius:2px;"></div>
+          <div style="height:4px;flex:0.4;background:#2a7a55;border-radius:2px;"></div>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-family:'Lora',serif;font-size:13px;font-weight:600;color:var(--ink);">$${fmt(Math.round(total))}</div>
+        <div style="font-size:10px;color:#4a7820;">+$${fmt(Math.round(ganancia))}</div>
       </div>
     </div>`;
-  }).join('');
+  }
 
-  document.getElementById('rec-section').style.display = 'block';
-  document.getElementById('rec-section').scrollIntoView({behavior:'smooth',block:'start'});
+  const totalFinal    = acumCons + acumEmp;
+  const totalAportes  = APORTE * 12;
+  const gananciaTotal = totalFinal - totalAportes;
+
+  document.getElementById('plan-meses').innerHTML = rows;
+  document.getElementById('plan-total').innerHTML = `
+    <div style="background:#f0ebe0;border:1.5px solid #c0b898;border-radius:10px;padding:15px 16px;">
+      <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Al cabo de 12 meses</div>
+      <div style="font-family:'Lora',serif;font-size:1.8rem;font-weight:600;color:var(--ink);margin:4px 0 2px;">$${fmt(Math.round(totalFinal))}</div>
+      <div style="font-size:12px;color:#4a7820;font-weight:600;">+$${fmt(Math.round(gananciaTotal))} de ganancia estimada</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">sobre $${fmt(totalAportes)} aportados · todo en Mercado Pago</div>
+    </div>`;
 }
 
 // ─── PORTFOLIO ─────────────────────────────────
@@ -772,6 +736,7 @@ async function consultarClaude() {
 }
 
 // ─── INIT ──────────────────────────────────────
+renderPlanMeses();
 fetchMarket();
 </script>
 </body>
