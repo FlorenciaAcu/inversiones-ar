@@ -395,34 +395,39 @@ _cache = {"data": None, "actualizado": None, "turno": None}
 
 async def _refresh_market():
     """Refresca el caché con datos frescos del mercado."""
-    dolar, tasas, bcra, fci = await asyncio.gather(
-        fetch_dolar(), fetch_tasas(), fetch_bcra(), fetch_fci()
-    )
-    byma = await fetch_byma_async()
-    ahora = datetime.now(ARG)
-    hora  = ahora.hour
-    turno = "Análisis de la mañana" if hora < 12 else "Análisis del mediodía" if hora < 17 else "Análisis de la tarde"
-    _cache["data"] = {"dolar": dolar, "tasas": tasas, "bcra": bcra, "fci": fci, "byma": byma}
-    _cache["actualizado"] = ahora.strftime("%d/%m · %H:%Mhs")
-    _cache["turno"] = turno
-    print(f"[{_cache['actualizado']}] Mercado actualizado — {turno}")
+    try:
+        dolar, tasas, bcra, fci = await asyncio.gather(
+            fetch_dolar(), fetch_tasas(), fetch_bcra(), fetch_fci()
+        )
+        byma = await fetch_byma_async()
+        ahora = datetime.now(ARG)
+        hora  = ahora.hour
+        turno = "Análisis de la mañana" if hora < 12 else "Análisis del mediodía" if hora < 17 else "Análisis de la tarde"
+        _cache["data"] = {"dolar": dolar, "tasas": tasas, "bcra": bcra, "fci": fci, "byma": byma}
+        _cache["actualizado"] = ahora.strftime("%d/%m · %H:%Mhs")
+        _cache["turno"] = turno
+        print(f"[{_cache['actualizado']}] Mercado actualizado — {turno}")
+    except Exception as e:
+        print(f"[refresh_market] error: {e}")
 
 async def _scheduler():
     """Corre cada minuto y dispara el refresh a las 9, 13 y 18hs Argentina."""
     HORAS = {9, 13, 18}
     ultimo = -1
     while True:
-        ahora = datetime.now(ARG)
-        if ahora.hour in HORAS and ahora.hour != ultimo:
-            ultimo = ahora.hour
-            await _refresh_market()
+        try:
+            ahora = datetime.now(ARG)
+            if ahora.hour in HORAS and ahora.hour != ultimo:
+                ultimo = ahora.hour
+                await _refresh_market()
+        except Exception as e:
+            print(f"[scheduler] error: {e}")
         await asyncio.sleep(60)
 
 @app.on_event("startup")
 async def startup():
-    # Primer refresh inmediato al arrancar
-    await _refresh_market()
-    # Lanzar el scheduler en background
+    # Refresh en background — no bloquea el arranque
+    asyncio.create_task(_refresh_market())
     asyncio.create_task(_scheduler())
 
 # ─── ENDPOINTS ────────────────────────────────────────────────
