@@ -313,13 +313,19 @@ function renderPlan() {
             </div>
           </td>
           <td>
-            <div class="plan-monto-wrap">
-              <span class="plan-monto-sym">$</span>
-              <input type="number" inputmode="numeric"
-                value="${Math.round(row.monto)}" placeholder="190000"
-                class="plan-monto-inp"
-                onchange="cambiarMonto(${row.id}, ${i}, this.value)"
-                onblur="cambiarMonto(${row.id}, ${i}, this.value)">
+            <div class="monto-add-wrap">
+              <div class="plan-monto-wrap">
+                <span class="plan-monto-sym">$</span>
+                <input type="number" inputmode="numeric"
+                  value="${Math.round(row.monto)}" placeholder="190000"
+                  class="plan-monto-inp"
+                  onchange="cambiarMonto(${row.id}, ${i}, this.value)"
+                  onblur="cambiarMonto(${row.id}, ${i}, this.value)">
+              </div>
+              ${isFirst
+                ? `<button class="btn-add-inst" title="Agregar instrumento"
+                     onclick="agregarFila('${mesKey}')">+</button>`
+                : '<div style="width:26px"></div>'}
             </div>
           </td>
           <td>
@@ -341,16 +347,6 @@ function renderPlan() {
         </tr>`;
     });
 
-    /* ── Fila de agregar instrumento ── */
-    tbody += `
-      <tr class="add-row${act}">
-        <td></td>
-        <td colspan="3">
-          <button class="add-btn add-btn--sm" onclick="agregarFila('${mesKey}')">
-            + otro instrumento este mes
-          </button>
-        </td>
-      </tr>`;
   });
 
   const totalAportado = planData.reduce((s, m) => s + parseFloat(m.monto), 0) + 190000;

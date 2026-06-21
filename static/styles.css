@@ -769,6 +769,39 @@ h1, .t-headline {
   border-style: dashed;
 }
 
+/* Botón + junto al monto */
+.btn-add-inst {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-border);
+  background: transparent;
+  color: var(--c-muted);
+  font-size: 17px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-std),
+              color var(--dur-fast) var(--ease-std),
+              background var(--dur-fast) var(--ease-std);
+}
+
+.btn-add-inst:active {
+  border-color: var(--c-brand);
+  color: var(--c-brand);
+  background: var(--c-brand-dim);
+}
+
+/* Celda monto + botón en fila */
+.monto-add-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
 /* ══════════════════════════════
    12. RESUMEN DE PLAN
 ══════════════════════════════ */
