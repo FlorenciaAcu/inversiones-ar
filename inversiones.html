@@ -1,246 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generanding</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-/* ═══════════════════════════════════════════
-   GENERANDING — Sistema de Diseño
-   Tokens → Base → Componentes → Layout
-═══════════════════════════════════════════ */
-
-/* ── TOKENS ── */
-:root {
-  /* Color — Marca */
-  --brand:        #1a5c40;
-  --brand-dim:    rgba(26,92,64,.08);
-  --brand-mid:    rgba(26,92,64,.16);
-  --accent:       #c04030;
-  --accent-dim:   rgba(192,64,48,.08);
-  --ppi:          #6b4a9a;
-  --ppi-dim:      rgba(107,74,154,.08);
-
-  /* Color — Superficie */
-  --bg:           #f5f0e8;
-  --surface:      #faf8f3;
-  --surface-2:    #f3efe6;
-  --surface-3:    #ebe6db;
-
-  /* Color — Texto */
-  --ink:          #2e2418;
-  --ink-2:        #5a3e22;
-  --muted:        #9a8a72;
-  --subtle:       #c0b09a;
-
-  /* Color — Borde */
-  --border:       #ddd5c4;
-  --border-s:     #c8bc9a;
-  --border-focus: #a07840;
-
-  /* Color — Semántico */
-  --ok:           #3a7a38;
-  --ok-dim:       rgba(58,122,56,.10);
-  --error:        #b03020;
-  --error-dim:    rgba(176,48,32,.08);
-
-  /* Tipografía */
-  --serif: 'Lora', Georgia, serif;
-  --sans:  'DM Sans', system-ui, sans-serif;
-
-  /* Espaciado — grid 8dp */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 24px;
-  --sp-6: 32px;
-  --sp-7: 48px;
-
-  /* Radio */
-  --r-xs:   4px;
-  --r-sm:   8px;
-  --r-md:   12px;
-  --r-lg:   16px;
-  --r-pill: 99px;
-
-  /* Elevación — sombras cálidas (Material) */
-  --e-0: none;
-  --e-1: 0 1px 3px rgba(46,36,24,.07);
-  --e-2: 0 2px 8px rgba(46,36,24,.10), 0 1px 3px rgba(46,36,24,.06);
-  --e-3: 0 8px 24px rgba(46,36,24,.12), 0 2px 8px rgba(46,36,24,.07);
-
-  /* Movimiento */
-  --ease: cubic-bezier(.4,0,.2,1);
-  --fast: 120ms;
-  --std:  200ms;
-  --slow: 350ms;
-}
-
-/* ── BASE ── */
-*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-html { -webkit-tap-highlight-color:transparent; }
-body {
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink);
-  min-height: 100vh;
-  background-color: var(--bg);
-  background-image:
-    linear-gradient(rgba(150,130,90,.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(150,130,90,.08) 1px, transparent 1px);
-  background-size: 24px 24px;
-  padding: 0 0 var(--sp-7);
-}
-
-/* ── TIPOGRAFÍA ── */
-h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--ink); letter-spacing:-.3px; line-height:1.15; }
-.tagline { font-family:var(--serif); font-style:italic; font-size:12px; color:var(--muted); margin-top:var(--sp-1); line-height:1.5; }
-.sec { font-family:var(--serif); font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin:var(--sp-5) 0 var(--sp-2); }
-.nota-legal { font-family:var(--serif); font-style:italic; font-size:11px; color:var(--subtle); margin-top:var(--sp-4); line-height:1.55; }
-
-/* ── NAV ── */
-.tab-nav { display:flex; background:var(--surface); border-bottom:1.5px solid var(--border); position:sticky; top:0; z-index:20; box-shadow:var(--e-1); }
-.tab-btn { flex:1; padding:var(--sp-3) var(--sp-2); background:none; border:none; font-family:var(--sans); font-size:12px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1.5px; letter-spacing:.1px; transition:color var(--fast) var(--ease), border-color var(--fast) var(--ease); }
-.tab-btn:active { opacity:.7; }
-.tab-btn.active { color:var(--brand); border-bottom-color:var(--brand); font-weight:600; }
-.tab-panel { display:none; }
-.tab-panel.active { display:block; }
-
-/* ── CUERPO ── */
-.card { background:var(--surface); padding:var(--sp-5) var(--sp-4) var(--sp-7); border-bottom:1.5px solid var(--border); }
-
-/* ── ENCABEZADO DE SECCIÓN ── */
-.header { display:flex; align-items:flex-start; gap:var(--sp-3); margin-bottom:var(--sp-3); padding-bottom:var(--sp-4); border-bottom:1px solid var(--border); }
-.accent { width:3px; min-height:40px; border-radius:2px; flex-shrink:0; margin-top:3px; }
-.accent-g { background:linear-gradient(180deg, var(--brand) 0%, transparent 100%); }
-.accent-r { background:linear-gradient(180deg, var(--accent) 0%, transparent 100%); }
-
-/* ── PROGRESO ── */
-.progress-section { margin:var(--sp-4) 0; padding:var(--sp-4); background:var(--surface-2); border:1.5px solid var(--border-s); border-radius:var(--r-md); box-shadow:var(--e-1); }
-.progress-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:var(--sp-3); }
-.progress-label { font-family:var(--serif); font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; }
-.progress-pct { font-family:var(--serif); font-size:2.4rem; font-weight:600; color:var(--accent); line-height:1; letter-spacing:-1.5px; }
-.progress-pct span { font-size:1.1rem; opacity:.6; }
-.track-wrap { height:10px; background:var(--surface-3); border-radius:var(--r-pill); overflow:visible; margin-bottom:var(--sp-3); position:relative; }
-.track-fill { height:100%; border-radius:var(--r-pill); background:linear-gradient(90deg, var(--accent), #e06030); transition:width var(--slow) var(--ease); position:relative; }
-.track-fill::after { content:''; position:absolute; right:-2px; top:50%; transform:translateY(-50%); width:18px; height:18px; background:var(--accent); border:3px solid var(--surface); border-radius:50%; box-shadow:var(--e-2); }
-.progress-meta { display:flex; justify-content:space-between; align-items:center; }
-.meta-current { font-size:13px; font-weight:600; color:var(--ink-2); }
-.meta-goal { font-size:12px; color:var(--muted); }
-.meta-message { font-family:var(--serif); font-style:italic; font-size:12.5px; color:var(--muted); text-align:center; margin-top:var(--sp-3); line-height:1.6; }
-
-/* ── CUENTAS ── */
-.rows-wrap { display:flex; flex-direction:column; gap:var(--sp-2); }
-.row { display:flex; align-items:center; gap:var(--sp-2); background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:var(--sp-3) var(--sp-4); transition:border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
-.row:focus-within { border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(160,120,64,.10); }
-.label-inp { flex:1; background:transparent; border:none; outline:none; font-family:var(--sans); font-size:15px; font-weight:500; color:var(--ink); min-width:0; }
-.label-inp::placeholder { color:var(--subtle); }
-.sep { width:1px; height:18px; background:var(--border); flex-shrink:0; }
-
-/* ── TOTAL ── */
-.divider { height:1px; background:linear-gradient(90deg, var(--border), transparent); border:none; margin:var(--sp-4) 0 var(--sp-3); }
-.total-row { display:flex; justify-content:space-between; align-items:center; padding:var(--sp-3) var(--sp-4); background:var(--surface-2); border:1.5px solid var(--border-s); border-radius:var(--r-sm); }
-.tl { font-family:var(--serif); font-size:13px; font-weight:600; color:var(--ink); }
-.tv { font-family:var(--serif); font-size:1.25rem; font-weight:600; color:var(--ink-2); }
-
-/* ── TIP CARD ── */
-.tip-card { background:var(--surface); border:1.5px solid var(--border); border-left:3px solid var(--accent); border-radius:var(--r-sm); padding:var(--sp-4); cursor:pointer; margin-top:var(--sp-5); transition:background var(--fast) var(--ease), transform var(--fast) var(--ease); }
-.tip-card:active { background:var(--surface-2); transform:scale(.99); }
-.tip-tag { font-size:9px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:var(--sp-2); }
-.tip-text { font-family:var(--serif); font-style:italic; font-size:14px; color:var(--ink-2); line-height:1.7; }
-.tip-hint { font-size:10px; color:var(--subtle); margin-top:var(--sp-3); text-align:right; }
-
-/* ── PLAN ── */
-.mes-card { border:1.5px solid var(--border); border-radius:var(--r-md); background:var(--surface-2); padding:var(--sp-3) var(--sp-4); margin-bottom:var(--sp-2); transition:border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
-.mes-card--col { flex-direction:column; align-items:stretch; }
-.mes-card.activo { background:var(--brand-dim); border-color:var(--brand); box-shadow:var(--e-1); }
-.mes-header { display:flex; align-items:center; gap:var(--sp-2); margin-bottom:var(--sp-3); }
-.mes-label { min-width:56px; }
-.mes-nombre { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--subtle); }
-.mes-nombre--activo { color:var(--brand); }
-.mes-tag { font-size:9px; font-weight:700; color:var(--brand); margin-top:2px; letter-spacing:.3px; }
-.plan-fila { margin-bottom:var(--sp-2); }
-.plan-fila-row { display:flex; align-items:center; gap:var(--sp-2); }
-.plan-feedback { font-family:var(--serif); font-style:italic; font-size:11px; color:var(--ok); margin-top:var(--sp-1); line-height:1.5; }
-.plan-saved { font-size:10px; font-weight:600; color:var(--ok); margin-top:2px; display:none; }
-
-/* ── RESUMEN ── */
-.resumen-card { background:var(--surface-2); border:1.5px solid var(--border-s); border-radius:var(--r-md); padding:var(--sp-4); margin-top:var(--sp-3); box-shadow:var(--e-1); }
-.resumen-lbl { font-family:var(--serif); font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; }
-.resumen-val { font-family:var(--serif); font-size:1.9rem; font-weight:600; color:var(--ink); margin:var(--sp-1) 0; letter-spacing:-.5px; }
-.resumen-sub { font-size:11px; color:var(--muted); }
-
-/* ── COMPONENTES FORM ── */
-.ds-input { background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:var(--sp-3); font-family:var(--sans); font-size:14px; font-weight:500; color:var(--ink); outline:none; width:100%; transition:border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
-.ds-input:focus { border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(160,120,64,.10); }
-.ds-input::placeholder { color:var(--subtle); font-weight:400; }
-
-.ds-select-wrap { position:relative; flex:1; min-width:0; }
-.ds-select-wrap::after { content:'↓'; position:absolute; right:var(--sp-3); top:50%; transform:translateY(-50%); color:var(--muted); font-size:10px; font-weight:700; pointer-events:none; }
-.ds-select { -webkit-appearance:none; appearance:none; background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:var(--sp-3) 28px var(--sp-3) var(--sp-3); font-family:var(--sans); font-size:13px; font-weight:500; color:var(--ink); cursor:pointer; width:100%; outline:none; transition:border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
-.ds-select:focus { border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(160,120,64,.10); }
-
-.plan-monto-wrap { display:flex; align-items:center; gap:var(--sp-1); flex-shrink:0; background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:var(--sp-3) var(--sp-2) var(--sp-3) var(--sp-3); transition:border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease); }
-.plan-monto-wrap:focus-within { border-color:var(--border-focus); box-shadow:0 0 0 3px rgba(160,120,64,.10); }
-.plan-monto-sym { font-size:11px; color:var(--muted); font-weight:600; flex-shrink:0; }
-.plan-monto-inp { background:transparent; border:none; outline:none; font-family:var(--sans); font-size:13px; font-weight:600; color:var(--ink); text-align:right; width:80px; }
-.plan-monto-inp::-webkit-outer-spin-button, .plan-monto-inp::-webkit-inner-spin-button { -webkit-appearance:none; }
-
-.ds-del { background:none; border:none; cursor:pointer; color:var(--subtle); font-size:14px; padding:var(--sp-1) var(--sp-2); flex-shrink:0; border-radius:var(--r-xs); transition:color var(--fast) var(--ease); }
-.ds-del:active { color:var(--accent); }
-
-.add-btn { width:100%; padding:var(--sp-3) var(--sp-4); background:transparent; color:var(--muted); border:1.5px dashed var(--border); border-radius:var(--r-sm); font-family:var(--sans); font-size:13px; font-weight:500; cursor:pointer; margin-top:var(--sp-3); text-align:left; transition:border-color var(--fast) var(--ease), color var(--fast) var(--ease), background var(--fast) var(--ease); }
-.add-btn:active { background:var(--brand-dim); border-color:var(--brand); color:var(--brand); }
-.add-btn--sm { padding:var(--sp-2) var(--sp-3); font-size:12px; margin-top:var(--sp-2); }
-
-.ds-error-banner { font-size:11px; color:var(--error); background:var(--error-dim); border:1px solid rgba(176,48,32,.2); border-radius:var(--r-sm); padding:var(--sp-2) var(--sp-3); margin-bottom:var(--sp-3); line-height:1.5; }
-
-/* ── MI CASA ── */
-.casa-desc { font-family:var(--serif); font-style:italic; font-size:13px; color:var(--muted); line-height:1.6; margin:var(--sp-3) 0 var(--sp-4); }
-.planos-toggle { display:flex; gap:var(--sp-2); margin-bottom:var(--sp-4); }
-.plano-btn { flex:1; padding:var(--sp-3) var(--sp-2); background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); font-family:var(--sans); font-size:12px; font-weight:500; color:var(--muted); cursor:pointer; text-align:center; transition:all var(--fast) var(--ease); }
-.plano-btn.active { background:var(--accent); border-color:var(--accent); color:white; font-weight:600; box-shadow:var(--e-2); }
-.plano-size { font-size:10px; opacity:.8; display:block; margin-top:2px; }
-.plano-wrap { display:none; }
-.plano-wrap.active { display:block; }
-.plano-card { background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-md); overflow:hidden; margin-bottom:var(--sp-4); box-shadow:var(--e-1); }
-.plano-header { padding:var(--sp-3) var(--sp-4); border-bottom:1px solid var(--border); }
-.plano-title { font-family:var(--serif); font-size:14px; font-weight:600; color:var(--ink); }
-.plano-sub { font-size:12px; color:var(--muted); margin-top:2px; }
-.plano-svg-wrap { padding:var(--sp-4); display:flex; justify-content:center; }
-.plano-svg-wrap svg { width:100%; max-width:320px; height:auto; }
-.amb-list { padding:0 var(--sp-4) var(--sp-4); display:flex; flex-wrap:wrap; gap:var(--sp-1); }
-.amb-tag { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-pill); padding:var(--sp-1) var(--sp-3); font-size:11px; color:var(--ink-2); font-weight:500; }
-.casa-quote { margin-top:var(--sp-5); background:var(--surface); border:1.5px solid var(--border); border-left:3px solid var(--accent); border-radius:var(--r-sm); padding:var(--sp-4); }
-.casa-quote p { font-family:var(--serif); font-style:italic; font-size:14px; color:var(--ink-2); line-height:1.7; }
-.quote-author { font-size:11px; color:var(--subtle); margin-top:var(--sp-2); text-align:right; }
-
-/* ── LAYOUT DESKTOP ── */
-@media (min-width:540px) {
-  body { display:flex; flex-direction:column; align-items:center; padding:var(--sp-7) var(--sp-4) var(--sp-7); }
-  .tab-nav, .card { width:100%; max-width:480px; }
-  .tab-nav { border:1.5px solid var(--border); border-radius:var(--r-lg) var(--r-lg) 0 0; border-bottom:none; box-shadow:var(--e-2); }
-  .card { border:1.5px solid var(--border); border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg); box-shadow:var(--e-2); }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generanding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
 
-
-<div class="tab-nav">
+<nav class="tab-nav">
   <button class="tab-btn active" onclick="go('ahorros')">Mis ahorros</button>
   <button class="tab-btn" onclick="go('plan')">Mi plan</button>
   <button class="tab-btn" onclick="go('casa')">Mi casa</button>
-</div>
+</nav>
 
-<div class="card">
+<main class="card">
 
-  <!-- ══ TAB 1: MIS AHORROS ══ -->
-  <div class="tab-panel active" id="tab-ahorros">
+  <!-- ══ PESTAÑA 1: MIS AHORROS ══ -->
+  <section class="tab-panel active" id="tab-ahorros">
+
     <div class="header">
       <div class="accent accent-r"></div>
       <div>
@@ -251,10 +31,15 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
 
     <div class="progress-section">
       <div class="progress-header">
-        <div class="progress-label">Objetivo: USD 40.000</div>
-        <div class="progress-pct" id="pct">0<span>%</span></div>
+        <div class="progress-label">
+          Objetivo
+          <span>USD 40.000 → mi casa</span>
+        </div>
+        <div class="progress-pct" id="pct">0<sup>%</sup></div>
       </div>
-      <div class="track-wrap"><div class="track-fill" id="track" style="width:0%"></div></div>
+      <div class="track-wrap">
+        <div class="track-fill" id="track" style="width:0%"></div>
+      </div>
       <div class="progress-meta">
         <span class="meta-current" id="meta-current">USD 0</span>
         <span class="meta-goal">✦ USD 40.000</span>
@@ -263,7 +48,7 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
     </div>
 
     <div id="cuentas-status"></div>
-    <div class="sec">Mis cuentas</div>
+    <span class="sec">Mis cuentas</span>
     <div class="rows-wrap" id="rows"></div>
 
     <hr class="divider">
@@ -272,16 +57,17 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
       <span class="tv">USD <span id="total">0,00</span></span>
     </div>
 
-
-    <div class="tip-card" onclick="nextTip()">
+    <div class="tip-card" onclick="nextTip()" role="button" tabindex="0">
       <div class="tip-tag">✦ sabiduría financiera</div>
       <p class="tip-text" id="tip-text"></p>
       <p class="tip-hint">tocá para otra reflexión →</p>
     </div>
-  </div>
 
-  <!-- ══ TAB 2: MI PLAN ══ -->
-  <div class="tab-panel" id="tab-plan">
+  </section>
+
+  <!-- ══ PESTAÑA 2: MI PLAN ══ -->
+  <section class="tab-panel" id="tab-plan">
+
     <div class="header">
       <div class="accent accent-g"></div>
       <div>
@@ -290,14 +76,16 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
       </div>
     </div>
 
-    <div class="sec">Proyección 12 meses</div>
+    <span class="sec">Proyección 12 meses</span>
     <div id="plan-meses"></div>
     <div id="plan-resumen"></div>
-    <p class="nota-legal">✦ Proyección estimada. Tasas variables. Tocá cualquier mes para cambiar el instrumento o el monto.</p>
-  </div>
+    <p class="nota-legal">✦ Proyección estimada. Tasas variables. Tocá cualquier mes para editar el instrumento o el monto.</p>
 
-  <!-- ══ TAB 3: MI CASA ══ -->
-  <div class="tab-panel" id="tab-casa">
+  </section>
+
+  <!-- ══ PESTAÑA 3: MI CASA ══ -->
+  <section class="tab-panel" id="tab-casa">
+
     <div class="header">
       <div class="accent accent-r"></div>
       <div>
@@ -305,16 +93,25 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
         <p class="tagline">El lugar que estoy construyendo,<br>un mes a la vez.</p>
       </div>
     </div>
+
     <p class="casa-desc">Terreno de esquina · 10,60 × 21 m · Patio, jardín y cochera. Dos versiones para elegir cuando llegue el momento.</p>
 
     <div class="planos-toggle">
-      <button class="plano-btn active" onclick="switchPlano('mono',this)">Monoambiente<br><span class="plano-size">~30 m²</span></button>
-      <button class="plano-btn" onclick="switchPlano('dorm',this)">Con dormitorio<br><span class="plano-size">~43 m²</span></button>
+      <button class="plano-btn active" onclick="switchPlano('mono', this)">
+        Monoambiente<span class="plano-size">~30 m²</span>
+      </button>
+      <button class="plano-btn" onclick="switchPlano('dorm', this)">
+        Con dormitorio<span class="plano-size">~43 m²</span>
+      </button>
     </div>
 
+    <!-- Plano monoambiente -->
     <div class="plano-wrap active" id="plano-mono">
       <div class="plano-card">
-        <div class="plano-header"><div class="plano-title">Planta E30E — Monoambiente</div><div class="plano-sub">Estar · Comedor · Cocina · Baño</div></div>
+        <div class="plano-header">
+          <div class="plano-title">Planta E30E — Monoambiente</div>
+          <div class="plano-sub">Estar · Comedor · Cocina · Baño</div>
+        </div>
         <div class="plano-svg-wrap">
           <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" width="220" height="320" fill="#c8d8b0" rx="2"/>
@@ -341,16 +138,23 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
           </svg>
         </div>
         <div class="amb-list">
-          <span class="amb-tag">Estar / Comedor</span><span class="amb-tag">Cocina</span>
-          <span class="amb-tag">Baño 2,40×1,60</span><span class="amb-tag">Cochera</span>
-          <span class="amb-tag">Patio</span><span class="amb-tag">Jardín</span>
+          <span class="amb-tag">Estar / Comedor</span>
+          <span class="amb-tag">Cocina</span>
+          <span class="amb-tag">Baño 2,40×1,60</span>
+          <span class="amb-tag">Cochera</span>
+          <span class="amb-tag">Patio</span>
+          <span class="amb-tag">Jardín</span>
         </div>
       </div>
     </div>
 
+    <!-- Plano con dormitorio -->
     <div class="plano-wrap" id="plano-dorm">
       <div class="plano-card">
-        <div class="plano-header"><div class="plano-title">Planta E43E — Con dormitorio</div><div class="plano-sub">Dormitorio · Estar · Comedor · Cocina · Baño</div></div>
+        <div class="plano-header">
+          <div class="plano-title">Planta E43E — Con dormitorio</div>
+          <div class="plano-sub">Dormitorio · Estar · Comedor · Cocina · Baño</div>
+        </div>
         <div class="plano-svg-wrap">
           <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" width="220" height="320" fill="#c8d8b0" rx="2"/>
@@ -379,9 +183,13 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
           </svg>
         </div>
         <div class="amb-list">
-          <span class="amb-tag">Dormitorio 3,10×4,00</span><span class="amb-tag">Estar / Comedor</span>
-          <span class="amb-tag">Cocina</span><span class="amb-tag">Baño 2,40×1,60</span>
-          <span class="amb-tag">Cochera</span><span class="amb-tag">Patio</span><span class="amb-tag">Jardín</span>
+          <span class="amb-tag">Dormitorio 3,10×4,00</span>
+          <span class="amb-tag">Estar / Comedor</span>
+          <span class="amb-tag">Cocina</span>
+          <span class="amb-tag">Baño 2,40×1,60</span>
+          <span class="amb-tag">Cochera</span>
+          <span class="amb-tag">Patio</span>
+          <span class="amb-tag">Jardín</span>
         </div>
       </div>
     </div>
@@ -390,327 +198,11 @@ h1 { font-family:var(--serif); font-size:1.4rem; font-weight:600; color:var(--in
       <p>Una casa no se construye de una vez. Se construye mes a mes, decisión a decisión. Este plano ya existe — solo está esperando que llegues.</p>
       <div class="quote-author">✦ tu objetivo financiero, con forma</div>
     </div>
-  </div>
 
-</div>
+  </section>
 
-<script>
-const API = (window.location.protocol === 'file:' || window.location.origin === 'null')
-  ? 'http://localhost:8000' : window.location.origin;
+</main>
 
-// ─── TABS ──────────────────────────────────────
-function go(t) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.getAttribute('onclick').includes("'"+t+"'")) b.classList.add('active');
-  });
-}
-
-function switchPlano(tipo, btn) {
-  document.querySelectorAll('.plano-wrap').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.plano-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('plano-'+tipo).classList.add('active');
-  btn.classList.add('active');
-}
-
-// ─── AHORROS ───────────────────────────────────
-const GOAL = 40000;
-let accounts = [];
-
-function fmt(n) { return Math.round(n).toLocaleString('es-AR'); }
-
-async function loadAccounts() {
-  try {
-    const r = await fetch(API + '/api/cuentas');
-    accounts = await r.json();
-  } catch(e) { accounts = []; }
-  renderAccounts();
-}
-
-async function saveAccount(acc) {
-  try {
-    if (acc.id) {
-      await fetch(API + '/api/cuentas/' + acc.id, {
-        method: 'PUT',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({label: acc.label, amount: acc.amount, orden: acc.orden || 0})
-      });
-    } else {
-      const r = await fetch(API + '/api/cuentas', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({label: acc.label, amount: acc.amount, orden: acc.orden || 0})
-      });
-      acc.id = (await r.json()).id;
-    }
-  } catch(e) {}
-}
-
-async function deleteAccount(id) {
-  try { await fetch(API + '/api/cuentas/' + id, {method:'DELETE'}); } catch(e) {}
-}
-
-function renderAccounts() {
-  const c = document.getElementById('rows');
-  c.innerHTML = '';
-  accounts.forEach((acc, i) => {
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = `
-      <input class="label-inp" value="${acc.label || ''}" placeholder="Nombre"
-        onchange="accounts[${i}].label=this.value;saveAccount(accounts[${i}])">
-      <div class="sep"></div>
-      <div class="plan-monto-wrap">
-        <span class="plan-monto-sym">USD</span>
-        <input class="plan-monto-inp" type="number" value="${acc.amount > 0 ? acc.amount : ''}" placeholder="0"
-          onchange="accounts[${i}].amount=parseFloat(this.value)||0;saveAccount(accounts[${i}]);updateGoal()">
-      </div>
-      <button class="ds-del" onclick="deleteAccount(accounts[${i}].id);accounts.splice(${i},1);renderAccounts()">✕</button>`;
-    c.appendChild(row);
-  });
-  updateGoal();
-}
-
-async function addRow() {
-  const nuevo = {label:'', amount:0, orden: accounts.length};
-  try {
-    const r = await fetch(API + '/api/cuentas', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(nuevo)
-    });
-    nuevo.id = (await r.json()).id;
-  } catch(e) {}
-  accounts.push(nuevo);
-  renderAccounts();
-}
-
-function updateGoal() {
-  const total = accounts.reduce((s,a) => s+(parseFloat(a.amount)||0), 0);
-  const pct   = Math.min((total/GOAL)*100, 100);
-  const rem   = GOAL - total;
-  document.getElementById('total').textContent =
-    total.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('track').style.width = pct.toFixed(1)+'%';
-  document.getElementById('pct').innerHTML = Math.floor(pct)+'<span>%</span>';
-  document.getElementById('meta-current').textContent =
-    'USD '+total.toLocaleString('es-AR',{maximumFractionDigits:0});
-  const msg = document.getElementById('meta-message');
-  if (total >= GOAL) {
-    msg.textContent = '✦ Lo lograste. La vida que construiste es real. ✦';
-  } else {
-    const rf = rem.toLocaleString('es-AR',{maximumFractionDigits:0});
-    const msgs = [
-      `USD ${rf} más por generar. Ya estás en camino.`,
-      `USD ${rf} más para producir. Cada mes que trabajás, más cerca.`,
-      `Cada mes más cerca. USD ${rf} más por construir.`,
-      `USD ${rf} más hacia tu libertad financiera. Lo estás haciendo.`,
-    ];
-    msg.textContent = msgs[Math.floor(pct/25)%msgs.length];
-  }
-}
-
-const tips = [
-  "La abundancia no se mide por cuánto gastás, sino por cuánto construís. Un ingreso mayor es una oportunidad de crecer, no de expandir gastos.",
-  "El dinero fluye hacia quienes lo cuidan. Guardar no es privarte — es enviarte un regalo al futuro.",
-  "Cuando sube tu ingreso, primero aumenta tu ahorro. Lo que no ves en tu cuenta corriente, no lo gastás.",
-  "Elegí gastar en experiencias que enriquecen tu vida, no en cosas que mantienen una imagen. La libertad financiera es la mayor señal de abundancia.",
-  "Visualizate ya en USD 40.000. Sentilo real. Esa emoción es lo que te mantiene alineada con el objetivo.",
-  "La gratitud por lo que ya tenés abre espacio para recibir más. ¿Qué tres cosas de tu situación financiera actual te generan paz?",
-  "No gastes para impresionar a personas que no están pensando en vos. Gastá para construir la vida que te imaginás.",
-  "Automatizá el ahorro antes de ver el dinero disponible. Lo que no pasa por tu cuenta corriente, no existe como tentación.",
-  "Los pequeños montos importan: USD 200 mensuales extra son USD 2.400 por año. Los hábitos chicos construyen fortunas grandes.",
-  "Vivís desde la abundancia cuando gastás con intención, no por impulso. La diferencia está en la pregunta: ¿esto me suma de verdad?",
-  "El lifestyle creep es silencioso: sube un plan, sube una suscripción, sube un hábito. Revisá tus gastos fijos cada tres meses con ojos frescos.",
-];
-let tipIdx = Math.floor(Math.random()*tips.length);
-function nextTip() { tipIdx=(tipIdx+1)%tips.length; document.getElementById('tip-text').textContent=tips[tipIdx]; }
-
-// ─── PLAN MENSUAL (desde BD) ───────────────────
-const MESES_NOM = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-const INSTRUMENTOS = [
-  {label:'Fondo Conservador MP',  plat:'Mercado Pago', tasa:0.030},
-  {label:'Empresas Argentinas MP',plat:'Mercado Pago', tasa:0.035},
-  {label:'Lecap PPI',             plat:'PPI',          tasa:0.035},
-  {label:'Boncap PPI',            plat:'PPI',          tasa:0.037},
-  {label:'Otro',                  plat:'',             tasa:0.030},
-];
-
-let planData = [];
-
-async function loadPlan() {
-  try {
-    const r = await fetch(API + '/api/plan');
-    planData = await r.json();
-  } catch(e) { planData = []; }
-  renderPlan();
-}
-
-async function savePlanMes(id, monto, instrumento, plataforma, tasa_mensual) {
-  try {
-    await fetch(API + '/api/plan/' + id, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({monto, instrumento, plataforma, tasa_mensual})
-    });
-    const el = document.getElementById('saved-'+id);
-    if (el) { el.style.display='block'; setTimeout(()=>el.style.display='none', 2000); }
-  } catch(e) {}
-}
-
-function cambiarInstrumento(id, i, value) {
-  const [inst, plat, tasa] = value.split('|');
-  planData[i].instrumento = inst;
-  planData[i].plataforma  = plat;
-  planData[i].tasa_mensual = parseFloat(tasa);
-  savePlanMes(id, planData[i].monto, inst, plat, parseFloat(tasa));
-  // actualizar feedback y color sin re-renderizar todo
-  const fb = document.getElementById('fb-'+id);
-  if (fb) fb.textContent = FEEDBACK[inst] || '';
-}
-
-function cambiarMonto(id, i, value) {
-  const monto = parseFloat(value) || 0;
-  planData[i].monto = monto;
-  savePlanMes(id, monto, planData[i].instrumento, planData[i].plataforma, planData[i].tasa_mensual);
-}
-
-async function agregarFila(mesKey) {
-  const inst = INSTRUMENTOS[0];
-  try {
-    const r = await fetch(API + '/api/plan', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({mes: mesKey, monto: 190000, instrumento: inst.label, plataforma: inst.plat, tasa_mensual: inst.tasa})
-    });
-    const data = await r.json();
-    planData.push({id: data.id, mes: mesKey, monto: 190000, instrumento: inst.label, plataforma: inst.plat, tasa_mensual: inst.tasa});
-  } catch(e) {}
-  renderPlan();
-}
-
-async function eliminarFila(id, mesKey) {
-  try {
-    await fetch(API + '/api/plan/' + id, {method: 'DELETE'});
-    planData = planData.filter(p => p.id !== id);
-  } catch(e) {}
-  renderPlan();
-}
-
-function mesLabel(mesStr) {
-  const [y, m] = mesStr.split('-');
-  return `${MESES_NOM[parseInt(m)-1]} ${y}`;
-}
-
-function hoyMes() {
-  const h = new Date();
-  return `${h.getFullYear()}-${String(h.getMonth()+1).padStart(2,'0')}`;
-}
-
-const FEEDBACK = {
-  'Fondo Conservador MP':   '✓ Liquidez inmediata, tasa ~3%/mes. Ideal para plata que puede necesitarse pronto.',
-  'Empresas Argentinas MP': '✓ Más rendimiento que el conservador, algo más de riesgo. Buen complemento.',
-  'Lecap PPI':              '✓ Tasa fija garantizada ~3.5%/mes. Sin volatilidad si llegás al vencimiento.',
-  'Boncap PPI':             '✓ Tasa fija ~3.7%/mes, mayor plazo. Ideal si no necesitás tocarlo.',
-  'Otro':                   '— Instrumento personalizado. Revisá la tasa antes de confirmar.',
-};
-
-function renderPlan() {
-  if (!planData.length) {
-    document.getElementById('plan-meses').innerHTML =
-      '<p class="nota-legal">Cargando plan...</p>';
-    return;
-  }
-
-  const hoy = hoyMes();
-
-  // agrupar por mes
-  const meses = {};
-  planData.forEach((row, i) => {
-    if (!meses[row.mes]) meses[row.mes] = [];
-    meses[row.mes].push({...row, _i: i});
-  });
-
-  let rows = '';
-  Object.keys(meses).sort().forEach(mesKey => {
-    const filas = meses[mesKey];
-    const esActual = mesKey === hoy;
-
-    let filasHtml = filas.map(row => {
-      const i = row._i;
-      const opciones = INSTRUMENTOS.map(o =>
-        `<option value="${o.label}|${o.plat}|${o.tasa}" ${row.instrumento===o.label?'selected':''}>${o.label}</option>`
-      ).join('');
-      const fb = FEEDBACK[row.instrumento] || '';
-      const puedeEliminar = filas.length > 1;
-
-      return `
-      <div id="fila-${row.id}" class="plan-fila">
-        <div class="plan-fila-row">
-          <div class="ds-select-wrap">
-            <select class="ds-select" onchange="cambiarInstrumento(${row.id},${i},this.value)">
-              ${opciones}
-            </select>
-          </div>
-          <div class="plan-monto-wrap">
-            <span class="plan-monto-sym">$</span>
-            <input type="number" value="${Math.round(row.monto)}" placeholder="190000"
-              class="plan-monto-inp"
-              onchange="cambiarMonto(${row.id},${i},this.value)"
-              onblur="cambiarMonto(${row.id},${i},this.value)">
-          </div>
-          ${puedeEliminar ? `<button class="ds-del" onclick="eliminarFila(${row.id},'${mesKey}')">✕</button>` : ''}
-        </div>
-        ${fb ? `<div id="fb-${row.id}" class="plan-feedback">${fb}</div>` : ''}
-        <div id="saved-${row.id}" class="plan-saved">✓ guardado</div>
-      </div>`;
-    }).join('');
-
-    rows += `
-    <div class="mes-card mes-card--col${esActual?' activo':''}">
-      <div class="mes-header">
-        <div class="mes-label">
-          <div class="mes-nombre${esActual?' mes-nombre--activo':''}">${mesLabel(mesKey)}</div>
-          ${esActual?'<div class="mes-tag">← este mes</div>':''}
-        </div>
-      </div>
-      ${filasHtml}
-      <button onclick="agregarFila('${mesKey}')" class="add-btn add-btn--sm">+ otro instrumento este mes</button>
-    </div>`;
-  });
-
-  const totalAportado = planData.reduce((s,m) => s + parseFloat(m.monto), 0) + 190000;
-  document.getElementById('plan-meses').innerHTML = rows;
-  document.getElementById('plan-resumen').innerHTML = `
-    <div class="resumen-card">
-      <div class="resumen-lbl">Total a aportar en 12 meses</div>
-      <div class="resumen-val">$${fmt(totalAportado)}</div>
-      <div class="resumen-sub">más los $190.000 que ya tenés en Mercado Pago</div>
-    </div>`;
-}
-
-// ─── CUENTAS — carga con diagnóstico ───────────
-async function loadAccounts() {
-  const status = document.getElementById('cuentas-status');
-  try {
-    const r = await fetch(API + '/api/cuentas');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    accounts = await r.json();
-    if (status) status.innerHTML = '';
-  } catch(e) {
-    if (status) status.innerHTML =
-      `<div class="ds-error-banner">⚠ No se pudieron cargar las cuentas desde la base de datos. ${e.message}</div>`;
-    accounts = [];
-  }
-  renderAccounts();
-}
-
-// ─── INIT ──────────────────────────────────────
-document.getElementById('tip-text').textContent = tips[tipIdx];
-loadAccounts();
-loadPlan();
-</script>
+<script src="/static/app.js"></script>
 </body>
 </html>

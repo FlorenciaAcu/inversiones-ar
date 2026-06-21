@@ -1,0 +1,1076 @@
+/* ═══════════════════════════════════════════════════════
+   GENERANDING — Design System
+   Identidad: papel cálido · gold & green · MD elevation
+   Capas: Tokens → Base → Tipografía → Nav → Componentes
+═══════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════
+   1. TOKENS DE DISEÑO
+══════════════════════════════ */
+:root {
+  /* ─ Colores de marca ─ */
+  --c-brand:       #1a5c40;   /* verde bosque — crecimiento */
+  --c-brand-light: #2a7a56;
+  --c-brand-dim:   rgba(26, 92, 64, .07);
+  --c-brand-mid:   rgba(26, 92, 64, .14);
+
+  --c-accent:      #b83a28;   /* terracota — objetivo, energía */
+  --c-accent-dim:  rgba(184, 58, 40, .08);
+
+  --c-gold:        #9a6210;   /* dorado — números financieros */
+  --c-gold-light:  #c07c20;
+  --c-gold-dim:    rgba(154, 98, 16, .08);
+
+  /* ─ Escala de superficie (papel cálido) ─ */
+  --c-bg:          #f2ede3;   /* fondo base — papel viejo */
+  --c-surface-0:   #faf7f0;   /* superficie elevada */
+  --c-surface-1:   #f5f1e8;   /* superficie base */
+  --c-surface-2:   #ede8dd;   /* superficie hundida */
+  --c-surface-3:   #e4ddd0;   /* superficie profunda */
+
+  /* ─ Texto ─ */
+  --c-ink:         #251c10;   /* negro tinta */
+  --c-ink-2:       #4a3520;   /* marrón texto secundario */
+  --c-muted:       #8a7a60;   /* texto terciario */
+  --c-subtle:      #b8a888;   /* texto placeholder / legal */
+
+  /* ─ Bordes ─ */
+  --c-border:      #d8d0bc;
+  --c-border-s:    #c4b89a;   /* borde fuerte */
+  --c-border-focus:#a07030;   /* foco — dorado oscuro */
+
+  /* ─ Semánticos ─ */
+  --c-ok:          #286a26;
+  --c-ok-dim:      rgba(40, 106, 38, .09);
+  --c-error:       #9a2010;
+  --c-error-dim:   rgba(154, 32, 16, .07);
+
+  /* ─ Tipografía ─ */
+  --f-serif:  'Lora', Georgia, serif;
+  --f-sans:   'DM Sans', system-ui, sans-serif;
+
+  /* ─ Escala tipográfica ─ */
+  --t-display:   2.8rem;  /* 44.8px — porcentaje de progreso */
+  --t-headline:  1.5rem;  /* 24px   — h1 */
+  --t-title:     1.1rem;  /* 17.6px — card titles */
+  --t-body:      0.9rem;  /* 14.4px — body copy */
+  --t-label:     0.75rem; /* 12px   — labels, nav */
+  --t-caption:   0.69rem; /* 11px   — captions */
+  --t-legal:     0.67rem; /* 10.7px — disclaimers */
+
+  /* ─ Espaciado (base 4dp) ─ */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-7:  32px;
+  --s-8:  40px;
+  --s-9:  48px;
+  --s-10: 64px;
+
+  /* ─ Radio de borde ─ */
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-pill: 100px;
+
+  /* ─ Elevación (sombras cálidas Material) ─ */
+  --e-1: 0 1px 2px rgba(37, 28, 16, .06),
+         0 1px 4px rgba(37, 28, 16, .04);
+  --e-2: 0 2px 6px rgba(37, 28, 16, .09),
+         0 1px 3px rgba(37, 28, 16, .06);
+  --e-3: 0 4px 16px rgba(37, 28, 16, .12),
+         0 2px 6px rgba(37, 28, 16, .07);
+  --e-4: 0 8px 28px rgba(37, 28, 16, .15),
+         0 3px 8px rgba(37, 28, 16, .08);
+
+  /* ─ Movimiento (Material easing) ─ */
+  --ease-std:  cubic-bezier(.4, 0, .2, 1);  /* standard */
+  --ease-dec:  cubic-bezier(0, 0, .2, 1);   /* decelerate */
+  --ease-acc:  cubic-bezier(.4, 0, 1, 1);   /* accelerate */
+  --dur-fast:  100ms;
+  --dur-std:   200ms;
+  --dur-slow:  300ms;
+}
+
+
+/* ══════════════════════════════
+   2. BASE / RESET
+══════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--c-ink);
+  background-color: var(--c-bg);
+  background-image:
+    linear-gradient(rgba(154, 130, 80, .07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(154, 130, 80, .07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  min-height: 100vh;
+  padding-bottom: var(--s-10);
+}
+
+
+/* ══════════════════════════════
+   3. ESCALA TIPOGRÁFICA
+══════════════════════════════ */
+
+/* Display — números grandes (% progreso, totales) */
+.t-display {
+  font-family: var(--f-serif);
+  font-size: var(--t-display);
+  font-weight: 600;
+  letter-spacing: -2px;
+  line-height: 1;
+  color: var(--c-ink);
+}
+
+/* Headline — h1 de cada pestaña */
+h1, .t-headline {
+  font-family: var(--f-serif);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  letter-spacing: -.4px;
+  line-height: 1.15;
+  color: var(--c-ink);
+}
+
+/* Title — encabezado de cards */
+.t-title {
+  font-family: var(--f-serif);
+  font-size: var(--t-title);
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+/* Label — etiquetas de sección MAYÚSCULAS */
+.sec,
+.t-label {
+  font-family: var(--f-sans);
+  font-size: var(--t-legal);
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.sec {
+  display: block;
+  margin: var(--s-7) 0 var(--s-3);
+}
+
+/* Caption */
+.t-caption {
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+  line-height: 1.45;
+}
+
+/* Legal / nota */
+.nota-legal {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-legal);
+  color: var(--c-subtle);
+  margin-top: var(--s-4);
+  line-height: 1.6;
+}
+
+/* Tagline (subtítulo de pestaña) */
+.tagline {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+  margin-top: var(--s-1);
+  line-height: 1.55;
+}
+
+
+/* ══════════════════════════════
+   4. NAVEGACIÓN POR PESTAÑAS
+══════════════════════════════ */
+.tab-nav {
+  display: flex;
+  background: var(--c-surface-0);
+  border-bottom: 1px solid var(--c-border);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: var(--e-2);
+}
+
+.tab-btn {
+  flex: 1;
+  position: relative;
+  padding: var(--s-3) var(--s-2) var(--s-3);
+  background: none;
+  border: none;
+  font-family: var(--f-sans);
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: .3px;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) var(--ease-std);
+}
+
+/* Línea indicadora bottom — Material style */
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2.5px;
+  border-radius: var(--r-pill) var(--r-pill) 0 0;
+  background: var(--c-brand);
+  transform: scaleX(0);
+  transition: transform var(--dur-std) var(--ease-std);
+}
+
+.tab-btn.active {
+  color: var(--c-brand);
+  font-weight: 700;
+}
+
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+.tab-btn:active {
+  background: var(--c-brand-dim);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+
+/* ══════════════════════════════
+   5. CONTENEDOR PRINCIPAL
+══════════════════════════════ */
+.card {
+  background: var(--c-surface-0);
+  padding: var(--s-7) var(--s-5) var(--s-10);
+  border-bottom: 1px solid var(--c-border);
+}
+
+
+/* ══════════════════════════════
+   6. ENCABEZADO DE PESTAÑA
+══════════════════════════════ */
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding-bottom: var(--s-5);
+  margin-bottom: var(--s-5);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.accent {
+  width: 3px;
+  min-height: 44px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  margin-top: 4px;
+}
+
+.accent-g { background: linear-gradient(to bottom, var(--c-brand), transparent); }
+.accent-r { background: linear-gradient(to bottom, var(--c-accent), transparent); }
+
+
+/* ══════════════════════════════
+   7. SECCIÓN DE PROGRESO (hero)
+══════════════════════════════ */
+.progress-section {
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-border-s);
+  border-radius: var(--r-lg);
+  padding: var(--s-6) var(--s-5);
+  margin-bottom: var(--s-7);
+  box-shadow: var(--e-2);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ornamento de fondo sutil */
+.progress-section::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,58,40,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--s-5);
+}
+
+.progress-label {
+  font-size: var(--t-legal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--c-muted);
+  line-height: 1.3;
+}
+
+.progress-label span {
+  display: block;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-caption);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--c-subtle);
+  margin-top: 3px;
+}
+
+/* El número grande — protagonista visual */
+.progress-pct {
+  font-family: var(--f-serif);
+  font-size: 3.4rem;
+  font-weight: 600;
+  color: var(--c-accent);
+  line-height: 1;
+  letter-spacing: -2.5px;
+  text-align: right;
+}
+
+.progress-pct sup {
+  font-size: 1.3rem;
+  letter-spacing: -1px;
+  opacity: .6;
+  vertical-align: super;
+}
+
+/* Barra de progreso */
+.track-wrap {
+  position: relative;
+  height: 12px;
+  background: var(--c-surface-3);
+  border-radius: var(--r-pill);
+  overflow: visible;
+  margin-bottom: var(--s-5);
+}
+
+.track-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--c-accent) 0%, #d05828 100%);
+  transition: width var(--dur-slow) var(--ease-dec);
+  position: relative;
+  box-shadow: 0 2px 6px rgba(184, 58, 40, .35);
+}
+
+/* Thumb al final de la barra */
+.track-fill::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background: var(--c-accent);
+  border: 3px solid var(--c-surface-0);
+  border-radius: 50%;
+  box-shadow: var(--e-3), 0 0 0 1px rgba(184, 58, 40, .25);
+  transition: right var(--dur-slow) var(--ease-dec);
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.meta-current {
+  font-family: var(--f-serif);
+  font-size: var(--t-title);
+  font-weight: 600;
+  color: var(--c-gold);
+  letter-spacing: -.3px;
+}
+
+.meta-goal {
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+}
+
+.meta-message {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+  margin-top: var(--s-4);
+  text-align: center;
+  line-height: 1.65;
+  padding-top: var(--s-4);
+  border-top: 1px dashed var(--c-border);
+}
+
+
+/* ══════════════════════════════
+   8. CUENTAS
+══════════════════════════════ */
+.rows-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-border-s);
+  border-radius: var(--r-md);
+  padding: var(--s-3) var(--s-4);
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std),
+    background var(--dur-fast) var(--ease-std);
+}
+
+.row:focus-within {
+  border-color: var(--c-border-focus);
+  border-left-color: var(--c-gold);
+  background: var(--c-surface-0);
+  box-shadow: var(--e-2), 0 0 0 3px var(--c-gold-dim);
+}
+
+.label-inp {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--f-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--c-ink);
+  min-width: 0;
+}
+
+.label-inp::placeholder { color: var(--c-subtle); }
+
+.sep {
+  width: 1px;
+  height: 18px;
+  background: var(--c-border);
+  flex-shrink: 0;
+}
+
+
+/* ══════════════════════════════
+   9. TOTAL
+══════════════════════════════ */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--c-border-s), transparent);
+  border: none;
+  margin: var(--s-5) 0 var(--s-4);
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-border-s);
+  border-radius: var(--r-md);
+  box-shadow: var(--e-1);
+}
+
+.tl {
+  font-family: var(--f-serif);
+  font-size: var(--t-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--c-muted);
+}
+
+.tv {
+  font-family: var(--f-serif);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  color: var(--c-gold);
+  letter-spacing: -.5px;
+}
+
+
+/* ══════════════════════════════
+   10. TIP / INSIGHT CARD
+══════════════════════════════ */
+.tip-card {
+  background: var(--c-surface-0);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-accent);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+  cursor: pointer;
+  margin-top: var(--s-7);
+  transition:
+    background var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std),
+    transform var(--dur-fast) var(--ease-std);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.tip-card:active {
+  background: var(--c-surface-1);
+  transform: scale(.985);
+  box-shadow: var(--e-1);
+}
+
+.tip-tag {
+  font-size: var(--t-legal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--c-accent);
+  margin-bottom: var(--s-3);
+}
+
+.tip-text {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-body);
+  color: var(--c-ink-2);
+  line-height: 1.75;
+}
+
+.tip-hint {
+  font-size: var(--t-legal);
+  color: var(--c-subtle);
+  margin-top: var(--s-4);
+  text-align: right;
+  letter-spacing: .2px;
+}
+
+
+/* ══════════════════════════════
+   11. PLAN MENSUAL
+══════════════════════════════ */
+.mes-card {
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  background: var(--c-surface-1);
+  overflow: hidden;
+  margin-bottom: var(--s-3);
+  transition:
+    border-color var(--dur-std) var(--ease-std),
+    box-shadow var(--dur-std) var(--ease-std);
+}
+
+.mes-card.activo {
+  border-color: var(--c-brand);
+  background: var(--c-brand-dim);
+  box-shadow: var(--e-2), 0 0 0 1px var(--c-brand);
+}
+
+.mes-header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface-2);
+}
+
+.mes-card.activo .mes-header {
+  background: var(--c-brand-mid);
+  border-bottom-color: rgba(26, 92, 64, .2);
+}
+
+.mes-label { flex: 1; }
+
+.mes-nombre {
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.mes-nombre--activo { color: var(--c-brand); }
+
+.mes-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--c-surface-0);
+  background: var(--c-brand);
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
+  margin-top: var(--s-1);
+}
+
+/* Cuerpo del mes card */
+.mes-body-wrap {
+  padding: var(--s-4);
+}
+
+.plan-fila {
+  margin-bottom: var(--s-3);
+}
+
+.plan-fila-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.plan-feedback {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--c-ok);
+  margin-top: var(--s-1);
+  padding-left: 2px;
+  line-height: 1.5;
+}
+
+.plan-saved {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-ok);
+  margin-top: 2px;
+  display: none;
+  letter-spacing: .3px;
+}
+
+
+/* ══════════════════════════════
+   12. RESUMEN DE PLAN
+══════════════════════════════ */
+.resumen-card {
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border-s);
+  border-radius: var(--r-lg);
+  padding: var(--s-6) var(--s-5);
+  margin-top: var(--s-4);
+  box-shadow: var(--e-2);
+}
+
+.resumen-lbl {
+  font-size: var(--t-legal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--c-muted);
+  margin-bottom: var(--s-2);
+}
+
+.resumen-val {
+  font-family: var(--f-serif);
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--c-gold);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: var(--s-2);
+}
+
+.resumen-sub {
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+  line-height: 1.5;
+}
+
+
+/* ══════════════════════════════
+   13. COMPONENTES FORM (DS)
+══════════════════════════════ */
+
+/* Input de texto */
+.ds-input {
+  background: var(--c-surface-1);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-sm);
+  padding: var(--s-3) var(--s-4);
+  font-family: var(--f-sans);
+  font-size: var(--t-body);
+  font-weight: 500;
+  color: var(--c-ink);
+  outline: none;
+  width: 100%;
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std);
+}
+
+.ds-input:focus {
+  border-color: var(--c-border-focus);
+  box-shadow: 0 0 0 3px var(--c-gold-dim);
+}
+
+.ds-input::placeholder {
+  color: var(--c-subtle);
+  font-weight: 400;
+}
+
+/* Select dropdown */
+.ds-select-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: var(--s-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c-muted);
+  font-size: 11px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.ds-select {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--c-surface-1);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-sm);
+  padding: var(--s-3) 28px var(--s-3) var(--s-3);
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-ink);
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std);
+}
+
+.ds-select:focus {
+  border-color: var(--c-border-focus);
+  box-shadow: 0 0 0 3px var(--c-gold-dim);
+}
+
+/* Input de monto */
+.plan-monto-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  flex-shrink: 0;
+  background: var(--c-surface-1);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-sm);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-3);
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std);
+}
+
+.plan-monto-wrap:focus-within {
+  border-color: var(--c-border-focus);
+  box-shadow: 0 0 0 3px var(--c-gold-dim);
+}
+
+.plan-monto-sym {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-muted);
+  flex-shrink: 0;
+  letter-spacing: .3px;
+}
+
+.plan-monto-inp {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-ink);
+  text-align: right;
+  width: 84px;
+  min-width: 0;
+}
+
+.plan-monto-inp::-webkit-outer-spin-button,
+.plan-monto-inp::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Botón eliminar */
+.ds-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--c-subtle);
+  font-size: 13px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--r-sm);
+  transition: color var(--dur-fast) var(--ease-std), background var(--dur-fast) var(--ease-std);
+}
+
+.ds-del:active {
+  color: var(--c-accent);
+  background: var(--c-accent-dim);
+}
+
+/* Botón agregar */
+.add-btn {
+  width: 100%;
+  padding: var(--s-3) var(--s-4);
+  background: transparent;
+  color: var(--c-muted);
+  border: 1.5px dashed var(--c-border);
+  border-radius: var(--r-sm);
+  font-family: var(--f-sans);
+  font-size: var(--t-caption);
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: var(--s-3);
+  text-align: left;
+  letter-spacing: .2px;
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    color var(--dur-fast) var(--ease-std),
+    background var(--dur-fast) var(--ease-std);
+}
+
+.add-btn:active {
+  background: var(--c-brand-dim);
+  border-color: var(--c-brand);
+  color: var(--c-brand);
+}
+
+.add-btn--sm {
+  padding: var(--s-2) var(--s-4);
+  font-size: 11px;
+  margin-top: var(--s-2);
+}
+
+/* Banner de error */
+.ds-error-banner {
+  font-size: var(--t-legal);
+  color: var(--c-error);
+  background: var(--c-error-dim);
+  border: 1px solid rgba(154, 32, 16, .2);
+  border-radius: var(--r-sm);
+  padding: var(--s-2) var(--s-4);
+  margin-bottom: var(--s-4);
+  line-height: 1.55;
+}
+
+
+/* ══════════════════════════════
+   14. MI CASA
+══════════════════════════════ */
+.casa-desc {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--c-muted);
+  line-height: 1.65;
+  margin: var(--s-4) 0 var(--s-6);
+}
+
+.planos-toggle {
+  display: flex;
+  gap: var(--s-2);
+  margin-bottom: var(--s-5);
+}
+
+.plano-btn {
+  flex: 1;
+  padding: var(--s-4) var(--s-3);
+  background: var(--c-surface-1);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  font-family: var(--f-sans);
+  font-size: var(--t-caption);
+  font-weight: 600;
+  color: var(--c-muted);
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.35;
+  transition:
+    background var(--dur-fast) var(--ease-std),
+    border-color var(--dur-fast) var(--ease-std),
+    color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std);
+}
+
+.plano-btn.active {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: #fff;
+  box-shadow: var(--e-3);
+}
+
+.plano-size {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  opacity: .8;
+  margin-top: 3px;
+}
+
+.plano-wrap { display: none; }
+.plano-wrap.active { display: block; }
+
+.plano-card {
+  background: var(--c-surface-1);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: var(--s-5);
+  box-shadow: var(--e-2);
+}
+
+.plano-header {
+  padding: var(--s-4) var(--s-5);
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface-2);
+}
+
+.plano-title {
+  font-family: var(--f-serif);
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+.plano-sub {
+  font-size: var(--t-caption);
+  color: var(--c-muted);
+  margin-top: 3px;
+}
+
+.plano-svg-wrap {
+  padding: var(--s-5);
+  display: flex;
+  justify-content: center;
+  background: var(--c-surface-1);
+}
+
+.plano-svg-wrap svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.amb-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  padding: 0 var(--s-5) var(--s-5);
+}
+
+.amb-tag {
+  background: var(--c-surface-0);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-pill);
+  padding: 3px var(--s-3);
+  font-size: 11px;
+  color: var(--c-ink-2);
+  font-weight: 500;
+}
+
+.casa-quote {
+  margin-top: var(--s-7);
+  background: var(--c-surface-0);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-accent);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+}
+
+.casa-quote p {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-body);
+  color: var(--c-ink-2);
+  line-height: 1.75;
+}
+
+.quote-author {
+  font-size: var(--t-legal);
+  color: var(--c-subtle);
+  margin-top: var(--s-3);
+  text-align: right;
+  letter-spacing: .3px;
+}
+
+
+/* ══════════════════════════════
+   15. LAYOUT DESKTOP
+══════════════════════════════ */
+@media (min-width: 540px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--s-9) var(--s-5) var(--s-10);
+  }
+
+  .tab-nav,
+  .card {
+    width: 100%;
+    max-width: 488px;
+  }
+
+  .tab-nav {
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    border-bottom: none;
+    box-shadow: var(--e-3);
+  }
+
+  .card {
+    border: 1px solid var(--c-border);
+    border-top: none;
+    border-radius: 0 0 var(--r-xl) var(--r-xl);
+    box-shadow: var(--e-3);
+  }
+}
