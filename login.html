@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Things Go</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-brand: #e0407e;
+      --c-brand-dim: rgba(224, 64, 126, .13);
+      --glow-brand: 0 0 20px rgba(224,64,126,.42), 0 0 48px rgba(224,64,126,.16);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+      background-color: #020608;
+      background-image:
+        radial-gradient(ellipse 70% 60% at 88% 5%,  rgba(200,36,96,.36)  0%, transparent 60%),
+        radial-gradient(ellipse 60% 55% at 4%  96%,  rgba(16,136,168,.32) 0%, transparent 58%),
+        radial-gradient(ellipse 45% 40% at 50% 50%,  rgba(160,16,72,.08)  0%, transparent 68%),
+        linear-gradient(rgba(114,204,224,.038) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(114,204,224,.038) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    /* ── Card glass ── */
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(8, 16, 28, .72);
+      backdrop-filter: blur(32px) saturate(170%);
+      -webkit-backdrop-filter: blur(32px) saturate(170%);
+      border: 1px solid rgba(255,255,255,.11);
+      border-radius: 28px;
+      padding: 52px 40px 44px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 16px 60px rgba(0,0,0,.64),
+        0 4px 14px rgba(0,0,0,.35);
+      animation: card-in .5s cubic-bezier(0,0,.2,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glow interno */
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(224,64,126,.16) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .login-card::after {
+      content: '';
+      position: absolute;
+      bottom: -50px; left: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(40,168,192,.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ── Logo / título ── */
+    .login-logo {
+      text-align: center;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .login-title {
+      font-family: 'Lora', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -.5px;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #e0407e 0%, #f090d0 55%, #c0e8f8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 14px rgba(224,64,126,.40));
+    }
+
+    .login-sub {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 13px;
+      color: rgba(114, 204, 224, .70);
+      margin-top: 8px;
+      letter-spacing: .2px;
+    }
+
+    /* ── Ornamento ── */
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 32px 0 28px;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .login-divider-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--c-brand);
+      box-shadow: 0 0 8px rgba(224,64,126,.55);
+    }
+
+    /* ── Form ── */
+    .login-form {
+      position: relative;
+    }
+
+    .field-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(122, 178, 200, .80);
+      margin-bottom: 8px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: rgba(4, 10, 18, .60);
+      border: 1.5px solid rgba(255,255,255,.09);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #eaf6f8;
+      outline: none;
+      transition: border-color .13s, box-shadow .13s;
+      -webkit-appearance: none;
+      appearance: none;
+      /* Ocultar caracteres — font-size grande evita zoom en iOS */
+      letter-spacing: 4px;
+    }
+
+    .field-input::placeholder {
+      letter-spacing: 0;
+      color: rgba(78, 142, 168, .60);
+    }
+
+    .field-input:focus {
+      border-color: rgba(224,64,126,.45);
+      box-shadow: 0 0 0 3px rgba(224,64,126,.12);
+    }
+
+    /* ── Botón ── */
+    .login-btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 8px;
+      background: var(--c-brand);
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        var(--glow-brand);
+      transition: opacity .13s, transform .13s, box-shadow .13s;
+    }
+
+    .login-btn:active {
+      opacity: .88;
+      transform: scale(.98);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.10), 0 0 12px rgba(224,64,126,.30);
+    }
+
+    /* ── Error ── */
+    .login-error {
+      display: none;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(240,100,100,.09);
+      border: 1px solid rgba(240,100,100,.22);
+      border-radius: 10px;
+      font-size: 13px;
+      color: #f09090;
+      text-align: center;
+    }
+
+    .login-error.visible { display: block; }
+
+    /* Shake animation en error */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-8px); }
+      40%      { transform: translateX(8px); }
+      60%      { transform: translateX(-5px); }
+      80%      { transform: translateX(5px); }
+    }
+
+    .shake { animation: shake .4s cubic-bezier(.4,0,.2,1); }
+
+    /* ── Entrada card ── */
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(20px) scale(.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card" id="card">
+  <div class="login-logo">
+    <div class="login-title">Good Things Go</div>
+    <p class="login-sub">Tu espacio financiero, solo tuyo.</p>
+  </div>
+
+  <div class="login-divider">
+    <div class="login-divider-dot"></div>
+  </div>
+
+  <form class="login-form" method="POST" action="/login" id="form">
+    <div class="field-wrap">
+      <label class="field-label" for="pwd">Contraseña</label>
+      <input
+        class="field-input"
+        id="pwd"
+        type="password"
+        name="password"
+        placeholder="••••••••"
+        autocomplete="current-password"
+        autofocus
+        required>
+    </div>
+    <button class="login-btn" type="submit">Entrar →</button>
+    <div class="login-error" id="err">Contraseña incorrecta. Intentá de nuevo.</div>
+  </form>
+</div>
+
+<script>
+  // Mostrar error si viene ?err=1 en la URL
+  if (new URLSearchParams(location.search).get('err') === '1') {
+    const err = document.getElementById('err');
+    const card = document.getElementById('card');
+    err.classList.add('visible');
+    card.classList.add('shake');
+    card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+    // Limpiar el campo
+    document.getElementById('pwd').value = '';
+    document.getElementById('pwd').focus();
+  }
+</script>
+
+</body>
+</html>

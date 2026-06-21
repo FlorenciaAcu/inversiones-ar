@@ -4,14 +4,16 @@ Backend de inversiones AR
 - Railway: PostgreSQL via DATABASE_URL
 - Análisis de mercado: 3 veces al día (9am, 1pm, 6pm Argentina)
 """
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Form, Cookie
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import httpx
 import asyncio
+import hashlib, hmac as _hmac
 from datetime import datetime, date
 import os
 from zoneinfo import ZoneInfo
@@ -223,8 +225,34 @@ except Exception as e:
     print(f"[DB] ERROR en init_db: {e}")
     import traceback; traceback.print_exc()
 
+# ─── AUTH ────────────────────────────────────────────────────
+_GTG_PASSWORD = os.environ.get("GTG_PASSWORD", "changeme")
+_GTG_SECRET   = os.environ.get("GTG_SECRET",   "gtg-secret-2024")
+# Token de sesión: HMAC(secret, password) — cambia si alguno cambia
+SESSION_TOKEN = _hmac.new(
+    _GTG_SECRET.encode(), _GTG_PASSWORD.encode(), hashlib.sha256
+).hexdigest()
+
+if _GTG_PASSWORD == "changeme":
+    print("[AUTH] ⚠ Usando contraseña por defecto. Seteá GTG_PASSWORD en las variables de entorno.")
+
+class AuthMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        path = request.url.path
+        # Rutas públicas: login y archivos estáticos
+        if path.startswith("/login") or path.startswith("/static") or path == "/favicon.ico":
+            return await call_next(request)
+        # Verificar cookie de sesión
+        token = request.cookies.get("gtg_session", "")
+        if not _hmac.compare_digest(token, SESSION_TOKEN):
+            if path.startswith("/api"):
+                return JSONResponse({"error": "no autorizado"}, status_code=401)
+            return RedirectResponse("/login")
+        return await call_next(request)
+
 # ─── APP ─────────────────────────────────────────────────────
-app = FastAPI(title="Inversiones AR")
+app = FastAPI(title="Good Things Go")
+app.add_middleware(AuthMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -580,6 +608,31 @@ async def context():
     lines += ["", "Contexto: inversora argentina, horizonte 12 meses, objetivo crecer pesos en USD, plataforma PPI.",
               "Que me recomendas hacer?"]
     return {"context": "\n".join(lines)}
+
+# ─── LOGIN / LOGOUT ───────────────────────────────────────────
+@app.get("/login")
+def login_page():
+    base = os.path.dirname(os.path.abspath(__file__))
+    p = os.path.join(base, "login.html")
+    return FileResponse(p) if os.path.exists(p) else HTMLResponse("<h2>login.html no encontrado</h2>", 404)
+
+@app.post("/login")
+def do_login(password: str = Form(...)):
+    if _hmac.compare_digest(password, _GTG_PASSWORD):
+        resp = RedirectResponse("/", status_code=302)
+        resp.set_cookie(
+            "gtg_session", SESSION_TOKEN,
+            httponly=True, samesite="lax",
+            max_age=60 * 60 * 24 * 30   # 30 días
+        )
+        return resp
+    return RedirectResponse("/login?err=1", status_code=302)
+
+@app.get("/logout")
+def logout():
+    resp = RedirectResponse("/login", status_code=302)
+    resp.delete_cookie("gtg_session")
+    return resp
 
 # ─── SERVE HTML ───────────────────────────────────────────────
 @app.get("/")
