@@ -200,8 +200,9 @@ async function savePlanMes(id, monto, instrumento, plataforma, tasa_mensual) {
     });
     const el = document.getElementById('saved-' + id);
     if (el) {
-      el.style.display = 'block';
-      setTimeout(() => { el.style.display = 'none'; }, 2000);
+      el.classList.remove('visible');
+      void el.offsetWidth; /* reflow para reiniciar animación */
+      el.classList.add('visible');
     }
   } catch (e) {}
 }

@@ -1044,20 +1044,60 @@ h1, .t-headline {
 
 
 /* ══════════════════════════════
-   15. LAYOUT DESKTOP
+   15. ANIMACIONES
 ══════════════════════════════ */
-@media (min-width: 540px) {
+
+/* Tab switch: fade-in suave */
+@keyframes tab-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tab-panel.active {
+  animation: tab-in var(--dur-std) var(--ease-dec) both;
+}
+
+/* Shimmer en progress bar al cargar */
+@keyframes shimmer {
+  0%   { opacity: .6; }
+  50%  { opacity: 1; }
+  100% { opacity: .6; }
+}
+
+.track-fill[style*="width:0%"],
+.track-fill[style="width:0%;"] {
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Guardado: flash verde */
+@keyframes saved-flash {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  20%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.plan-saved.visible {
+  display: block !important;
+  animation: saved-flash 2s var(--ease-std) forwards;
+}
+
+
+/* ══════════════════════════════
+   16. LAYOUT DESKTOP
+══════════════════════════════ */
+@media (min-width: 600px) {
   body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--s-9) var(--s-5) var(--s-10);
+    padding: var(--s-8) var(--s-5) var(--s-10);
   }
 
   .tab-nav,
   .card {
     width: 100%;
-    max-width: 488px;
+    max-width: 840px;
   }
 
   .tab-nav {
@@ -1072,5 +1112,61 @@ h1, .t-headline {
     border-top: none;
     border-radius: 0 0 var(--r-xl) var(--r-xl);
     box-shadow: var(--e-3);
+    padding: var(--s-7) var(--s-7) var(--s-10);
+  }
+
+  /* ── Tab 1: layout 2 columnas ── */
+  .ahorros-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-7);
+    align-items: start;
+  }
+
+  .ahorros-right .sec {
+    margin-top: 0;
+  }
+
+  /* ── Tab 2: Plan en grid 3×4 ── */
+  #plan-meses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-3);
+  }
+
+  /* Mes card en grid: más compacta */
+  #plan-meses .mes-card {
+    margin-bottom: 0;
+  }
+
+  #plan-meses .mes-body-wrap {
+    padding: var(--s-3);
+  }
+
+  #plan-meses .add-btn--sm {
+    font-size: 10px;
+    padding: var(--s-1) var(--s-2);
+  }
+
+  #plan-meses .plan-feedback {
+    font-size: 10px;
+  }
+
+  /* ── Tab 3: Mi casa — ambos planos side by side ── */
+  .casa-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-5);
+    align-items: start;
+  }
+
+  /* En desktop ambos planos visibles siempre — el toggle solo aplica en mobile */
+  .casa-layout .plano-wrap {
+    display: block !important;
+  }
+
+  /* Ocultar el toggle en desktop — los planos ya son side by side */
+  .planos-toggle {
+    display: none;
   }
 }

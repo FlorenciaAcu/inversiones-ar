@@ -29,38 +29,48 @@
       </div>
     </div>
 
-    <div class="progress-section">
-      <div class="progress-header">
-        <div class="progress-label">
-          Objetivo
-          <span>USD 40.000 → mi casa</span>
+    <div class="ahorros-grid">
+
+      <!-- Columna izquierda: progreso -->
+      <div class="ahorros-left">
+        <div class="progress-section">
+          <div class="progress-header">
+            <div class="progress-label">
+              Objetivo
+              <span>USD 40.000 → mi casa</span>
+            </div>
+            <div class="progress-pct" id="pct">0<sup>%</sup></div>
+          </div>
+          <div class="track-wrap">
+            <div class="track-fill" id="track" style="width:0%"></div>
+          </div>
+          <div class="progress-meta">
+            <span class="meta-current" id="meta-current">USD 0</span>
+            <span class="meta-goal">✦ USD 40.000</span>
+          </div>
+          <p class="meta-message" id="meta-message"></p>
         </div>
-        <div class="progress-pct" id="pct">0<sup>%</sup></div>
-      </div>
-      <div class="track-wrap">
-        <div class="track-fill" id="track" style="width:0%"></div>
-      </div>
-      <div class="progress-meta">
-        <span class="meta-current" id="meta-current">USD 0</span>
-        <span class="meta-goal">✦ USD 40.000</span>
-      </div>
-      <p class="meta-message" id="meta-message"></p>
-    </div>
 
-    <div id="cuentas-status"></div>
-    <span class="sec">Mis cuentas</span>
-    <div class="rows-wrap" id="rows"></div>
+        <div class="tip-card" onclick="nextTip()" role="button" tabindex="0">
+          <div class="tip-tag">✦ sabiduría financiera</div>
+          <p class="tip-text" id="tip-text"></p>
+          <p class="tip-hint">tocá para otra reflexión →</p>
+        </div>
+      </div>
 
-    <hr class="divider">
-    <div class="total-row">
-      <span class="tl">Total generado</span>
-      <span class="tv">USD <span id="total">0,00</span></span>
-    </div>
+      <!-- Columna derecha: cuentas -->
+      <div class="ahorros-right">
+        <div id="cuentas-status"></div>
+        <span class="sec">Mis cuentas</span>
+        <div class="rows-wrap" id="rows"></div>
 
-    <div class="tip-card" onclick="nextTip()" role="button" tabindex="0">
-      <div class="tip-tag">✦ sabiduría financiera</div>
-      <p class="tip-text" id="tip-text"></p>
-      <p class="tip-hint">tocá para otra reflexión →</p>
+        <hr class="divider">
+        <div class="total-row">
+          <span class="tl">Total generado</span>
+          <span class="tv">USD <span id="total">0,00</span></span>
+        </div>
+      </div>
+
     </div>
 
   </section>
@@ -104,6 +114,8 @@
         Con dormitorio<span class="plano-size">~43 m²</span>
       </button>
     </div>
+
+    <div class="casa-layout">
 
     <!-- Plano monoambiente -->
     <div class="plano-wrap active" id="plano-mono">
@@ -193,6 +205,8 @@
         </div>
       </div>
     </div>
+
+    </div><!-- /.casa-layout -->
 
     <div class="casa-quote">
       <p>Una casa no se construye de una vez. Se construye mes a mes, decisión a decisión. Este plano ya existe — solo está esperando que llegues.</p>
