@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════
-   GENERANDING — Design System
-   Identidad: papel cálido · gold & green · MD elevation
+   GOOD THINGS GO — Design System
+   Identidad: dark slate · magenta & teal · liquid energy
    Capas: Tokens → Base → Tipografía → Nav → Componentes
 ═══════════════════════════════════════════════════════ */
 
@@ -10,54 +10,54 @@
 ══════════════════════════════ */
 :root {
   /* ─ Colores de marca ─ */
-  --c-brand:       #1a5c40;   /* verde bosque — crecimiento */
-  --c-brand-light: #2a7a56;
-  --c-brand-dim:   rgba(26, 92, 64, .07);
-  --c-brand-mid:   rgba(26, 92, 64, .14);
+  --c-brand:       #d03272;   /* magenta — primario */
+  --c-brand-light: #e4509a;
+  --c-brand-dim:   rgba(208, 50, 114, .10);
+  --c-brand-mid:   rgba(208, 50, 114, .18);
 
-  --c-accent:      #b83a28;   /* terracota — objetivo, energía */
-  --c-accent-dim:  rgba(184, 58, 40, .08);
+  --c-accent:      #1a8090;   /* teal — secundario */
+  --c-accent-dim:  rgba(26, 128, 144, .10);
 
-  --c-gold:        #9a6210;   /* dorado — números financieros */
-  --c-gold-light:  #c07c20;
-  --c-gold-dim:    rgba(154, 98, 16, .08);
+  --c-gold:        #5ab0c8;   /* teal-azul — números financieros */
+  --c-gold-light:  #78c8e0;
+  --c-gold-dim:    rgba(90, 176, 200, .14);
 
-  /* ─ Escala de superficie (papel cálido) ─ */
-  --c-bg:          #f2ede3;   /* fondo base — papel viejo */
-  --c-surface-0:   #faf7f0;   /* superficie elevada */
-  --c-surface-1:   #f5f1e8;   /* superficie base */
-  --c-surface-2:   #ede8dd;   /* superficie hundida */
-  --c-surface-3:   #e4ddd0;   /* superficie profunda */
+  /* ─ Escala de superficie (dark slate) ─ */
+  --c-bg:          #070d10;   /* fondo base — casi negro */
+  --c-surface-0:   #0c151b;   /* superficie elevada */
+  --c-surface-1:   #111d25;   /* superficie base */
+  --c-surface-2:   #172530;   /* superficie hundida */
+  --c-surface-3:   #1d2e3b;   /* superficie profunda */
 
   /* ─ Texto ─ */
-  --c-ink:         #251c10;   /* negro tinta */
-  --c-ink-2:       #4a3520;   /* marrón texto secundario */
-  --c-muted:       #8a7a60;   /* texto terciario */
-  --c-subtle:      #b8a888;   /* texto placeholder / legal */
+  --c-ink:         #ddeef4;   /* blanco frío */
+  --c-ink-2:       #8ab8cc;   /* teal claro */
+  --c-muted:       #4a7888;   /* muted teal */
+  --c-subtle:      #2e5060;   /* muy sutil */
 
   /* ─ Bordes ─ */
-  --c-border:      #d8d0bc;
-  --c-border-s:    #c4b89a;   /* borde fuerte */
-  --c-border-focus:#a07030;   /* foco — dorado oscuro */
+  --c-border:      rgba(90, 176, 200, .10);
+  --c-border-s:    rgba(90, 176, 200, .18);   /* borde fuerte */
+  --c-border-focus:#d03272;                   /* foco — magenta */
 
   /* ─ Semánticos ─ */
-  --c-ok:          #286a26;
-  --c-ok-dim:      rgba(40, 106, 38, .09);
-  --c-error:       #9a2010;
-  --c-error-dim:   rgba(154, 32, 16, .07);
+  --c-ok:          #40b090;
+  --c-ok-dim:      rgba(64, 176, 144, .10);
+  --c-error:       #d04040;
+  --c-error-dim:   rgba(208, 64, 64, .08);
 
   /* ─ Tipografía ─ */
   --f-serif:  'Lora', Georgia, serif;
   --f-sans:   'DM Sans', system-ui, sans-serif;
 
   /* ─ Escala tipográfica ─ */
-  --t-display:   2.8rem;  /* 44.8px — porcentaje de progreso */
-  --t-headline:  1.5rem;  /* 24px   — h1 */
-  --t-title:     1.1rem;  /* 17.6px — card titles */
-  --t-body:      0.9rem;  /* 14.4px — body copy */
-  --t-label:     0.75rem; /* 12px   — labels, nav */
-  --t-caption:   0.69rem; /* 11px   — captions */
-  --t-legal:     0.67rem; /* 10.7px — disclaimers */
+  --t-display:   2.8rem;
+  --t-headline:  1.5rem;
+  --t-title:     1.1rem;
+  --t-body:      0.9rem;
+  --t-label:     0.75rem;
+  --t-caption:   0.69rem;
+  --t-legal:     0.67rem;
 
   /* ─ Espaciado (base 4dp) ─ */
   --s-1:  4px;
@@ -79,20 +79,24 @@
   --r-xl:   24px;
   --r-pill: 100px;
 
-  /* ─ Elevación (sombras cálidas Material) ─ */
-  --e-1: 0 1px 2px rgba(37, 28, 16, .06),
-         0 1px 4px rgba(37, 28, 16, .04);
-  --e-2: 0 2px 6px rgba(37, 28, 16, .09),
-         0 1px 3px rgba(37, 28, 16, .06);
-  --e-3: 0 4px 16px rgba(37, 28, 16, .12),
-         0 2px 6px rgba(37, 28, 16, .07);
-  --e-4: 0 8px 28px rgba(37, 28, 16, .15),
-         0 3px 8px rgba(37, 28, 16, .08);
+  /* ─ Elevación (sombras oscuras) ─ */
+  --e-1: 0 1px 2px rgba(0, 0, 0, .30),
+         0 1px 4px rgba(0, 0, 0, .20);
+  --e-2: 0 2px 8px rgba(0, 0, 0, .40),
+         0 1px 3px rgba(0, 0, 0, .25);
+  --e-3: 0 4px 20px rgba(0, 0, 0, .50),
+         0 2px 8px rgba(0, 0, 0, .30);
+  --e-4: 0 8px 32px rgba(0, 0, 0, .60),
+         0 3px 10px rgba(0, 0, 0, .35);
 
-  /* ─ Movimiento (Material easing) ─ */
-  --ease-std:  cubic-bezier(.4, 0, .2, 1);  /* standard */
-  --ease-dec:  cubic-bezier(0, 0, .2, 1);   /* decelerate */
-  --ease-acc:  cubic-bezier(.4, 0, 1, 1);   /* accelerate */
+  /* Glow magenta para elementos destacados */
+  --glow-brand: 0 0 20px rgba(208, 50, 114, .30),
+                0 0 40px rgba(208, 50, 114, .12);
+
+  /* ─ Movimiento ─ */
+  --ease-std:  cubic-bezier(.4, 0, .2, 1);
+  --ease-dec:  cubic-bezier(0, 0, .2, 1);
+  --ease-acc:  cubic-bezier(.4, 0, 1, 1);
   --dur-fast:  100ms;
   --dur-std:   200ms;
   --dur-slow:  300ms;
@@ -120,8 +124,8 @@ body {
   color: var(--c-ink);
   background-color: var(--c-bg);
   background-image:
-    linear-gradient(rgba(154, 130, 80, .07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(154, 130, 80, .07) 1px, transparent 1px);
+    linear-gradient(rgba(26, 128, 144, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 128, 144, .05) 1px, transparent 1px);
   background-size: 28px 28px;
   min-height: 100vh;
   padding-bottom: var(--s-10);
@@ -131,8 +135,6 @@ body {
 /* ══════════════════════════════
    3. ESCALA TIPOGRÁFICA
 ══════════════════════════════ */
-
-/* Display — números grandes (% progreso, totales) */
 .t-display {
   font-family: var(--f-serif);
   font-size: var(--t-display);
@@ -142,7 +144,6 @@ body {
   color: var(--c-ink);
 }
 
-/* Headline — h1 de cada pestaña */
 h1, .t-headline {
   font-family: var(--f-serif);
   font-size: var(--t-headline);
@@ -152,7 +153,6 @@ h1, .t-headline {
   color: var(--c-ink);
 }
 
-/* Title — encabezado de cards */
 .t-title {
   font-family: var(--f-serif);
   font-size: var(--t-title);
@@ -160,7 +160,6 @@ h1, .t-headline {
   color: var(--c-ink);
 }
 
-/* Label — etiquetas de sección MAYÚSCULAS */
 .sec,
 .t-label {
   font-family: var(--f-sans);
@@ -176,14 +175,12 @@ h1, .t-headline {
   margin: var(--s-7) 0 var(--s-3);
 }
 
-/* Caption */
 .t-caption {
   font-size: var(--t-caption);
   color: var(--c-muted);
   line-height: 1.45;
 }
 
-/* Legal / nota */
 .nota-legal {
   font-family: var(--f-serif);
   font-style: italic;
@@ -193,7 +190,6 @@ h1, .t-headline {
   line-height: 1.6;
 }
 
-/* Tagline (subtítulo de pestaña) */
 .tagline {
   font-family: var(--f-serif);
   font-style: italic;
@@ -229,11 +225,9 @@ h1, .t-headline {
   letter-spacing: .3px;
   color: var(--c-muted);
   cursor: pointer;
-  transition:
-    color var(--dur-fast) var(--ease-std);
+  transition: color var(--dur-fast) var(--ease-std);
 }
 
-/* Línea indicadora bottom — Material style */
 .tab-btn::after {
   content: '';
   position: absolute;
@@ -294,12 +288,12 @@ h1, .t-headline {
   margin-top: 4px;
 }
 
-.accent-g { background: linear-gradient(to bottom, var(--c-brand), transparent); }
-.accent-r { background: linear-gradient(to bottom, var(--c-accent), transparent); }
+.accent-g { background: linear-gradient(to bottom, var(--c-accent), transparent); }
+.accent-r { background: linear-gradient(to bottom, var(--c-brand), transparent); }
 
 
 /* ══════════════════════════════
-   7. SECCIÓN DE PROGRESO (hero)
+   7. SECCIÓN DE PROGRESO
 ══════════════════════════════ */
 .progress-section {
   background: var(--c-surface-1);
@@ -312,16 +306,15 @@ h1, .t-headline {
   position: relative;
 }
 
-/* Ornamento de fondo sutil */
 .progress-section::before {
   content: '';
   position: absolute;
   top: -20px;
   right: -20px;
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(184,58,40,.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(208, 50, 114, .12) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -353,15 +346,15 @@ h1, .t-headline {
   margin-top: 3px;
 }
 
-/* El número grande — protagonista visual */
 .progress-pct {
   font-family: var(--f-serif);
   font-size: 3.4rem;
   font-weight: 600;
-  color: var(--c-accent);
+  color: var(--c-brand);
   line-height: 1;
   letter-spacing: -2.5px;
   text-align: right;
+  text-shadow: var(--glow-brand);
 }
 
 .progress-pct sup {
@@ -384,13 +377,12 @@ h1, .t-headline {
 .track-fill {
   height: 100%;
   border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--c-accent) 0%, #d05828 100%);
+  background: linear-gradient(90deg, #901858 0%, var(--c-brand) 60%, #e050a0 100%);
   transition: width var(--dur-slow) var(--ease-dec);
   position: relative;
-  box-shadow: 0 2px 6px rgba(184, 58, 40, .35);
+  box-shadow: 0 2px 10px rgba(208, 50, 114, .45);
 }
 
-/* Thumb al final de la barra */
 .track-fill::after {
   content: '';
   position: absolute;
@@ -399,10 +391,10 @@ h1, .t-headline {
   transform: translateY(-50%);
   width: 22px;
   height: 22px;
-  background: var(--c-accent);
-  border: 3px solid var(--c-surface-0);
+  background: var(--c-brand);
+  border: 3px solid var(--c-surface-1);
   border-radius: 50%;
-  box-shadow: var(--e-3), 0 0 0 1px rgba(184, 58, 40, .25);
+  box-shadow: var(--e-3), 0 0 0 1px rgba(208, 50, 114, .40), var(--glow-brand);
   transition: right var(--dur-slow) var(--ease-dec);
 }
 
@@ -464,9 +456,9 @@ h1, .t-headline {
 
 .row:focus-within {
   border-color: var(--c-border-focus);
-  border-left-color: var(--c-gold);
-  background: var(--c-surface-0);
-  box-shadow: var(--e-2), 0 0 0 3px var(--c-gold-dim);
+  border-left-color: var(--c-brand);
+  background: var(--c-surface-2);
+  box-shadow: var(--e-2), 0 0 0 2px var(--c-brand-dim);
 }
 
 .label-inp {
@@ -534,9 +526,9 @@ h1, .t-headline {
    10. TIP / INSIGHT CARD
 ══════════════════════════════ */
 .tip-card {
-  background: var(--c-surface-0);
+  background: var(--c-surface-1);
   border: 1px solid var(--c-border);
-  border-left: 3px solid var(--c-accent);
+  border-left: 3px solid var(--c-brand);
   border-radius: var(--r-md);
   padding: var(--s-5);
   cursor: pointer;
@@ -550,9 +542,9 @@ h1, .t-headline {
 }
 
 .tip-card:active {
-  background: var(--c-surface-1);
+  background: var(--c-surface-2);
   transform: scale(.985);
-  box-shadow: var(--e-1);
+  box-shadow: var(--e-2);
 }
 
 .tip-tag {
@@ -560,7 +552,7 @@ h1, .t-headline {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: var(--c-accent);
+  color: var(--c-brand);
   margin-bottom: var(--s-3);
 }
 
@@ -582,40 +574,117 @@ h1, .t-headline {
 
 
 /* ══════════════════════════════
-   11. PLAN MENSUAL
+   11b. TABLA PLAN (estilo Excel)
 ══════════════════════════════ */
-.mes-card {
+.plan-table-wrap {
   border: 1px solid var(--c-border);
   border-radius: var(--r-md);
-  background: var(--c-surface-1);
   overflow: hidden;
-  margin-bottom: var(--s-3);
-  transition:
-    border-color var(--dur-std) var(--ease-std),
-    box-shadow var(--dur-std) var(--ease-std);
+  box-shadow: var(--e-1);
 }
 
-.mes-card.activo {
-  border-color: var(--c-brand);
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-caption);
+}
+
+.plan-table thead tr {
+  background: var(--c-surface-3);
+}
+
+.plan-table thead th {
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--t-legal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  color: var(--c-muted);
+  text-align: left;
+  border-bottom: 1.5px solid var(--c-border-s);
+  white-space: nowrap;
+}
+
+.plan-table .col-mes   { width: 96px; }
+.plan-table .col-monto { width: 136px; }
+.plan-table .col-del   { width: 36px; }
+
+.plan-table td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: middle;
+  background: var(--c-surface-1);
+}
+
+.plan-table .mes-row--first td {
+  border-top: 2px solid var(--c-border-s);
+}
+
+.plan-table tbody tr:first-child td {
+  border-top: none;
+}
+
+.plan-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.plan-table .mes-cell {
+  padding: var(--s-3) var(--s-4);
+  vertical-align: top;
+}
+
+.plan-table .activo-row td {
   background: var(--c-brand-dim);
-  box-shadow: var(--e-2), 0 0 0 1px var(--c-brand);
 }
 
-.mes-header {
+.plan-table .feedback-row td {
+  padding-top: 2px;
+  padding-bottom: var(--s-3);
+  border-bottom: none;
+}
+
+.plan-table .add-row td {
+  padding-top: var(--s-1);
+  padding-bottom: var(--s-3);
+  border-bottom: none;
+}
+
+.plan-table .add-row .add-btn {
+  margin-top: 0;
+  border-style: dashed;
+}
+
+.btn-add-inst {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-border);
+  background: transparent;
+  color: var(--c-muted);
+  font-size: 17px;
+  line-height: 1;
   display: flex;
   align-items: center;
-  gap: var(--s-3);
-  padding: var(--s-3) var(--s-4);
-  border-bottom: 1px solid var(--c-border);
-  background: var(--c-surface-2);
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-std),
+    color var(--dur-fast) var(--ease-std),
+    background var(--dur-fast) var(--ease-std);
 }
 
-.mes-card.activo .mes-header {
-  background: var(--c-brand-mid);
-  border-bottom-color: rgba(26, 92, 64, .2);
+.btn-add-inst:active {
+  border-color: var(--c-brand);
+  color: var(--c-brand);
+  background: var(--c-brand-dim);
 }
 
-.mes-label { flex: 1; }
+.monto-add-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
 
 .mes-nombre {
   font-size: var(--t-label);
@@ -635,26 +704,12 @@ h1, .t-headline {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .5px;
-  color: var(--c-surface-0);
+  color: #fff;
   background: var(--c-brand);
   border-radius: var(--r-pill);
   padding: 2px 8px;
   margin-top: var(--s-1);
-}
-
-/* Cuerpo del mes card */
-.mes-body-wrap {
-  padding: var(--s-4);
-}
-
-.plan-fila {
-  margin-bottom: var(--s-3);
-}
-
-.plan-fila-row {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
+  box-shadow: 0 0 8px rgba(208, 50, 114, .4);
 }
 
 .plan-feedback {
@@ -676,131 +731,6 @@ h1, .t-headline {
   letter-spacing: .3px;
 }
 
-
-/* ══════════════════════════════
-   11b. TABLA PLAN (estilo Excel)
-══════════════════════════════ */
-
-/* Wrapper con border-radius (border-collapse rompe border-radius en <table>) */
-.plan-table-wrap {
-  border: 1px solid var(--c-border);
-  border-radius: var(--r-md);
-  overflow: hidden;
-  box-shadow: var(--e-1);
-}
-
-.plan-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--t-caption);
-}
-
-/* Encabezado */
-.plan-table thead tr {
-  background: var(--c-surface-3);
-}
-
-.plan-table thead th {
-  padding: var(--s-2) var(--s-4);
-  font-size: var(--t-legal);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .9px;
-  color: var(--c-muted);
-  text-align: left;
-  border-bottom: 1.5px solid var(--c-border-s);
-  white-space: nowrap;
-}
-
-/* Anchos de columna */
-.plan-table .col-mes   { width: 96px; }
-.plan-table .col-monto { width: 136px; }
-.plan-table .col-del   { width: 36px; }
-
-/* Celdas base */
-.plan-table td {
-  padding: var(--s-2) var(--s-3);
-  border-bottom: 1px solid var(--c-border);
-  vertical-align: middle;
-  background: var(--c-surface-0);
-}
-
-/* Separador entre grupos de meses — línea más fuerte */
-.plan-table .mes-row--first td {
-  border-top: 2px solid var(--c-border-s);
-}
-
-.plan-table tbody tr:first-child td {
-  border-top: none;
-}
-
-/* Última fila: sin borde inferior */
-.plan-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* Celda de mes */
-.plan-table .mes-cell {
-  padding: var(--s-3) var(--s-4);
-  vertical-align: top;
-}
-
-/* Mes activo: tinte verde en toda la fila */
-.plan-table .activo-row td {
-  background: var(--c-brand-dim);
-}
-
-/* Fila de feedback */
-.plan-table .feedback-row td {
-  padding-top: 2px;
-  padding-bottom: var(--s-3);
-  border-bottom: none;
-}
-
-/* Fila de agregar instrumento */
-.plan-table .add-row td {
-  padding-top: var(--s-1);
-  padding-bottom: var(--s-3);
-  border-bottom: none;
-}
-
-.plan-table .add-row .add-btn {
-  margin-top: 0;
-  border-style: dashed;
-}
-
-/* Botón + junto al monto */
-.btn-add-inst {
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 1.5px solid var(--c-border);
-  background: transparent;
-  color: var(--c-muted);
-  font-size: 17px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease-std),
-              color var(--dur-fast) var(--ease-std),
-              background var(--dur-fast) var(--ease-std);
-}
-
-.btn-add-inst:active {
-  border-color: var(--c-brand);
-  color: var(--c-brand);
-  background: var(--c-brand-dim);
-}
-
-/* Celda monto + botón en fila */
-.monto-add-wrap {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-}
 
 /* ══════════════════════════════
    12. RESUMEN DE PLAN
@@ -843,8 +773,6 @@ h1, .t-headline {
 /* ══════════════════════════════
    13. COMPONENTES FORM (DS)
 ══════════════════════════════ */
-
-/* Input de texto */
 .ds-input {
   background: var(--c-surface-1);
   border: 1.5px solid var(--c-border);
@@ -863,7 +791,7 @@ h1, .t-headline {
 
 .ds-input:focus {
   border-color: var(--c-border-focus);
-  box-shadow: 0 0 0 3px var(--c-gold-dim);
+  box-shadow: 0 0 0 3px var(--c-brand-dim);
 }
 
 .ds-input::placeholder {
@@ -871,7 +799,6 @@ h1, .t-headline {
   font-weight: 400;
 }
 
-/* Select dropdown */
 .ds-select-wrap {
   position: relative;
   flex: 1;
@@ -893,7 +820,7 @@ h1, .t-headline {
 .ds-select {
   -webkit-appearance: none;
   appearance: none;
-  background: var(--c-surface-1);
+  background: var(--c-surface-2);
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-sm);
   padding: var(--s-3) 28px var(--s-3) var(--s-3);
@@ -911,16 +838,15 @@ h1, .t-headline {
 
 .ds-select:focus {
   border-color: var(--c-border-focus);
-  box-shadow: 0 0 0 3px var(--c-gold-dim);
+  box-shadow: 0 0 0 3px var(--c-brand-dim);
 }
 
-/* Input de monto */
 .plan-monto-wrap {
   display: flex;
   align-items: center;
   gap: var(--s-1);
   flex-shrink: 0;
-  background: var(--c-surface-1);
+  background: var(--c-surface-2);
   border: 1.5px solid var(--c-border);
   border-radius: var(--r-sm);
   padding: var(--s-3) var(--s-3) var(--s-3) var(--s-3);
@@ -931,7 +857,7 @@ h1, .t-headline {
 
 .plan-monto-wrap:focus-within {
   border-color: var(--c-border-focus);
-  box-shadow: 0 0 0 3px var(--c-gold-dim);
+  box-shadow: 0 0 0 2px var(--c-brand-dim);
 }
 
 .plan-monto-sym {
@@ -960,7 +886,6 @@ h1, .t-headline {
   -webkit-appearance: none;
 }
 
-/* Botón eliminar */
 .ds-del {
   background: none;
   border: none;
@@ -974,15 +899,16 @@ h1, .t-headline {
   justify-content: center;
   flex-shrink: 0;
   border-radius: var(--r-sm);
-  transition: color var(--dur-fast) var(--ease-std), background var(--dur-fast) var(--ease-std);
+  transition:
+    color var(--dur-fast) var(--ease-std),
+    background var(--dur-fast) var(--ease-std);
 }
 
 .ds-del:active {
-  color: var(--c-accent);
-  background: var(--c-accent-dim);
+  color: var(--c-brand);
+  background: var(--c-brand-dim);
 }
 
-/* Botón agregar */
 .add-btn {
   width: 100%;
   padding: var(--s-3) var(--s-4);
@@ -1015,12 +941,11 @@ h1, .t-headline {
   margin-top: var(--s-2);
 }
 
-/* Banner de error */
 .ds-error-banner {
   font-size: var(--t-legal);
   color: var(--c-error);
   background: var(--c-error-dim);
-  border: 1px solid rgba(154, 32, 16, .2);
+  border: 1px solid rgba(208, 64, 64, .25);
   border-radius: var(--r-sm);
   padding: var(--s-2) var(--s-4);
   margin-bottom: var(--s-4);
@@ -1067,10 +992,10 @@ h1, .t-headline {
 }
 
 .plano-btn.active {
-  background: var(--c-accent);
-  border-color: var(--c-accent);
+  background: var(--c-brand);
+  border-color: var(--c-brand);
   color: #fff;
-  box-shadow: var(--e-3);
+  box-shadow: var(--e-2), var(--glow-brand);
 }
 
 .plano-size {
@@ -1133,7 +1058,7 @@ h1, .t-headline {
 }
 
 .amb-tag {
-  background: var(--c-surface-0);
+  background: var(--c-surface-2);
   border: 1px solid var(--c-border);
   border-radius: var(--r-pill);
   padding: 3px var(--s-3);
@@ -1144,9 +1069,9 @@ h1, .t-headline {
 
 .casa-quote {
   margin-top: var(--s-7);
-  background: var(--c-surface-0);
+  background: var(--c-surface-1);
   border: 1px solid var(--c-border);
-  border-left: 3px solid var(--c-accent);
+  border-left: 3px solid var(--c-brand);
   border-radius: var(--r-md);
   padding: var(--s-5);
 }
@@ -1171,8 +1096,6 @@ h1, .t-headline {
 /* ══════════════════════════════
    15. ANIMACIONES
 ══════════════════════════════ */
-
-/* Tab switch: fade-in suave */
 @keyframes tab-in {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1182,11 +1105,10 @@ h1, .t-headline {
   animation: tab-in var(--dur-std) var(--ease-dec) both;
 }
 
-/* Shimmer en progress bar al cargar */
 @keyframes shimmer {
-  0%   { opacity: .6; }
-  50%  { opacity: 1; }
-  100% { opacity: .6; }
+  0%   { opacity: .4; }
+  50%  { opacity: .8; }
+  100% { opacity: .4; }
 }
 
 .track-fill[style*="width:0%"],
@@ -1194,7 +1116,6 @@ h1, .t-headline {
   animation: shimmer 1.4s ease-in-out infinite;
 }
 
-/* Guardado: flash verde */
 @keyframes saved-flash {
   0%   { opacity: 0; transform: translateY(-4px); }
   20%  { opacity: 1; transform: translateY(0); }
@@ -1240,7 +1161,6 @@ h1, .t-headline {
     padding: var(--s-7) var(--s-7) var(--s-10);
   }
 
-  /* ── Tab 1: layout 2 columnas ── */
   .ahorros-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1252,9 +1172,6 @@ h1, .t-headline {
     margin-top: 0;
   }
 
-  /* plan-table: full width en desktop, sin cambios */
-
-  /* ── Tab 3: Mi casa — ambos planos side by side ── */
   .casa-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1262,12 +1179,10 @@ h1, .t-headline {
     align-items: start;
   }
 
-  /* En desktop ambos planos visibles siempre — el toggle solo aplica en mobile */
   .casa-layout .plano-wrap {
     display: block !important;
   }
 
-  /* Ocultar el toggle en desktop — los planos ya son side by side */
   .planos-toggle {
     display: none;
   }
