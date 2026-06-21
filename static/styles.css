@@ -678,6 +678,98 @@ h1, .t-headline {
 
 
 /* ══════════════════════════════
+   11b. TABLA PLAN (estilo Excel)
+══════════════════════════════ */
+
+/* Wrapper con border-radius (border-collapse rompe border-radius en <table>) */
+.plan-table-wrap {
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--e-1);
+}
+
+.plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-caption);
+}
+
+/* Encabezado */
+.plan-table thead tr {
+  background: var(--c-surface-3);
+}
+
+.plan-table thead th {
+  padding: var(--s-2) var(--s-4);
+  font-size: var(--t-legal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  color: var(--c-muted);
+  text-align: left;
+  border-bottom: 1.5px solid var(--c-border-s);
+  white-space: nowrap;
+}
+
+/* Anchos de columna */
+.plan-table .col-mes   { width: 96px; }
+.plan-table .col-monto { width: 136px; }
+.plan-table .col-del   { width: 36px; }
+
+/* Celdas base */
+.plan-table td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: middle;
+  background: var(--c-surface-0);
+}
+
+/* Separador entre grupos de meses — línea más fuerte */
+.plan-table .mes-row--first td {
+  border-top: 2px solid var(--c-border-s);
+}
+
+.plan-table tbody tr:first-child td {
+  border-top: none;
+}
+
+/* Última fila: sin borde inferior */
+.plan-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Celda de mes */
+.plan-table .mes-cell {
+  padding: var(--s-3) var(--s-4);
+  vertical-align: top;
+}
+
+/* Mes activo: tinte verde en toda la fila */
+.plan-table .activo-row td {
+  background: var(--c-brand-dim);
+}
+
+/* Fila de feedback */
+.plan-table .feedback-row td {
+  padding-top: 2px;
+  padding-bottom: var(--s-3);
+  border-bottom: none;
+}
+
+/* Fila de agregar instrumento */
+.plan-table .add-row td {
+  padding-top: var(--s-1);
+  padding-bottom: var(--s-3);
+  border-bottom: none;
+}
+
+.plan-table .add-row .add-btn {
+  margin-top: 0;
+  border-style: dashed;
+}
+
+/* ══════════════════════════════
    12. RESUMEN DE PLAN
 ══════════════════════════════ */
 .resumen-card {
@@ -1127,30 +1219,7 @@ h1, .t-headline {
     margin-top: 0;
   }
 
-  /* ── Tab 2: Plan en grid 3×4 ── */
-  #plan-meses {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--s-3);
-  }
-
-  /* Mes card en grid: más compacta */
-  #plan-meses .mes-card {
-    margin-bottom: 0;
-  }
-
-  #plan-meses .mes-body-wrap {
-    padding: var(--s-3);
-  }
-
-  #plan-meses .add-btn--sm {
-    font-size: 10px;
-    padding: var(--s-1) var(--s-2);
-  }
-
-  #plan-meses .plan-feedback {
-    font-size: 10px;
-  }
+  /* plan-table: full width en desktop, sin cambios */
 
   /* ── Tab 3: Mi casa — ambos planos side by side ── */
   .casa-layout {

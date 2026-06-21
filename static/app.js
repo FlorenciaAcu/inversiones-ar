@@ -276,29 +276,43 @@ function renderPlan() {
     meses[row.mes].push({ ...row, _i: i });
   });
 
-  let html = '';
-  Object.keys(meses).sort().forEach(mesKey => {
+  let tbody = '';
+
+  Object.keys(meses).sort().forEach((mesKey, mesIdx) => {
     const filas    = meses[mesKey];
     const esActual = mesKey === hoy;
+    const act      = esActual ? ' activo-row' : '';
 
-    const filasHtml = filas.map(row => {
-      const i = row._i;
+    filas.forEach((row, idx) => {
+      const i             = row._i;
+      const isFirst       = idx === 0;
+      const firstCls      = isFirst ? ' mes-row--first' : '';
+      const puedeEliminar = filas.length > 1;
+      const fb            = FEEDBACK[row.instrumento] || '';
+
       const opciones = INSTRUMENTOS.map(o =>
         `<option value="${o.label}|${o.plat}|${o.tasa}"
           ${row.instrumento === o.label ? 'selected' : ''}>${o.label}</option>`
       ).join('');
-      const fb            = FEEDBACK[row.instrumento] || '';
-      const puedeEliminar = filas.length > 1;
 
-      return `
-        <div id="fila-${row.id}" class="plan-fila">
-          <div class="plan-fila-row">
+      /* ── Fila de instrumento ── */
+      tbody += `
+        <tr class="mes-row${firstCls}${act}">
+          <td class="mes-cell">
+            ${isFirst ? `
+              <div class="mes-nombre${esActual ? ' mes-nombre--activo' : ''}">${mesLabel(mesKey)}</div>
+              ${esActual ? '<div class="mes-tag">este mes</div>' : ''}
+            ` : ''}
+          </td>
+          <td>
             <div class="ds-select-wrap">
               <select class="ds-select"
                 onchange="cambiarInstrumento(${row.id}, ${i}, this.value)">
                 ${opciones}
               </select>
             </div>
+          </td>
+          <td>
             <div class="plan-monto-wrap">
               <span class="plan-monto-sym">$</span>
               <input type="number" inputmode="numeric"
@@ -307,41 +321,60 @@ function renderPlan() {
                 onchange="cambiarMonto(${row.id}, ${i}, this.value)"
                 onblur="cambiarMonto(${row.id}, ${i}, this.value)">
             </div>
+          </td>
+          <td>
             ${puedeEliminar
-              ? `<button class="ds-del" aria-label="Eliminar fila"
+              ? `<button class="ds-del" aria-label="Eliminar"
                    onclick="eliminarFila(${row.id}, '${mesKey}')">✕</button>`
               : ''}
-          </div>
-          ${fb ? `<div id="fb-${row.id}" class="plan-feedback">${fb}</div>` : ''}
-          <div id="saved-${row.id}" class="plan-saved">✓ guardado</div>
-        </div>`;
-    }).join('');
+          </td>
+        </tr>`;
 
-    html += `
-      <div class="mes-card${esActual ? ' activo' : ''}">
-        <div class="mes-header">
-          <div class="mes-label">
-            <div class="mes-nombre${esActual ? ' mes-nombre--activo' : ''}">${mesLabel(mesKey)}</div>
-            ${esActual ? '<div class="mes-tag">Este mes</div>' : ''}
-          </div>
-        </div>
-        <div class="mes-body-wrap">
-          ${filasHtml}
-          <button onclick="agregarFila('${mesKey}')" class="add-btn add-btn--sm">
+      /* ── Fila de feedback + guardado ── */
+      tbody += `
+        <tr class="feedback-row${act}">
+          <td></td>
+          <td colspan="3">
+            ${fb ? `<div id="fb-${row.id}" class="plan-feedback">${fb}</div>` : ''}
+            <div id="saved-${row.id}" class="plan-saved">✓ guardado</div>
+          </td>
+        </tr>`;
+    });
+
+    /* ── Fila de agregar instrumento ── */
+    tbody += `
+      <tr class="add-row${act}">
+        <td></td>
+        <td colspan="3">
+          <button class="add-btn add-btn--sm" onclick="agregarFila('${mesKey}')">
             + otro instrumento este mes
           </button>
-        </div>
-      </div>`;
+        </td>
+      </tr>`;
   });
 
   const totalAportado = planData.reduce((s, m) => s + parseFloat(m.monto), 0) + 190000;
 
-  document.getElementById('plan-meses').innerHTML = html;
+  document.getElementById('plan-meses').innerHTML = `
+    <div class="plan-table-wrap">
+      <table class="plan-table">
+        <thead>
+          <tr>
+            <th class="col-mes">Mes</th>
+            <th>Instrumento</th>
+            <th class="col-monto">Monto</th>
+            <th class="col-del"></th>
+          </tr>
+        </thead>
+        <tbody>${tbody}</tbody>
+      </table>
+    </div>`;
+
   document.getElementById('plan-resumen').innerHTML = `
     <div class="resumen-card">
-      <div class="resumen-lbl">Total a aportar en 12 meses</div>
+      <div class="resumen-lbl">Total proyectado en 12 meses</div>
       <div class="resumen-val">$${fmt(totalAportado)}</div>
-      <div class="resumen-sub">más los $190.000 que ya tenés en Mercado Pago</div>
+      <div class="resumen-sub">Suma de todos los aportes planificados</div>
     </div>`;
 }
 
