@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════
    GOOD THINGS GO — Design System v4
-   Nav pill · gradient text · glass depth · breathing room
+   Nav pill · glass depth · solid color · breathing room
 ═══════════════════════════════════════════════════════ */
 
 
@@ -14,12 +14,6 @@
   --c-brand-mid:  rgba(224, 64, 126, .22);
   --c-accent:     #28a8c0;
   --c-gold:       #72cce0;
-
-  /* ─ Gradientes de texto ─ */
-  --grad-pct:     linear-gradient(135deg, #e0407e 0%, #f090d0 55%, #c0e8f8 100%);
-  --grad-total:   linear-gradient(135deg, #72cce0 0%, #a0e0f8 100%);
-  --grad-h1:      linear-gradient(135deg, #eaf6f8 0%, #a8d2e2 100%);
-  --grad-brand:   linear-gradient(135deg, #e0407e 0%, #f060a0 100%);
 
   /* ─ Superficies glass ─ */
   --g-nav:    rgba(2, 8, 14, .78);
@@ -123,11 +117,7 @@ h1, .t-headline {
   font-weight: 600;
   letter-spacing: -.4px;
   line-height: 1.15;
-  /* Gradiente sutil en títulos */
-  background: var(--grad-h1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--c-ink);
 }
 
 .tagline {
@@ -261,11 +251,11 @@ h1, .t-headline {
 }
 
 .accent-r {
-  background: linear-gradient(to bottom, var(--c-brand) 0%, rgba(224,64,126,0) 100%);
+  background: var(--c-brand);
   box-shadow: var(--glow-brand);
 }
 .accent-g {
-  background: linear-gradient(to bottom, var(--c-accent) 0%, rgba(40,168,192,0) 100%);
+  background: var(--c-accent);
   box-shadow: var(--glow-teal);
 }
 
@@ -284,26 +274,6 @@ h1, .t-headline {
   position: relative;
 }
 
-.progress-section::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -60px;
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(224,64,126,.18) 0%, transparent 60%);
-  pointer-events: none;
-}
-.progress-section::after {
-  content: '';
-  position: absolute;
-  bottom: -50px; left: -40px;
-  width: 180px; height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(40,168,192,.14) 0%, transparent 65%);
-  pointer-events: none;
-}
 
 .progress-header {
   display: flex;
@@ -334,7 +304,6 @@ h1, .t-headline {
   margin-top: 5px;
 }
 
-/* % — gradiente magenta→pink→teal, glow con filter */
 .progress-pct {
   font-family: var(--f-serif);
   font-size: 4rem;
@@ -342,11 +311,7 @@ h1, .t-headline {
   line-height: 1;
   letter-spacing: -3px;
   text-align: right;
-  background: var(--grad-pct);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 14px rgba(224,64,126,.42));
+  color: var(--c-brand);
   position: relative;
 }
 
@@ -371,8 +336,7 @@ h1, .t-headline {
 .track-fill {
   height: 100%;
   border-radius: var(--r-pill);
-  background: linear-gradient(90deg,
-    #801050 0%, #c02870 40%, var(--c-brand) 70%, #f090d0 100%);
+  background: var(--c-brand);
   transition: width var(--dur-slow) var(--ease-dec);
   position: relative;
   animation: glow-pulse 3s ease-in-out infinite;
@@ -402,11 +366,7 @@ h1, .t-headline {
   font-size: var(--t-title);
   font-weight: 600;
   letter-spacing: -.3px;
-  background: var(--grad-total);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(40,168,192,.35));
+  color: var(--c-gold);
 }
 
 .meta-goal {
@@ -449,14 +409,6 @@ h1, .t-headline {
   overflow: hidden;
 }
 
-.tip-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg,
-    rgba(224,64,126,.07) 0%, transparent 50%);
-  pointer-events: none;
-}
 
 .tip-card:active {
   background: rgba(16,28,44,.78);
@@ -547,7 +499,7 @@ h1, .t-headline {
 ══════════════════════════════ */
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, var(--gb-sm), transparent);
+  background: var(--gb-sm);
   border: none;
   margin: var(--s-6) 0 var(--s-4);
 }
@@ -576,11 +528,7 @@ h1, .t-headline {
   font-size: var(--t-headline);
   font-weight: 600;
   letter-spacing: -.5px;
-  background: var(--grad-total);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(40,168,192,.30));
+  color: var(--c-gold);
 }
 
 
@@ -668,11 +616,7 @@ h1, .t-headline {
 }
 
 .mes-nombre--activo {
-  background: var(--grad-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 6px rgba(224,64,126,.35));
+  color: var(--c-brand);
 }
 
 .mes-tag {
@@ -757,16 +701,6 @@ h1, .t-headline {
   overflow: hidden;
 }
 
-.resumen-card::before {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(114,204,224,.12) 0%, transparent 65%);
-  pointer-events: none;
-}
 
 .resumen-lbl {
   font-size: var(--t-legal);
@@ -784,11 +718,7 @@ h1, .t-headline {
   letter-spacing: -1.5px;
   line-height: 1.1;
   margin-bottom: var(--s-2);
-  background: var(--grad-total);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 10px rgba(40,168,192,.30));
+  color: var(--c-gold);
 }
 
 .resumen-sub {
