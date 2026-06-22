@@ -726,6 +726,16 @@ h1, .t-headline {
   color: var(--c-muted);
 }
 
+.resumen-usd {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: var(--t-body);
+  color: var(--c-gold);
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--gb-xs);
+}
+
 
 /* ══════════════════════════════
    13. FORM — glass inputs

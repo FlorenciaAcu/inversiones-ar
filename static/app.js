@@ -180,6 +180,17 @@ const FEEDBACK = {
 };
 
 let planData = [];
+let mepRate  = null;   // dólar MEP para convertir el plan (pesos) a USD
+
+async function loadMep() {
+  try {
+    const r = await fetch(API + '/api/market');
+    if (r.ok) {
+      const m = await r.json();
+      mepRate = (m.dolar && m.dolar.mep) ? m.dolar.mep : null;
+    }
+  } catch (e) { mepRate = null; }
+}
 
 async function loadPlan() {
   try {
@@ -349,7 +360,23 @@ function renderPlan() {
 
   });
 
-  const totalAportado = planData.reduce((s, m) => s + parseFloat(m.monto), 0) + 190000;
+  /* ── Aportes vs. proyección con rendimiento ──
+     Recorro los meses en orden: cada mes sumo el aporte y lo hago
+     crecer a la tasa de ese mes (interés compuesto). */
+  let totalAportado = 0;
+  let balance       = 0;
+  Object.keys(meses).sort().forEach(mesKey => {
+    meses[mesKey].forEach(row => {
+      const monto = parseFloat(row.monto) || 0;
+      const tasa  = parseFloat(row.tasa_mensual) || 0;
+      totalAportado += monto;
+      balance = (balance + monto) * (1 + tasa);
+    });
+  });
+  const totalProyectado = balance;
+  const intereses       = totalProyectado - totalAportado;
+  const usdEquiv        = mepRate ? totalProyectado / mepRate : null;
+  const pctCasa         = usdEquiv ? Math.min((usdEquiv / GOAL) * 100, 100) : null;
 
   document.getElementById('plan-meses').innerHTML = `
     <div class="plan-table-wrap">
@@ -368,9 +395,16 @@ function renderPlan() {
 
   document.getElementById('plan-resumen').innerHTML = `
     <div class="resumen-card">
-      <div class="resumen-lbl">Total proyectado en 12 meses</div>
-      <div class="resumen-val">$${fmt(totalAportado)}</div>
-      <div class="resumen-sub">Suma de todos los aportes planificados</div>
+      <div class="resumen-lbl">Proyección con rendimiento</div>
+      <div class="resumen-val">$${fmt(totalProyectado)}</div>
+      <div class="resumen-sub">
+        Aportás $${fmt(totalAportado)} · generás $${fmt(intereses)} en intereses
+      </div>
+      ${usdEquiv !== null ? `
+        <div class="resumen-usd">
+          ≈ USD ${fmt(usdEquiv)} al dólar MEP
+          ${pctCasa !== null ? ` · ${pctCasa.toFixed(0)}% de tu casa` : ''}
+        </div>` : ''}
     </div>`;
 }
 
@@ -381,3 +415,5 @@ function renderPlan() {
 document.getElementById('tip-text').textContent = TIPS[tipIdx];
 loadAccounts();
 loadPlan();
+// El dólar llega aparte: cuando está, re-renderizo el plan para mostrar el equivalente en USD
+loadMep().then(() => { if (planData.length) renderPlan(); });
